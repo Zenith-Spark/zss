@@ -1,7 +1,8 @@
 import React from 'react'
+import { metadata } from '../layout'
 
 
-export default function Home() {  return (
+export default function About() {  return (
   
        <>
         <div className="w-full h-auto pt-32 flex flex-col items-center justify-around relative bg-black">

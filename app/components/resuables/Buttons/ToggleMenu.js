@@ -17,7 +17,7 @@ const ToggleMenu = ({ Click }) => {
 
   return (
     <div
-      className={`toggle w-8 h-8 rounded-md shadow-md flex items-center justify-center cursor-pointer relative overflow-hidden ${isActive ? 'activate' : ''}`}
+      className={`toggle w-8 h-8  flex items-center justify-center cursor-pointer relative overflow-hidden ${isActive ? 'activate' : ''}`}
       onClick={handleFuncs}
     >
       <span
