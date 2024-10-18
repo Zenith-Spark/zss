@@ -88,5 +88,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-Transition translate the navbar upwards when the page is scrolled up and bring it down when the page is scrolled down 
