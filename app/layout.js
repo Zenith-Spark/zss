@@ -1,7 +1,7 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import Navbar from "./components/Navbar/Navbar";
 import ThemeProvider from "./Theme/ThemeProvider";
+import Navbar from "./components/Navbar/Navbar";
 
 
 
@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
         className={` antialiased`}
         >
         <ThemeProvider>
-        <Navbar/>  
+        <Navbar/>
         {children}
       </ThemeProvider>
       </body>
