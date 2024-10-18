@@ -1,27 +1,48 @@
+/* globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Agdasima:wght@400;700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* Font Classes */
+.font-afacad {
+  font-family: 'Afacad Flux', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.font-agdasima {
+  font-family: 'Agdasima', sans-serif;
+}
+
+.font-josefin {
+  font-family: 'Josefin Sans', sans-serif;
+}
+
+.font-source-code {
+  font-family: 'Source Code Pro', monospace;
+}
+
+/* Dark theme styles */
+html[data-theme='dark'] {
+  --bg-color: #1a1a1a;
+  --text-color: #e0e0e0;
+  background-color: var(--bg-color);
+  background-image: linear-gradient(to right, #333333 1px, transparent 1px),
+                    linear-gradient(to bottom, #333333 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+/* Light theme styles */
+html[data-theme='light'] {
+  --bg-color: #F7F9FC;
+  --text-color: #000000;
+  background-color: var(--bg-color);
+  background-image: linear-gradient(to right, #E3E8EF 1px, transparent 1px),
+                    linear-gradient(to bottom, #E3E8EF 1px, transparent 1px);
+  background-size: 4rem 4rem;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }

@@ -13,8 +13,8 @@ export const NavItems = [
 
   export const LandingPageAboutUs = [
     {title: 'About Us', heading: 'Zenith Spark Station', 
-    firstText: 'Welcome to Zenith Spark  Station, a modern investment firm designed for ambitious investors! We specialize in helping our members discover promising digital assets and facilitate successful funding through private transactions. Zenith Nova Globals is a fully legitimate company, officially registered in the UK under company number 04255913.', 
-    secondText: 'We invest in stocks of stable and rapidly growing companies in the digital asset market. The priority direction is companies developing solutions for financial transactions using blockchain technology, as well as solutions for automated trading on the stock exchange. Here you will find the most relevant offerrs for most profitable and promising investment. We give you financial freedom'}
+    firstText: 'Welcome to Zenith Spark Station, an innovative investment firm crafted for ambitious investors. We help our members uncover valuable digital assets and facilitate private funding deals. Zenith Nova Globals is a fully legitimate UK-registered company under company number 04255913.', 
+    secondText: `We focus on investing in stocks of stable, fast-growing companies in the digital asset space, particularly those developing blockchain-based financial solutions and automated trading systems. Here, you'll discover the best opportunities for profitable and promising investments, giving you the financial freedom you seek.`}
   ]
 
   export const ComponayDocs = [
@@ -85,7 +85,7 @@ export const NavItems = [
     },
   ]
 
-  import CPImg from '../../../../public/img/pexels-georgemorina-6918529.jpg'
+  import CPImg from '../../../../public/img/SublandingPageBG.jpg'
   export const CP = [
     {
         title: `client-partner`,
