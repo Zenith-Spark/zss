@@ -1,4 +1,3 @@
-'use client'
 import Image from "next/image";
 import { metadata } from "./layout";
 import { ButtonOne } from "./components/resuables/Buttons/Buttons";
