@@ -7,9 +7,7 @@ import { ButtonOne, ButtonTwo } from '../resuables/Buttons/Buttons.js';
 
 const Navbar = () => {
   const [navDrawer, setNavDrawer] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0); // Track last scroll position
-  const [navbarVisible, setNavbarVisible] = useState(true); // Track navbar visibility
-
+  
   // Function to toggle the navDrawer state
   const toggleNav = () => {
     setNavDrawer(!navDrawer);
@@ -29,44 +27,24 @@ const Navbar = () => {
     };
   }, [navDrawer]);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-
-      // Check if scrolling down
-      if (scrollY > lastScrollY) {
-        setNavbarVisible(false); // Hide navbar
-      } else {
-        setNavbarVisible(true); // Show navbar
-      }
-
-      setLastScrollY(scrollY); // Update last scroll position
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    // Cleanup the event listener on unmount
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [lastScrollY]);
-
   return (
     <>
       <nav
-        className={`z-20 fixed w-full dark:bg-slate-800 bg-slate-900 transition-all duration-300 ease-in-out ${
-          navbarVisible ? 'translate-y-0' : '-translate-y-full'
-        }`}
+        className={`z-20 fixed w-full dark:bg-slate-800 bg-slate-900 transition-all duration-1000 overflow-hidden ${navDrawer ? 'h-[20rem]' : 'h-[3rem]'} md:h-[3rem] z-40`}
       >
         <div className='flex flex-row h-[3rem] items-center w-full justify-evenly'>
-          <Link href={'/'}>
-            <div className='text-white'>LOGO</div>
-          </Link>
+         <Link href={'/'}>
+         <div className='text-white'>
+            LOGO
+          </div>
+         </Link>
           <div className='hidden md:flex w-[30%] items-center justify-between'>
             {NavItems.map((item, index) => (
               <ul className='text-white' key={index}>
                 <li onClick={toggleNav}> {/* Toggle on click */}
-                  <Link href={item.href}>{item.name}</Link>
+                  <Link href={item.href}>
+                    {item.name}
+                  </Link>
                 </li>
               </ul>
             ))}
@@ -88,7 +66,9 @@ const Navbar = () => {
           {NavItems.map((items, index) => (
             <ul key={index} className='flex gap-2 hover:text-neutral-500 active:underline pb-2 items-center text-white'>
               <li onClick={toggleNav}> {/* Toggle on click */}
-                <Link href={items.href}>{items.name}</Link>
+                <Link href={items.href}>
+                  {items.name}
+                </Link>
               </li>
               <span>{items.icon}</span>
             </ul>
