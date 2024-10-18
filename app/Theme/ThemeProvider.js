@@ -13,25 +13,24 @@ export const useTheme = () => {
 };
 
 const ThemeProvider = ({ children }) => {
-  // Default to device preference for SSR and initialize state
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const [theme, setTheme] = useState(() => {
-    // Default to device preference
-    return prefersDark ? 'dark' : 'light';
-  });
-
+  const [theme, setTheme] = useState('light'); // Default to 'light'
   const [mounted, setMounted] = useState(false); // Track when component is mounted
 
   useEffect(() => {
-    // Mark the component as mounted
-    setMounted(true);
+    // This code runs only on the client
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = prefersDark ? 'dark' : 'light';
+    setTheme(initialTheme);
+    setMounted(true); // Mark the component as mounted
+
     // Set the initial theme based on device preference
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+    document.documentElement.setAttribute('data-theme', initialTheme);
+  }, []); // Empty dependency array ensures it runs only once on mount
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme); // Apply theme to document
   };
 
   // Don't render the button until after mount to prevent hydration errors
