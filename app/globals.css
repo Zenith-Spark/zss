@@ -35,7 +35,7 @@ html[data-theme='dark'] {
 /* Light theme styles */
 html[data-theme='light'] {
   --bg-color: #F7F9FC;
-  --text-color: #000000;
+  --text-color: #1e293b; /* Updated text color */
   background-color: var(--bg-color);
   background-image: linear-gradient(to right, #E3E8EF 1px, transparent 1px),
                     linear-gradient(to bottom, #E3E8EF 1px, transparent 1px);

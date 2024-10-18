@@ -20,7 +20,7 @@ export const NavItems = [
   export const ComponayDocs = [
     {
         title: 'Company Documents', 
-        Heading: 'Our company', 
+        heading: 'Our company', 
         name: 'Zenith Spark Station', 
         No: 'Company number: 04255913', 
         address: 'Office Address: 11 Margett Street Cottenham, Cambridge, Cambridgeshire, CB24 8QY', 
