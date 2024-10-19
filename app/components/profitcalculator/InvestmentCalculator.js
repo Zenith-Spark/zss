@@ -59,7 +59,7 @@ const InvestmentCalculator = () => {
         datasets: [{
           label: 'Investment Value (USD)',
           data,
-          borderColor: 'rgba(75, 192, 192, 1)',
+          borderColor: '#1a1a1a',
           borderWidth: 2,
           fill: false
         }]
@@ -84,7 +84,7 @@ const InvestmentCalculator = () => {
       <h1 className="text-3xl font-bold text-center mb-8 ">Investment Profit Calculator</h1>
       
       {/* Plan Selection */}
-      <div className="plan-selection grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 my-6">
+      <div className="plan-selection flex flex-wrap items-center justify-center gap-4 my-6">
         {Plans.map((plan, index) => (
           <label 
             key={index} 

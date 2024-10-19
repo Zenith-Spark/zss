@@ -85,14 +85,12 @@ export const NavItems = [
     },
   ]
 
-  import CPImg from '../../../../public/img/SublandingPageBG.jpg'
   export const CP = [
     {
         title: `client-partner`,
         heading: `Interests of our clients are above all`,
         firstText: `We are proud of our clients and value their potential. Our company always puts the interests of the client in the first place in order to fulfill its obligations, showing initiative and skillfully using its knowledge.`,
         secondText: `Zenith Nova Globals considers its customers as full partners in business. We our clients financial freedom and complete anonymity.`,
-        CPImg: CPImg
     }
   ]
 
