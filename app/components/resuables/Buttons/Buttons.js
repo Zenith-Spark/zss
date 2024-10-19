@@ -1,44 +1,54 @@
 'use client';
 import React from 'react';
+import styled from 'styled-components';
 
-export const ButtonOne = ({ buttonValue, iconValue, IconButton, Button, Clicked }) => (
-  <button
-    onClick={Clicked}
-    className={`
-      flex items-center justify-center text-white text-xs
-       bg-yellow-600 hover:bg-transparent hover:text-yellow-600 hover:border border-yellow-600  transition  
-      ${IconButton ? 'w-9 h-9 rounded-full' : 'py-2 px-4 rounded-2xl h-7'} 
-      active:translate-x-4
-    `}
-  >
-        {buttonValue && <span className="">{buttonValue}</span>}
-    {iconValue && (
-      <span className="flex items-center justify-center w-full h-full">
-        {iconValue}
-      </span>
-    )}
-  </button>
+const ButtonBase = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  &:active {
+    transform: translateY(1px);
+  }
+`;
+
+const StyledButtonOne = styled(ButtonBase)`
+  background-color: #fbbf24;
+  color: white;
+  border: 1px solid #fbbf24;
+  ${({ IconButton }) =>
+    IconButton ? 'width: 2.25rem; height: 2.25rem; border-radius: 50%;' : 'padding: 0.5rem 1rem; border-radius: 1.5rem; height: auto;'}
+  &:hover {
+    background-color: transparent;
+    color: #fbbf24;
+  }
+`;
+
+const StyledButtonTwo = styled(ButtonBase)`
+  background-color: transparent;
+  color: #fbbf24;
+  border: 1px solid #fbbf24;
+  ${({ IconButton }) =>
+    IconButton ? 'width: 2.25rem; height: 2.25rem; border-radius: 50%;' : 'padding: 0.5rem 1rem; border-radius: 1.5rem; height: auto;'}
+  &:hover {
+    background-color: #fbbf24;
+    color: white;
+  }
+`;
+
+export const ButtonOne = ({ buttonValue, iconValue, IconButton, Clicked }) => (
+  <StyledButtonOne onClick={Clicked} IconButton={IconButton}>
+    {buttonValue && <span>{buttonValue}</span>}
+    {iconValue && <span>{iconValue}</span>}
+  </StyledButtonOne>
 );
 
-
-
-
 export const ButtonTwo = ({ buttonValue, iconValue, IconButton, Clicked }) => (
-  <button
-    onClick={Clicked}
-    className={`
-      flex items-center justify-center text-xs
-      border border-yellow-600 text-yellow-600 transition 
-      ${IconButton ? 'w-9 h-9 rounded-full' : 'py-2 px-4 rounded-2xl h-7'} 
-      bg-transparent hover:bg-yellow-600 hover:text-white 
-      active:translate-x-4
-    `}
-  >
-        {buttonValue && <span className="">{buttonValue}</span>}
-    {iconValue && (
-      <span className="flex items-center justify-center w-full h-full">
-        {iconValue}
-      </span>
-    )}
-  </button>
+  <StyledButtonTwo onClick={Clicked} IconButton={IconButton}>
+    {buttonValue && <span>{buttonValue}</span>}
+    {iconValue && <span>{iconValue}</span>}
+  </StyledButtonTwo>
 );

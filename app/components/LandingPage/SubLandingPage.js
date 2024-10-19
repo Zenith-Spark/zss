@@ -52,7 +52,7 @@ const SubLandingPage = () => {
         <div className='z-20 w-full md:w-1/2'>
         {LandingPageAboutUs.map((texts, index) => (
         <div key={index} className='flex flex-col gap-4'>
-          <h3 className='text-8xl md:text-10xl mb-4  dark:text-yellow-600 text-yellow-700'>
+          <h3 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 dark:text-yellow-600 text-yellow-700'>
             {texts.title}
           </h3>
           <p>{getLimitedText(texts.firstText)}</p> {/* Limit the firstText */}
