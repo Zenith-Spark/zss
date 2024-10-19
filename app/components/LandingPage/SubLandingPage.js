@@ -1,11 +1,14 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { ComponayDocs, LandingPageAboutUs, WhatWeOffer } from '../resuables/index';
+import { Affiliate, ComponayDocs, LandingPageAboutUs, WhatWeOffer } from '../resuables/index';
 import Image from 'next/image';
 import BG from '../../../public/img/team1.webp';
+import BGTwo from '../../../public/img/building1.webp';
+import BGThree from '../../../public/img/building2.webp';
 import { ButtonOne } from '../resuables/Buttons/Buttons';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import InvestmentCalculator from '../profitcalculator/InvestmentCalculator';
 
 const SubLandingPage = () => {
   const [profitTab, setProfitTab] = useState(false);
@@ -42,7 +45,7 @@ const SubLandingPage = () => {
 
   return (
     <main className='w-full h-auto relative overflow-hidden'>
-      <section className='mx-auto mb-20 flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between'>
+      <section className='mx-auto  flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between'>
         <div className='z-20 w-full md:w-1/2'>
         {LandingPageAboutUs.map((texts, index) => (
         <div key={index} className='flex flex-col gap-4'>
@@ -51,7 +54,7 @@ const SubLandingPage = () => {
           </h3>
           <p>{getLimitedText(texts.firstText)}</p> {/* Limit the firstText */}
           <Link href={'/about'}>
-            <div className='mb-8 flex flex-row gap-4 items-center'>
+            <div className=' flex flex-row gap-4 items-center'>
               <ButtonOne iconValue={<ArrowRight />} buttonValue={'More'} />
             </div>
           </Link>
@@ -62,14 +65,27 @@ const SubLandingPage = () => {
           <Image src={BG} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl' />
         </div>
       </section>
-      <div className='flex flex-col md:flex-row w-[80%] mx-auto gap-8'>
-        <div className="w-full md:w-1/2 z-20">
-          {ComponayDocs.map((texts, index) => (
+
+      <section className='h-auto w-full mb-20 flex  my-10  items-center text-xl  md:text-2xl md:justify-center bg-slate-800 text-white py-10'>
+      <div className="w-[80%] mx-auto  z-20 ">
+          {WhatWeOffer.map((texts, index) => (
             <section className='flex flex-col gap-2 font-semibold w-full md:text-lg' key={index}>
+              <h1 className="text-4xl md:text-6xl tracking-wider">
+                {texts.heading}
+              </h1>
+              <p>{texts.text}</p>
+            </section>
+          ))}
+        </div>
+      </section>
+          <section className='mx-auto  flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between gap-x-3'>
+        <div className='z-20 w-full md:w-1/2 '>
+        {ComponayDocs.map((texts, index) => (
+            <div className='flex flex-col gap-2 font-semibold md:text-lg' key={index}>
               <h3 className='text-xl md:text-2xl mb-4 font-extrabold dark:text-yellow-600 text-yellow-700'>
                 {texts.title}
               </h3>
-              <h1 className="text-5xl md:text-7xl tracking-wider">
+              <h1 className="text-4xl md:text-6xl tracking-wider">
                 {texts.heading}
               </h1>
               <p>{texts.name}</p>
@@ -84,29 +100,43 @@ const SubLandingPage = () => {
                 <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
                 <span> View Report</span>
               </div>
-            </section>
+            </div>
           ))}
         </div>
-        <div className="w-full md:w-1/2 z-20">
-          {WhatWeOffer.map((texts, index) => (
+        <div className='hidden md:flex gap-x-1 z-20 relative rounded-2xl h-[50dvh] w-1/2'>
+          <Image src={BGTwo} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6' />
+          <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover -translate-y-20 rounded-2xl shadow-2xl w-1/2 skew-y-6' />
+          <Link href={'/about'}>
+        <span className=' absolute z-30  bottom-52 xl:right-[48%] right-[45%] border-[4px] rounded-full'>
+            <ButtonOne IconButton={true} iconValue={(<ArrowLeft/>)}/>
+        </span>
+          </Link>
+        </div>
+      </section>
+
+
+      <InvestmentCalculator/>
+
+      <section className='h-auto w-full mb-20 flex flex-col md:flex-row  my-10  items-center text-md  md:text-xl px-3 md:px-10 bg-slate-800 text-white py-10'>
+      <article className="md:w-[80%] px-3  mx-auto  z-20 ">
+          {Affiliate.map((texts, index) => (
             <section className='flex flex-col gap-2 font-semibold w-full md:text-lg' key={index}>
-              <h3 className='text-xl md:text-2xl mb-4 font-extrabold dark:text-yellow-600 text-yellow-700'>
-                {texts.title}
-              </h3>
-              <h1 className="text-5xl md:text-7xl tracking-wider">
+              <h1 className="text-4xl md:text-6xl tracking-wider">
                 {texts.heading}
               </h1>
               <p>{texts.text}</p>
             </section>
           ))}
-          <div className='flex flex-row items-center gap-4 font-semibold w-full md:text-lg justify-end cursor-pointer'>
-            <ButtonOne IconButton={true} iconValue={(<ArrowLeft />)} Clicked={toggleProfitTab} />
-            <span className='' onClick={toggleProfitTab}>
-              Calculate Profit
-            </span>
-          </div>
-        </div>
-      </div>
+        </article>
+          <span className='flex flex-col items-center text-yellow-400 my-5'>
+            <h1 className=' text-6xl md:text-8xl font-extrabold'>
+              10%.
+            </h1>
+            <p>
+            Referral Commission
+            </p>
+          </span>
+      </section>
     </main>
   );
 }
