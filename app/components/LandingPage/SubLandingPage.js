@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { ComponayDocs, LandingPageAboutUs, WhatWeOffer } from '../resuables/index';
 import Image from 'next/image';
-import BG from '../../../public/img/pexels-karolina-grabowska-7877020.webp';
+import BG from '../../../public/img/team1.webp';
 import { ButtonOne } from '../resuables/Buttons/Buttons';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -25,30 +25,40 @@ const SubLandingPage = () => {
     };
   }, [profitTab]);
 
+  const [showMore, setShowMore] = useState(false);
+  
+    // Helper function to split the text into words
+    const getWords = (text) => text.split(' ');
+  
+    // Function to limit the number of words in firstText
+    const getLimitedText = (text) => {
+      const words = getWords(text);
+      const isLongText = words.length > 10;
+      return isLongText && !showMore
+        ? words.slice(0, 20).join(' ') + '...'
+        : text;
+    };
+ 
+
   return (
     <main className='w-full h-auto relative overflow-hidden'>
-      <section className='mx-auto mb-20 flex flex-row gap-4 items-center justify-center pt-24 text-xl md:text-2xl w-[80%]'>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"></div>
+      <section className='mx-auto mb-20 flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between'>
         <div className='z-20 w-full md:w-1/2'>
-          {LandingPageAboutUs.map((texts, index) => (
-            <div key={index} className=' flex flex-col gap-4'>
-              <h3 className='text-4xl md:text-6xl mb-4  font-extrabold dark:text-yellow-600 text-yellow-700'>
-                {texts.title}
-              </h3>
-              <h1 className="text-3xl md:text-4xl tracking-wider">
-                {texts.heading}
-              </h1>
-              <p>{texts.firstText}</p>
-              <Link href={'/about'}>
-                <div className='mb-8 flex flex-row gap-4 items-center '>
-                  <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
-                  <span className=''> See More</span>
-                </div>
-              </Link>
+        {LandingPageAboutUs.map((texts, index) => (
+        <div key={index} className='flex flex-col gap-4'>
+          <h3 className='text-8xl md:text-10xl mb-4  dark:text-yellow-600 text-yellow-700'>
+            {texts.title}
+          </h3>
+          <p>{getLimitedText(texts.firstText)}</p> {/* Limit the firstText */}
+          <Link href={'/about'}>
+            <div className='mb-8 flex flex-row gap-4 items-center'>
+              <ButtonOne iconValue={<ArrowRight />} buttonValue={'More'} />
             </div>
-          ))}
+          </Link>
         </div>
-        <div className='hidden md:flex z-20 rounded-2xl h-[50dvh]'>
+      ))}
+        </div>
+        <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
           <Image src={BG} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl' />
         </div>
       </section>
