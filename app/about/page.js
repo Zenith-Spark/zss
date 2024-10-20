@@ -5,7 +5,7 @@ import { LandingPageAboutUs, stepsToEarn } from '../components/resuables/index'
 
 export default function About() {  return (
   
-       <>
+       <main className='w-full'>
         <div className="w-full h-auto pt-32 flex flex-col items-center justify-around relative bg-black">
         <div className="flex-col flex gap-3 z-10 text-white w-[80%] mx-auto">
           <h3 className="text-2xl md:text-3xl tracking-tight">
@@ -101,7 +101,7 @@ export default function About() {  return (
         </div>
       </div>
     </section>
-       </>
+       </main>
   )
 }
 
