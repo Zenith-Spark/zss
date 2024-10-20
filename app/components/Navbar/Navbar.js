@@ -53,12 +53,16 @@ const Navbar = () => {
             <ToggleMenu Click={toggleNav} />
           </div>
           <div className='gap-x-4 justify-center py-4 hidden md:flex'>
+            <Link href={'/login'}>
             <span onClick={toggleNav}> {/* Toggle on click */}
               <ButtonOne buttonValue={`Login`} />
             </span>
+            </Link>
+            <Link href={'/signup'}>
             <span onClick={toggleNav}> {/* Toggle on click */}
               <ButtonTwo buttonValue={`Sign Up`} />
             </span>
+            </Link>
           </div>
         </div>
 
@@ -74,12 +78,16 @@ const Navbar = () => {
             </ul>
           ))}
           <div className='flex w-1/2 mx-auto gap-x-4 justify-center md:hidden'>
+          <Link href={'/login'}>
             <span onClick={toggleNav}> {/* Toggle on click */}
               <ButtonOne buttonValue={`Login`} />
             </span>
+            </Link>
+            <Link href={'/signup'}>
             <span onClick={toggleNav}> {/* Toggle on click */}
               <ButtonTwo buttonValue={`Sign Up`} />
             </span>
+            </Link>
           </div>
         </div>
       </nav>
