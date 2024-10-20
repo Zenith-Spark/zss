@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Chart, registerables } from 'chart.js';
 import { Plans } from '../resuables/index';
 
@@ -24,18 +24,7 @@ const InvestmentCalculator = () => {
     }
   }, [selectedPlan]);
 
-  useEffect(() => {
-    updateCalculations();
-  }, [selectedPlan, investment]);
-
-  const handleInvestmentChange = (e) => {
-    const value = parseFloat(e.target.value);
-    if (!isNaN(value)) {
-      setInvestment(value);
-    }
-  };
-
-  const updateCalculations = () => {
+  const updateCalculations = useCallback(() => {
     const intervalDays = parseInt(selectedPlan.interval.match(/\d+/), 10);
     const interestRate = parseFloat(selectedPlan.heading);
     const profit = investment * (interestRate / 100);
@@ -73,6 +62,18 @@ const InvestmentCalculator = () => {
         }
       }
     });
+  }, [investment, selectedPlan]); // Include dependencies here
+
+  // Call updateCalculations when the selected plan or investment changes
+  useEffect(() => {
+    updateCalculations();
+  }, [selectedPlan, investment, updateCalculations]);
+
+  const handleInvestmentChange = (e) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value)) {
+      setInvestment(value);
+    }
   };
 
   // Extract min and max from the selected plan
@@ -104,21 +105,21 @@ const InvestmentCalculator = () => {
 
       {/* Investment Input */}
       <div className="investment-input grid grid-cols-1 md:grid-cols-2 gap-6 items-center my-8">
-      <div className="text-center md:text-left">
-  <label htmlFor="investmentRange" className="block mb-2 text-lg font-semibold">Investment amount (USD):</label>
-  <input
-    type="range"
-    id="investmentRange"
-    min={minInvestment}
-    max={maxInvestment}
-    value={investment}
-    onChange={handleInvestmentChange}
-    className="w-full appearance-none h-2 bg-gray-200 rounded-lg cursor-pointer"
-    style={{
-      background: `linear-gradient(to right, #FFD700 ${(investment - minInvestment) * 100 / (maxInvestment - minInvestment)}%, #e2e8f0 ${(investment - minInvestment) * 100 / (maxInvestment - minInvestment)}%)`,
-    }}
-  />
-</div>
+        <div className="text-center md:text-left">
+          <label htmlFor="investmentRange" className="block mb-2 text-lg font-semibold">Investment amount (USD):</label>
+          <input
+            type="range"
+            id="investmentRange"
+            min={minInvestment}
+            max={maxInvestment}
+            value={investment}
+            onChange={handleInvestmentChange}
+            className="w-full appearance-none h-2 bg-gray-200 rounded-lg cursor-pointer"
+            style={{
+              background: `linear-gradient(to right, #FFD700 ${(investment - minInvestment) * 100 / (maxInvestment - minInvestment)}%, #e2e8f0 ${(investment - minInvestment) * 100 / (maxInvestment - minInvestment)}%)`,
+            }}
+          />
+        </div>
         <div className="flex flex-col items-center">
           <input
             type="number"

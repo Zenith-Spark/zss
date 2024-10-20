@@ -54,7 +54,7 @@ const LoginPage = () => {
             </form>
             <div className="flex flex-col items-center mt-4">
               <a href="/forgot-password" className="text-yellow-500 hover:underline">Forgot Password?</a>
-              <p className="text-gray-300 mt-2">Don't have an account? <Link href="/signup" className="text-yellow-500 hover:underline">Sign Up</Link></p>
+              <p className="text-gray-300 mt-2">Dont have an account? <Link href="/signup" className="text-yellow-500 hover:underline">Sign Up</Link></p>
             </div>
           </section>
         </div>
