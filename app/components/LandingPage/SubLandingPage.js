@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Affiliate, ComponayDocs, LandingPageAboutUs, WhatWeOffer } from '../resuables/index';
+import { Affiliate, coins, ComponayDocs, LandingPageAboutUs, WhatWeOffer } from '../resuables/index';
 import Image from 'next/image';
 import BG from '../../../public/img/team1.webp';
 import BGTwo from '../../../public/img/building1.webp';
@@ -68,6 +68,11 @@ const SubLandingPage = () => {
           <Image src={BG} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl' />
         </div>
       </section>
+      <div className='flex  flex-row gap-x-4 w-full items-center justify-evenly my-5 '>
+        {coins.map((coins, index)=>(
+            <Image key={index} src={coins.Image} width={50} height={50} alt='coins'/>
+        ))}
+      </div>
 
       <section className='h-auto w-full mb-20  flex items-center  my-10  gap-x-5 text-md  md:text-xl px-3 md:px-10 bg-slate-800 text-white py-10'>
       <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>

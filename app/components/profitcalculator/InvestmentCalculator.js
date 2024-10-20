@@ -60,7 +60,7 @@ const InvestmentCalculator = () => {
         datasets: [{
           label: 'Investment Value (USD)',
           data,
-          borderColor: '#1a1a1a',
+          borderColor: '#C2A74D',
           borderWidth: 2,
           fill: false
         }]

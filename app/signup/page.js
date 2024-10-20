@@ -19,7 +19,7 @@ const Page = () => {
     <main className='w-full h-screen flex items-center justify-center relative'>
       <div className='absolute inset-0 bg-cover bg-center' style={{ backgroundImage: `url(${formBg.src})` }}>
         <div className='bg-black bg-opacity-50 h-full w-full flex items-center justify-center'>
-          <section className='w-[80%] mx-auto md:w-[40%] rounded-3xl backdrop-blur-sm h-[50dvh] flex flex-col items-center justify-center  p-6'>
+          <section className='w-[80%] mx-auto md:w-[40%] rounded-3xl backdrop-blur-sm h-auto border flex flex-col items-center justify-center  p-6'>
             <h1 className='text-white text-3xl font-bold mb-6'>Sign Up</h1>
             <form className='w-full flex flex-col gap-y-5' onSubmit={handleSubmit}>
               <Input

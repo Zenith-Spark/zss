@@ -24,8 +24,7 @@ const Roadmap = () => {
   };
 
   return (
-    <main className="max-w-7xl mx-auto px-4 h-screen flex items-center justify-center">
-        <div>
+    <main className="max-w-7xl mx-auto px-4 h-screen">
       <h1 className="text-3xl font-bold text-center mb-8">Our Roadmap</h1>
       <div className="flex justify-center mb-4">
         <select
@@ -44,7 +43,6 @@ const Roadmap = () => {
           ))}
         </ul>
       </div>
-        </div>
     </main>
   );
 };

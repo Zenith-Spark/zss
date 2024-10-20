@@ -163,8 +163,8 @@ export const WorkProcessFAQs = [
   {
       question: "How can I create a Zenith Nova Globals account?",
       answer: [
-          "1. Click the Sign-Up link.",
-          "2. Fill in your details and click 'Register'."
+          " Click the Sign-Up link.",
+          " Fill in your details and click 'Register'."
       ]
   },
   {
@@ -197,9 +197,9 @@ export const aboutInvestmentFAQs = [
   {
       question: "How can I make a deposit?",
       answer: [
-          "1. Select your preferred investment plan.",
-          "2. Click on 'Make a Deposit' and choose a payment method.",
-          "3. Enter the deposit amount and proceed with the payment."
+          " Select your preferred investment plan.",
+          " Click on 'Make a Deposit' and choose a payment method.",
+          " Enter the deposit amount and proceed with the payment."
       ]
   },
   {
@@ -224,10 +224,10 @@ export const aboutWithdrawalFAQs = [
   {
       question: "How can I submit a withdrawal request?",
       answer: [
-          "1. Log in with your username and password.",
-          "2. Navigate to the Withdrawal section.",
-          "3. Select your preferred currency and input the amount.",
-          "4. Click 'Confirm' to submit the request."
+          " Log in with your username and password.",
+          " Navigate to the Withdrawal section.",
+          "Select your preferred currency and input the amount.",
+          "Click 'Confirm' to submit the request."
       ]
   },
   {
@@ -272,3 +272,26 @@ export const RoadMapYearThree = [
   "Conducting in-depth market research to refine offerings",
   "Strengthening community engagement and corporate responsibility initiatives"
 ];
+
+
+import Binance from '../../../../public/img/binace.png'
+import BitCoin from '../../../../public/img/bitcoin.png'
+import EImg from '../../../../public/img/eimg.png'
+import Etherium from '../../../../public/img/Etherium.png'
+import TEtherium from '../../../../public/img/Tetherium.png'
+import LImg from '../../../../public/img/Limg.png'
+import TBinance from '../../../../public/img/TBinance.png'
+import TonImg from '../../../../public/img/TonImg.png'
+import TtonImg from '../../../../public/img/TtonImg.png'
+
+export const coins = [
+ {Image: Binance},
+ {Image: EImg},
+ {Image: Etherium},
+ {Image: TEtherium},
+ {Image: BitCoin},
+ {Image: LImg},
+ {Image: TBinance},
+ {Image: TonImg},
+ {Image: TtonImg},
+]
