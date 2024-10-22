@@ -75,16 +75,17 @@ export default function About() {  return (
           How to Earn With Us
         </h2>
 
-        {/* Steps Container */}
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8">
+        <section className="w-full py-12">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <div className="flex flex-col md:flex-row justify-between border shadow-lg rounded-lg">
           {stepsToEarn.map((step, index) => (
             <div
               key={index}
-              className="w-full md:w-1/3 bg-gray-100 dark:bg-gray-800 shadow-lg rounded-lg p-6 text-center transition-transform hover:scale-105"
+              className="w-full md:w-1/3 bg-gray-100 dark:bg-gray-800  p-6 text-center transition-transform hover:scale-105"
             >
               {/* Step Number */}
-              <div className="text-4xl md:text-6xl font-bold text-yellow-600 dark:text-yellow-500 mb-4">
-                {step.number}
+              <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-500 mb-4">
+               Step {step.number}
               </div>
 
               {/* Step Title */}
@@ -98,8 +99,10 @@ export default function About() {  return (
               </p>
             </div>
           ))}
-        </div>
       </div>
+      </div>
+    </section>
+    </div>
     </section>
        </main>
   )

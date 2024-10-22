@@ -34,7 +34,7 @@ html[data-theme='dark'] {
 
 /* Light theme styles */
 html[data-theme='light'] {
-  --bg-color: #F7F9FC;
+  --bg-color: #f3f6fa;
   --text-color: #1e293b; /* Updated text color */
   background-color: var(--bg-color);
   background-image: linear-gradient(to right, #E3E8EF 1px, transparent 1px),
@@ -45,4 +45,12 @@ html[data-theme='light'] {
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
+}
+/* Add this to your global CSS file */
+#default-carousel {
+  overflow: hidden;
+}
+
+.transition-transform {
+  transition: transform 0.5s ease; /* Smooth transition */
 }

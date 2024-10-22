@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { metadata } from "./layout";
-import { ButtonOne } from "./components/resuables/Buttons/Buttons";
+import { ButtonOne, ButtonTwo } from "./components/resuables/Buttons/Buttons";
 import { ArrowRight } from "lucide-react";
 import { LandingPage } from "./components/resuables/index";
 import SubLandingPage from "./components/LandingPage/SubLandingPage";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -24,18 +25,9 @@ export default function Home() {
           </article>
 
           <div className="flex gap-4 flex-col md:flex-row">
-            <span className="flex flex-row gap-3 items-center">
-              <ButtonOne IconButton={true} iconValue={(<ArrowRight/>)}/>
-              <p>
-                Investor Login
-              </p>
-            </span>
-            <span className="flex flex-row gap-3 items-center">
-              <ButtonOne IconButton={true} iconValue={(<ArrowRight/>)}/>
-              <p>
-                Create  Account
-              </p>
-            </span>
+            <Link href={'/signup'} className="flex flex-row gap-3 items-center">
+              <ButtonTwo buttonValue={'Get Stated'} iconValue={(<ArrowRight/>)}/>
+            </Link>
           </div>
         </div>
           ))

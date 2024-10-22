@@ -45,34 +45,60 @@ const SubLandingPage = () => {
         : text;
     };
  
+    const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  // Function to check screen size
+  const handleResize = () => {
+    setIsSmallScreen(window.innerWidth < 768); // 768px is Tailwind's md breakpoint
+  };
+
+  useEffect(() => {
+    // Set initial screen size
+    handleResize();
+    // Add event listener to update screen size on window resize
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Limit coins to 4 on small screens
+  const displayedCoins = isSmallScreen ? coins.slice(0, 4) : coins;
+
 
   return (
     <main className='w-full h-auto relative overflow-hidden'>
-      <section className='mx-auto  flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between'>
-        <div className='z-20 w-full md:w-1/2'>
-        {LandingPageAboutUs.map((texts, index) => (
-        <div key={index} className='flex flex-col gap-4'>
-          <h3 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 dark:text-yellow-600 text-yellow-700'>
-            {texts.title}
-          </h3>
-          <p>{getLimitedText(texts.firstText)}</p> {/* Limit the firstText */}
-          <Link href={'/about'}>
-            <div className=' flex flex-row gap-4 items-center'>
-              <ButtonOne iconValue={<ArrowRight />} buttonValue={'More'} />
-            </div>
-          </Link>
-        </div>
+      <section className='mx-auto md:h-screen flex flex-col  items-center  text-xl w-[80%] md:text-2xl md:justify-center'>
+      <div className='z-20 w-full'>
+  {LandingPageAboutUs.map((text, index) => (
+    <div 
+      key={index} 
+      className='w-full flex flex-col items-center text-center py-8 '>
+      {/* Title */}
+      <h3 className='text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-300'>
+        {text.title}
+      </h3>
+      
+      {/* Heading */}
+      <h1 className='text-3xl md:text-6xl font-extrabold text-yellow-600 mb-4'>
+        {text.heading}
+      </h1>
+      
+      {/* Paragraph */}
+      <p className='text-lg md:text-xl text-gray-700 dark:text-gray-400 leading-relaxed max-w-3xl'>
+        {text.firstText}
+      </p>
+    </div>
+  ))}
+</div>
+
+
+      <div className='flex flex-row w-full items-center justify-evenly pt-16'>
+      {displayedCoins.map((coin, index) => (
+        <span key={index} className='text-3xl md:text-4xl'>
+          {coin}
+        </span>
       ))}
-        </div>
-        <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={BG} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl' />
-        </div>
+    </div>
       </section>
-      <div className='flex  flex-row gap-x-4 w-full items-center justify-evenly my-5 '>
-        {coins.map((coins, index)=>(
-            <Image key={index} src={coins.Image} width={50} height={50} alt='coins'/>
-        ))}
-      </div>
 
       <section className='h-auto w-full mb-20  flex items-center  my-10  gap-x-5 text-md  md:text-xl px-3 md:px-10 bg-slate-800 text-white py-10'>
       <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>

@@ -9,6 +9,7 @@ import Footer from "./components/footer/Footer";
 export const metadata = {
   title: "Zenith Spark Station",
   description: "Innovative Company",
+  
 };
 
 export default function RootLayout({ children }) {

@@ -1,3 +1,4 @@
+
 export const NavItems = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
@@ -10,7 +11,7 @@ export const LandingPage = [
 ];
 
 export const LandingPageAboutUs = [
-  {title: 'About Us', heading: 'Zenith Spark Station', 
+  {title: 'Why choose', heading: 'Zenith Spark Station', 
   firstText: 'Introducing Zenith Spark Station, a forward-thinking investment firm designed for ambitious investors. We assist our clients in discovering valuable digital assets and enabling private funding opportunities. Zenith Nova Globals is a legally registered UK company with registration number 04255913.', 
   secondText: `We specialize in investing in high-growth companies, particularly those involved in blockchain and automated trading technologies. Here, you'll find top-tier opportunities for profitable investments, paving the way for your financial freedom.`}
 ];
@@ -93,22 +94,22 @@ export const CP = [
 
 export const howToEarn = [
   {
-      No: `1.`,
+      No: `1`,
       title: `Register`,
       text: `Create an account by clicking SIGN UP, completing the form, confirming the captcha, and clicking REGISTER.`
   },
   {
-      No: `2.`,
+      No: `2`,
       title: `Make a Deposit`,
       text: `Select MAKE DEPOSIT, choose your payment method, input the deposit amount, and complete the transaction.`
   },
   {
-      No: `3.`,
+      No: `3`,
       title: `Choose a Plan`,
       text: `Navigate to the "Invest" section on your dashboard, pick your desired investment plan, and proceed.`
   },
   {
-      No: `4.`,
+      No: `4`,
       title: `Receive Profit`,
       text: `Log in with your credentials and click on the WITHDRAW section to access your earnings.`
   }
@@ -143,17 +144,17 @@ export const reasonsToChooseUs = [
 
 export const stepsToEarn = [
   {
-    number: `1.`,
+    number: `1`,
     title: "Register",
     description: "Sign up on the platform and generate your personal referral link."
   },
   {
-    number: `2.`,
+    number: `2`,
     title: "Advertise",
     description: "Promote our company and earn rewards without investing."
   },
   {
-    number: `3.`,
+    number: `3`,
     title: "Earn Commissions",
     description: "Build a client network and earn referral commissions."
   }
@@ -274,24 +275,31 @@ export const RoadMapYearThree = [
 ];
 
 
-import Binance from '../../../../public/img/binace.png'
-import BitCoin from '../../../../public/img/bitcoin.png'
-import EImg from '../../../../public/img/eimg.png'
-import Etherium from '../../../../public/img/Etherium.png'
-import TEtherium from '../../../../public/img/Tetherium.png'
-import LImg from '../../../../public/img/Limg.png'
-import TBinance from '../../../../public/img/TBinance.png'
-import TonImg from '../../../../public/img/TonImg.png'
-import TtonImg from '../../../../public/img/TtonImg.png'
+
+import { SiBitcoin } from "react-icons/si";
+import { FaEthereum } from "react-icons/fa";
+import { RiBnbFill } from "react-icons/ri";
+import { SiSolana } from "react-icons/si";
+import { SiTether } from "react-icons/si";
+import { RiXrpFill } from "react-icons/ri";
+import { IoLogoUsd } from "react-icons/io5";
+import { SiHiveBlockchain } from "react-icons/si";
+
+
 
 export const coins = [
- {Image: Binance},
- {Image: EImg},
- {Image: Etherium},
- {Image: TEtherium},
- {Image: BitCoin},
- {Image: LImg},
- {Image: TBinance},
- {Image: TonImg},
- {Image: TtonImg},
+  <SiBitcoin />, 
+  <FaEthereum />,
+  <RiBnbFill/>,
+  <SiSolana/>,
+  <SiTether/>,
+  <RiXrpFill/>,
+  <IoLogoUsd/>,
+  <SiHiveBlockchain/>
+]
+
+export const FooterPages = [
+  { name: 'Contact us', href: '/contactus' },
+  { name: 'Terms and conditions', href: '/terms' },
+  { name: 'Privacy Policy', href: '/privacy' },
 ]
