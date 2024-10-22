@@ -94,7 +94,7 @@ const SubLandingPage = () => {
       <div className='flex flex-row w-full items-center justify-evenly pt-16'>
       {displayedCoins.map((coin, index) => (
         <span key={index} className='text-3xl md:text-4xl'>
-          {coin}
+          {coin.coins}
         </span>
       ))}
     </div>

@@ -288,14 +288,14 @@ import { SiHiveBlockchain } from "react-icons/si";
 
 
 export const coins = [
-  <SiBitcoin />, 
-  <FaEthereum />,
-  <RiBnbFill/>,
-  <SiSolana/>,
-  <SiTether/>,
-  <RiXrpFill/>,
-  <IoLogoUsd/>,
-  <SiHiveBlockchain/>
+ {coins: <SiBitcoin />}, 
+  {coins:  <FaEthereum />},
+  {coins: <RiBnbFill/>},
+  {coins: <SiSolana/>},
+  {coins: <SiTether/>},
+  {coins:<RiXrpFill/>},
+  {coins: <IoLogoUsd/>},
+  {coins: <SiHiveBlockchain/>}
 ]
 
 export const FooterPages = [
