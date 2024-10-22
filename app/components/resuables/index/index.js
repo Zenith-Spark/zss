@@ -303,3 +303,24 @@ export const FooterPages = [
   { name: 'Terms and conditions', href: '/terms' },
   { name: 'Privacy Policy', href: '/privacy' },
 ]
+
+
+import { TbLayoutDashboardFilled } from "react-icons/tb";
+import { PiHandWithdrawFill, PiHandDepositFill } from "react-icons/pi";
+import { GiTakeMyMoney } from "react-icons/gi";
+import { TfiBarChart } from "react-icons/tfi";
+import { FaUserFriends } from "react-icons/fa";
+import { FiUser } from "react-icons/fi";
+import { AiOutlineSetting, AiOutlineLogout } from "react-icons/ai";
+
+export const usrDBSidebar = [
+  {name: 'Dashboard', href: '/usr', icons: <TbLayoutDashboardFilled/>},
+  {name: 'Withdraw', href: '/withdraw', icons: <PiHandWithdrawFill/>},
+  {name: 'Deposit', href: '/deposit', icons: <PiHandDepositFill/>},
+  {name: 'Invest', href: '/invest', icons: <GiTakeMyMoney/>},
+  {name: 'Investment', href: '/investment', icons: <TfiBarChart/>},
+  {name: 'Referrals', href: '/referrals', icons: <FaUserFriends/>},
+  {name: 'Profile', href: '/profile', icons: <FiUser/> },
+  {name: 'settings', href: '/settings', icons: <AiOutlineSetting/>},
+  {name: 'Logout', href: '/', icons: <AiOutlineLogout/>},
+]

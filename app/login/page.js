@@ -45,12 +45,13 @@ const LoginPage = () => {
                 />
                 <label htmlFor="rememberMe" className="ml-2 text-gray-300">Remember Me</label>
               </div>
+              <Link href={'/usr'} className="mt-4 px-4 py-2 text-white bg-yellow-600 rounded-lg hover:bg-yellow-500 transition duration-300 text-center">
               <button
                 type="submit"
-                className="mt-4 px-4 py-2 text-white bg-yellow-600 rounded-lg hover:bg-yellow-500 transition duration-300"
               >
                 Login
               </button>
+              </Link>
             </form>
             <div className="flex flex-col items-center mt-4">
               <a href="/forgot-password" className="text-yellow-500 hover:underline">Forgot Password?</a>
