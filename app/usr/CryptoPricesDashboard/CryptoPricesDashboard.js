@@ -62,7 +62,7 @@ const CryptoPricesDashboard = () => {
 
       <div className="overflow-x-auto">
         <table className="min-w-full table-auto">
-          <tbody className="text-sm">
+          <tbody className="text-xs md:text-base">
             {filteredCoins.map((coin) => {
               const userCoinAmount = userWallet[coin.id] || 0;
               const userTotalValue = userCoinAmount * coin.currentPrice;
