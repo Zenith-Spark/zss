@@ -16,9 +16,7 @@ const CryptoPricesDashboard = () => {
   const [sortByCoins, setSortByCoins] = useState(false); // State to control sorting by coins
   const { coinsData, loading, error, totalCoins } = useCryptoPrices(currency, page);
 
-  const handleCurrencyChange = (event) => {
-    setCurrency(event.target.value);
-  };
+  
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -42,7 +40,7 @@ const CryptoPricesDashboard = () => {
   if (error) return <p className="text-center text-red-500">Error fetching data: {error.message}</p>;
 
   return (
-    <div className="container mx-auto py-6">
+    <div className="container mx-auto pt-32">
       <div className="mb-6 flex justify-around flex-col md:flex-row gap-y-3 px-5">
         <div>
           <input
