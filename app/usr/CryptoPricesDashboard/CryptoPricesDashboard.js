@@ -1,17 +1,17 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import useCryptoPrices from '@assets/app/components/resuables/CryptoPrices/CryptoPrices';
-import { ButtonOne, ButtonTwo, DBButtonOne, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
+import { DBButtonOne, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
 import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import Loader from '@assets/app/components/resuables/Loader/Loader';
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
+import { PiGreaterThan } from "react-icons/pi";
+
 
 const CryptoPricesDashboard = () => {
-  const userWallet = {
-    bitcoin: 1.5,
-    ethereum: 10,
-    cardano: 5000,
-    // Add more coins as needed
-  };
+  // Get user wallet from global state
+  const { formData } = useGlobalState(); // Use your global state hook
+  const userWallet = formData.userWallet; // Adjust the path to match your state structure
 
   const [currency, setCurrency] = useState('usd');
   const [page, setPage] = useState(1);
@@ -44,20 +44,28 @@ const CryptoPricesDashboard = () => {
   // Pagination logic: Slice the coins array based on the page and limit
   const paginatedCoins = filteredCoins.slice((page - 1) * pageLimit, page * pageLimit);
 
-  if (loading) return <p className="text-center">
-    <Loader/>
-  </p>;
-  if (error) return <p className="text-center text-red-500">Error fetching data: {error.message}</p>;
-
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto pb-5">
       <div className="mb-6 flex flex-col md:flex-row items-center gap-y-3">
         <div className="flex flex-col sm:flex-row items-start justify-between md:items-center md:mx-5 md:w-[80%] gap-6">
           {/* Total Balance Section */}
-          <div className="">
+          <div className=' px-5'>
+            <p className='flex flex-row gap-2 items-center text-xs pb-4 font-thin'>
+              <span>
+                {
+                  usrDBSidebar[0].icons
+                }
+              </span>
+              <span>
+              <PiGreaterThan/>
+              </span>
+              <span>
+                Transaction
+              </span>
+            </p>
             <h3 className="text-base md:text-lg tracking-wider font-medium">Total Balance</h3>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-wide">
-              {totalBalance.toFixed(2)} $
+            <h1 className="text-4xl md:text-6xl font-bold tracking-wide md:mx-0">
+              ${totalBalance.toFixed(2)}
             </h1>
           </div>
 
@@ -84,7 +92,7 @@ const CryptoPricesDashboard = () => {
       {/* Toggle Button to Switch Between All Coins and Owned Coins */}
       <div className="mb-4 text-center w-full">
         <div className="flex justify-center gap-4">
-        <button
+          <button
             onClick={() => setShowOwnedCoins(true)}
             className={`p-2 ${showOwnedCoins ? 'border-b-2 border-blue-500' : ''} w-1/2`}
           >
@@ -100,63 +108,74 @@ const CryptoPricesDashboard = () => {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto">
-          <thead>
-            <tr className="">
-              <th className="text-left px-6">Coins</th>
-              {showOwnedCoins && <th className="text-right px-6">Owned</th>}
-              {showOwnedCoins && <th className="text-right px-6">Worth (USD)</th>}
-              {!showOwnedCoins && <th className="text-right px-6">Rate</th>}
-              {!showOwnedCoins && <th className="text-right px-6 hidden md:table-cell">Price Change</th>}
-            </tr>
-          </thead>
-
-          <tbody className="text-xs md:text-base">
-            {paginatedCoins.map((coin) => {
-              const userCoinAmount = userWallet[coin.id] || 0;
-              const userTotalValue = userCoinAmount * coin.currentPrice;
-              const coinSymbol = coin.symbol ? coin.symbol.toUpperCase() : ''; // Ensure symbol exists
-
-              return (
-                <tr key={coin.id} className="transition duration-200 ease-in-out">
-                  <td className="flex items-center py-4 px-6">
-                    <img src={coin.image} alt={coin.name} className="w-8 h-8 mr-4 rounded-full" />
-                    <div>
-                      <p className="font-semibold">{coin.name}</p>
-                      {!showOwnedCoins && <p className="text-sm">${coin.currentPrice.toFixed(2)}</p>}
-                    </div>
-                  </td>
-                  {showOwnedCoins && (
-                    <>
-                      <td className="py-4 px-6 text-right">
-                        {userCoinAmount.toFixed(2)} {coinSymbol}
-                      </td>
-                      <td className="py-4 px-6 text-right">
-                        ${userTotalValue.toFixed(2)}
-                      </td>
-                    </>
-                  )}
-                  {!showOwnedCoins && (
-                    <>
-                      <td className="py-4 px-6 text-right">${coin.currentPrice.toFixed(2)}</td>
-                      <td
-                        className={`py-4 px-6 text-right hidden md:table-cell ${
-                          coin.priceChange < 0 ? 'text-red-500' : 'text-green-500'
-                        }`}
-                      >
-                        {coin.priceChange.toFixed(2)}%
-                      </td>
-                    </>
-                  )}
+        {/* Loader and Error Handling within the Table Section */}
+        {loading ? (
+          <p className="text-center">
+            <Loader />
+          </p>
+        ) : error ? (
+          <p className="text-center text-red-500">Error fetching data: {error.message}</p>
+        ) : (
+          <>
+            <table className="min-w-full table-auto">
+              <thead>
+                <tr className="">
+                  <th className="text-left px-6">Coins</th>
+                  {showOwnedCoins && <th className="text-right px-6">Owned</th>}
+                  {showOwnedCoins && <th className="text-right px-6">Worth (USD)</th>}
+                  {!showOwnedCoins && <th className="text-right px-6">Rate</th>}
+                  {!showOwnedCoins && <th className="text-right px-6 hidden md:table-cell">Price Change</th>}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              </thead>
 
-        {/* Show message if no coins are owned when showing owned coins */}
-        {showOwnedCoins && paginatedCoins.length === 0 && (
-          <p className="text-center py-4">You dont own any coins yet.</p>
+              <tbody className="text-xs md:text-base">
+                {paginatedCoins.map((coin) => {
+                  const userCoinAmount = userWallet[coin.id] || 0;
+                  const userTotalValue = userCoinAmount * coin.currentPrice;
+                  const coinSymbol = coin.symbol ? coin.symbol.toUpperCase() : ''; // Ensure symbol exists
+
+                  return (
+                    <tr key={coin.id} className="transition duration-200 ease-in-out">
+                      <td className="flex items-center py-4 px-6">
+                        <img src={coin.image} alt={coin.name} className="w-8 h-8 mr-4 rounded-full" />
+                        <div>
+                          <p className="font-semibold">{coin.name}</p>
+                          {!showOwnedCoins && <p className="text-sm">${coin.currentPrice.toFixed(2)}</p>}
+                        </div>
+                      </td>
+                      {showOwnedCoins && (
+                        <>
+                          <td className="py-4 px-6 text-right">
+                            {userCoinAmount.toFixed(2)} {coinSymbol}
+                          </td>
+                          <td className="py-4 px-6 text-right">
+                            ${userTotalValue.toFixed(2)}
+                          </td>
+                        </>
+                      )}
+                      {!showOwnedCoins && (
+                        <>
+                          <td className="py-4 px-6 text-right">${coin.currentPrice.toFixed(2)}</td>
+                          <td
+                            className={`py-4 px-6 text-right hidden md:table-cell ${
+                              coin.priceChange < 0 ? 'text-red-500' : 'text-green-500'
+                            }`}
+                          >
+                            {coin.priceChange.toFixed(2)}%
+                          </td>
+                        </>
+                      )}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+
+            {/* Show message if no coins are owned when showing owned coins */}
+            {showOwnedCoins && paginatedCoins.length === 0 && (
+              <p className="text-center py-4">You don't own any coins yet.</p>
+            )}
+          </>
         )}
       </div>
 
@@ -170,7 +189,7 @@ const CryptoPricesDashboard = () => {
           Previous
         </button>
 
-        <span>Page {page}</span>
+        <span>{page}</span>
 
         <button
           onClick={() => setPage((prev) => prev + 1)}

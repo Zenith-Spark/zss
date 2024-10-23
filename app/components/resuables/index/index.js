@@ -315,12 +315,12 @@ import { AiOutlineSetting, AiOutlineLogout } from "react-icons/ai";
 
 export const usrDBSidebar = [
   {name: 'Dashboard', href: '/usr', icons: <TbLayoutDashboardFilled/>},
-  {name: 'Withdraw', href: '/withdraw', icons: <PiHandWithdrawFill/>},
-  {name: 'Deposit', href: '/deposit', icons: <PiHandDepositFill/>},
-  {name: 'Invest', href: '/invest', icons: <GiTakeMyMoney/>},
-  {name: 'Investment', href: '/investment', icons: <TfiBarChart/>},
-  {name: 'Referrals', href: '/referrals', icons: <FaUserFriends/>},
-  {name: 'Profile', href: '/profile', icons: <FiUser/> },
-  {name: 'settings', href: '/settings', icons: <AiOutlineSetting/>},
+  {name: 'Withdraw', href: '/usr/withdraw', icons: <PiHandWithdrawFill/>},
+  {name: 'Deposit', href: '/usr/deposit', icons: <PiHandDepositFill/>},
+  {name: 'Invest', href: '/usr/invest', icons: <GiTakeMyMoney/>},
+  {name: 'Investment', href: '/usr/investment', icons: <TfiBarChart/>},
+  {name: 'Referrals', href: '/usr/referrals', icons: <FaUserFriends/>},
+  {name: 'Profile', href: '/usr/profile', icons: <FiUser/> },
+  {name: 'settings', href: '/usr/settings', icons: <AiOutlineSetting/>},
   {name: 'Logout', href: '/', icons: <AiOutlineLogout/>},
 ]

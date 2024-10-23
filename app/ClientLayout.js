@@ -8,7 +8,7 @@ import Footer from './components/footer/Footer';
 export default function ClientLayout({ children }) {
   const pathname = usePathname() || ''; // Ensure pathname is always a string
 
-  // Check if the current path starts with '/usr'
+  // Check if the current path starts with '/usr' or is exactly '/usr/withdraw'
   const shouldHideNavbarAndFooter = pathname.startsWith('/usr');
 
   return (

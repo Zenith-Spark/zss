@@ -16,7 +16,7 @@ const useCryptoPrices = (currency, page) => {
           params: {
             vs_currency: currency,
             order: 'market_cap_desc',
-            per_page: 100, // Fetch 100 coins per page
+            per_page: 20, // Fetch 100 coins per page
             page: page,
             sparkline: false,
           },

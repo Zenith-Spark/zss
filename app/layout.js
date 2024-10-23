@@ -1,6 +1,7 @@
 import "./globals.css";
 import ThemeProvider from "./Theme/ThemeProvider";
 import ClientLayout from "./ClientLayout"; // Separate client logic
+import { GlobalStateProvider } from "./GlobalStateProvider";
 
 export const metadata = {
   title: "Zenith Spark Station",
@@ -11,10 +12,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`antialiased`}>
+            <GlobalStateProvider>
         <ThemeProvider>
           {/* Client-side layout handling */}
-          <ClientLayout>{children}</ClientLayout>
+          <ClientLayout>
+            {children}
+            </ClientLayout>
         </ThemeProvider>
+            </GlobalStateProvider>
       </body>
     </html>
   );

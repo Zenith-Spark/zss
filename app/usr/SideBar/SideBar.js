@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import SideBarLogo from '../../../public/svg/zss.svg';
@@ -8,6 +8,7 @@ import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 
 const SideBar = () => {
   const [sideSlide, setSideSlide] = useState(false);
+  const [activeLink, setActiveLink] = useState(''); // State to track the active link
 
   // Effect to check screen size on mount and resize
   useEffect(() => {
@@ -36,14 +37,19 @@ const SideBar = () => {
     setSideSlide(prevState => !prevState);
   };
 
+  const handleLinkClick = (href) => {
+    setActiveLink(href); // Set the active link
+    setSideSlide(false); // Close the sidebar when a link is clicked
+  };
+
   return (
-    <nav className='fixed w-full h-16 z-50 '>
+    <nav className='fixed w-full h-16 z-50'>
       <div className='flex items-center justify-between bg-slate-800 h-full px-4 text-white'>
-        <div className='flex flex-row gap-2 items-center '>
+        <div className='flex flex-row gap-2 items-center'>
           <Image src={SideBarLogo} width={100} height={100} alt='logo'/>
           <h1 className='text-white text-lg font-bold hidden md:flex'>Zenith Spark Station</h1>
         </div>
-        <button onClick={toggleSideSlide} className=' md:hidden'>
+        <button onClick={toggleSideSlide} className='md:hidden'>
           {sideSlide ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
         </button>
       </div>
@@ -55,7 +61,7 @@ const SideBar = () => {
             <span className='font-bold absolute right-16'>Zenith Spark Station</span>
           </div>
           
-          <div className='h-16 flex items-center gap-5 ml-4  md:ml-8 pb-2 mb-3'>
+          <div className='h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2 mb-3'>
             <span className='text-3xl border rounded-full p-2 bg-slate-500'>
               {usrDBSidebar[6].icons}
             </span>
@@ -67,8 +73,12 @@ const SideBar = () => {
 
           <div className='flex flex-col gap-y-5 overflow-y-auto'>
             {usrDBSidebar.map((links, index) => (
-              <div className='border-b border-gray-700' key={index}>
-                <Link href={links.href} className='flex items-center ml-4 md:ml-8 gap-2 pb-2 hover:text-gray-400 text-sm md:text-base focus:underline transition duration-200'>
+              <div className='border-gray-700' key={index}>
+                <Link
+                  href={links.href}
+                  onClick={() => handleLinkClick(links.href)} // Pass the link href to the click handler
+                  className={`flex items-center ml-4 md:ml-8 gap-2 py-2 hover:text-gray-400 text-sm md:text-base focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''}`}
+                >
                   <span className='text-xl'>{links.icons}</span>
                   <span>{links.name}</span>
                 </Link>
