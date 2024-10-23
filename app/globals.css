@@ -27,9 +27,6 @@ html[data-theme='dark'] {
   --bg-color: #1a1a1a;
   --text-color: #F5F5F5;
   background-color: var(--bg-color);
-  background-image: linear-gradient(to right, #333333 1px, transparent 1px),
-                    linear-gradient(to bottom, #333333 1px, transparent 1px);
-  background-size: 4rem 4rem;
 }
 
 /* Light theme styles */
@@ -37,9 +34,6 @@ html[data-theme='light'] {
   --bg-color: #F5F5F5;
   --text-color: #1e293b; /* Updated text color */
   background-color: var(--bg-color);
-  background-image: linear-gradient(to right, #E3E8EF 1px, transparent 1px),
-                    linear-gradient(to bottom, #E3E8EF 1px, transparent 1px);
-  background-size: 4rem 4rem;
 }
 
 body {

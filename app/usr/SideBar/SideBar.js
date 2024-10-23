@@ -44,11 +44,7 @@ const SideBar = () => {
 
   return (
     <nav className='fixed w-full h-16 z-50'>
-      <div className='flex items-center justify-between bg-slate-800 h-full px-4 text-white'>
-        <div className='flex flex-row gap-2 items-center'>
-          <Image src={SideBarLogo} width={100} height={100} alt='logo'/>
-          <h1 className='text-white text-lg font-bold hidden md:flex'>Zenith Spark Station</h1>
-        </div>
+      <div className='flex items-center justify-start h-full px-4 '>
         <button onClick={toggleSideSlide} className='md:hidden'>
           {sideSlide ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
         </button>

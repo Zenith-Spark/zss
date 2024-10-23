@@ -12,7 +12,8 @@ export const GlobalStateProvider = ({ children }) => {
     email: '',
     password: '', 
     userWallet: {
-    }
+    },
+    totalBalance: 0,
   });
 
   return (

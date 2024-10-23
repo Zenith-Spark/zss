@@ -1,9 +1,11 @@
-
 import React from 'react'
+import CryptoPricesTable from '../CryptoPricesDashboard/CryptoPricesTable'
 
 const page = () => {
   return (
-    <div>page</div>
+    <div>
+        <CryptoPricesTable/>
+    </div>
   )
 }
 
