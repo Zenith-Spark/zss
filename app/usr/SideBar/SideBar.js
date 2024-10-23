@@ -50,9 +50,9 @@ const SideBar = () => {
 
       <aside className={`fixed top-0 h-screen w-[80%] md:w-[30%] xl:w-[20%] transition-transform duration-300 bg-slate-800 ${sideSlide ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
         <div className='flex flex-col h-full text-white'>
-          <div className='flex items-center '>
-            <Image src={SideBarLogo} width={100} height={100} alt="Logo" />
-            <span className='font-bold'>Zenith Spark Station</span>
+          <div className='flex items-center relative mb-16 mt-8'>
+            <Image src={SideBarLogo} width={100} height={100} alt="Logo" className='absolute -translate-x-4 lg:-translate-x-0' />
+            <span className='font-bold absolute right-16'>Zenith Spark Station</span>
           </div>
           
           <div className='h-16 flex items-center gap-5 ml-4  md:ml-8 pb-2 mb-3'>
