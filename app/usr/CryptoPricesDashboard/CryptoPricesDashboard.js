@@ -156,7 +156,7 @@ const CryptoPricesDashboard = () => {
 
         {/* Show message if no coins are owned when showing owned coins */}
         {showOwnedCoins && paginatedCoins.length === 0 && (
-          <p className="text-center py-4">You don't own any coins yet.</p>
+          <p className="text-center py-4">You dont own any coins yet.</p>
         )}
       </div>
 
