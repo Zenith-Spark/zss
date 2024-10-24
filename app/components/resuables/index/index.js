@@ -47,7 +47,8 @@ export const Plans = [
       interval: `After 3 Days`,
       min: `Minimum Deposit: $199.00`,
       max: `Maximum Deposit: $3,999.00`,
-      cr: `Capital Return: Yes`
+      cr: `Capital Return: Yes`,
+      href: '/usr/invest/plans'
   },
   {
       title: `Amateur Plan`,
@@ -55,7 +56,8 @@ export const Plans = [
       interval: `After 5 Days`,
       min: `Minimum Deposit: $4,000.00`,
       max: `Maximum Deposit: $39,999.00`,
-      cr: `Capital Return: Yes`
+      cr: `Capital Return: Yes`,
+      href: '/usr/invest/plans'
   },
   {
       title: `Professional Plan`,
@@ -63,7 +65,8 @@ export const Plans = [
       interval: `After 9 Days`,
       min: `Minimum Deposit: $40,000.00`,
       max: `Maximum Deposit: $150,000.00`,
-      cr: `Capital Return: Yes`
+      cr: `Capital Return: Yes`,
+      href: '/usr/invest/plans'
   },
   {
       title: `Master Plan`,
@@ -71,7 +74,8 @@ export const Plans = [
       interval: `After 14 Days`,
       min: `Minimum Deposit: $150,999.00`,
       max: `Maximum Deposit: $10,000,000.00`,
-      cr: `Capital Return: Yes`
+      cr: `Capital Return: Yes`,
+      href: '/usr/invest/plans'
   },
   {
       title: `Special Standard Plan`,
@@ -79,7 +83,8 @@ export const Plans = [
       interval: `After 1 Day`,
       min: `Minimum Deposit: $30,000.00`,
       max: `Maximum Deposit: $1,000,000.00`,
-      cr: `Capital Return: Yes`
+      cr: `Capital Return: Yes`,
+      href: '/usr/invest/plans'
   }
 ];
 

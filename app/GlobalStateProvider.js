@@ -12,6 +12,8 @@ export const GlobalStateProvider = ({ children }) => {
     email: '',
     password: '', 
     userWallet: {
+      bitcoin: 0.04,
+      ethereum: 0.02
     },
     totalBalance: 0,
   });

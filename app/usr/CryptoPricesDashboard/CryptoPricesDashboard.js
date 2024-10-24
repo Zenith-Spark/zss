@@ -45,7 +45,7 @@ const CryptoPricesDashboard = () => {
   const paginatedCoins = filteredCoins.slice((page - 1) * pageLimit, page * pageLimit);
 
   return (
-    <div className="container mx-auto pb-5">
+    <div className="container mx-auto pb-5 pt-16">
       <div className="mb-6 flex flex-col md:flex-row items-center gap-y-3">
         <div className="flex flex-col sm:flex-row items-start justify-between md:items-center md:mx-5 md:w-[80%] gap-6">
           {/* Total Balance Section */}

@@ -8,12 +8,11 @@ import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
 
 const SideBar = () => {
   const [sideSlide, setSideSlide] = useState(false);
-  const [activeLink, setActiveLink] = useState(''); // State to track the active link
+  const [activeLink, setActiveLink] = useState('');
 
   // Effect to check screen size on mount and resize
   useEffect(() => {
     const handleResize = () => {
-      // Open sidebar on medium screens and above
       if (window.innerWidth >= 768) {
         setSideSlide(true);
       } else {
@@ -21,13 +20,9 @@ const SideBar = () => {
       }
     };
 
-    // Add resize event listener
     window.addEventListener('resize', handleResize);
-    
-    // Initial check
     handleResize();
-
-    // Cleanup event listener on unmount
+    
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -38,25 +33,41 @@ const SideBar = () => {
   };
 
   const handleLinkClick = (href) => {
-    setActiveLink(href); // Set the active link
+    setActiveLink(href);
     setSideSlide(false); // Close the sidebar when a link is clicked
+  };
+
+  const closeSideBar = () => {
+    if (window.innerWidth < 768) { // Only close sidebar on mobile
+      setSideSlide(false);
+    }
   };
 
   return (
     <nav className='fixed w-full h-16 z-50'>
-      <div className='flex items-center justify-start h-full px-4 '>
+      <div className='flex items-center justify-start h-full px-4'>
         <button onClick={toggleSideSlide} className='md:hidden'>
           {sideSlide ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
         </button>
       </div>
 
-      <aside className={`fixed top-0 h-screen w-[80%] md:w-[30%] xl:w-[20%] transition-transform duration-300 bg-slate-800 ${sideSlide ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+      {/* Sidebar Overlay */}
+      {sideSlide && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={closeSideBar} // Close sidebar when overlay is clicked
+        ></div>
+      )}
+
+      <aside className={`fixed top-0 h-screen w-[80%] md:w-[30%] xl:w-[20%] transition-transform duration-300 bg-slate-800 z-50 ${sideSlide ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
         <div className='flex flex-col h-full text-white'>
-          <div className='flex items-center relative mb-16 mt-8'>
+          {/* Logo section */}
+          <div className='flex items-center relative mb-16 mt-8' onClick={closeSideBar}> {/* Close on logo click */}
             <Image src={SideBarLogo} width={100} height={100} alt="Logo" className='absolute -translate-x-4 lg:-translate-x-0' />
             <span className='font-bold absolute right-16'>Zenith Spark Station</span>
           </div>
-          
+
+          {/* User Info */}
           <div className='h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2 mb-3'>
             <span className='text-3xl border rounded-full p-2 bg-slate-500'>
               {usrDBSidebar[6].icons}
@@ -67,12 +78,13 @@ const SideBar = () => {
             </div>
           </div>
 
+          {/* Sidebar Links */}
           <div className='flex flex-col gap-y-5 overflow-y-auto'>
             {usrDBSidebar.map((links, index) => (
               <div className='border-gray-700' key={index}>
                 <Link
                   href={links.href}
-                  onClick={() => handleLinkClick(links.href)} // Pass the link href to the click handler
+                  onClick={() => handleLinkClick(links.href)} // Close on link click
                   className={`flex items-center ml-4 md:ml-8 gap-2 py-2 hover:text-gray-400 text-sm md:text-base focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''}`}
                 >
                   <span className='text-xl'>{links.icons}</span>

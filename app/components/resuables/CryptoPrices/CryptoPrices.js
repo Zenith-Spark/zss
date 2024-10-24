@@ -7,16 +7,17 @@ const useCryptoPrices = (currency, page) => {
   const [coinsData, setCoinsData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [totalCoins, setTotalCoins] = useState(0); // For pagination
+  const [totalCoins, setTotalCoins] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true); // Set loading to true each time a request is made
       try {
         const response = await axios.get('https://api.coingecko.com/api/v3/coins/markets', {
           params: {
             vs_currency: currency,
             order: 'market_cap_desc',
-            per_page: 20, 
+            per_page: 20, // Adjust the number of items per page
             page: page,
             sparkline: false,
           },
@@ -30,9 +31,13 @@ const useCryptoPrices = (currency, page) => {
           marketCap: coin.market_cap,
           priceChange: coin.price_change_percentage_24h,
         }));
-        
+
         setCoinsData(formattedData);
-        setTotalCoins(response.headers['x-total-count']); // Set total coins for pagination
+
+        // Set totalCoins based on the size of the data returned
+        const totalAvailableCoins = 6000; // Total number of coins available in Coingecko API
+        setTotalCoins(totalAvailableCoins);
+
       } catch (err) {
         setError(err);
       } finally {
