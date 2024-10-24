@@ -7,17 +7,17 @@ import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import { X } from 'lucide-react';
 import Txn from '../transaction/Txn';
 
-const CryptoPricesTable = () => {
-  const { formData } = useGlobalState();
+const CryptoPricesTable = ({showTable}) => {
+  const { formData, setFormData } = useGlobalState();
   const userWallet = formData.userWallet;
 
   const [currency, setCurrency] = useState('usd');
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
   const [showOwnedCoins, setShowOwnedCoins] = useState(true);
-  const { coinsData, loading, error, totalCoins } = useCryptoPrices(currency, page);
+  const { coinsData, loading, error, refetch } = useCryptoPrices(currency, page);
 
-  const pageLimit = 20;
+  const pageLimit = 10; // Display 10 coins per page
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -29,18 +29,35 @@ const CryptoPricesTable = () => {
   );
 
   if (showOwnedCoins) {
-    filteredCoins = filteredCoins.filter((coin) => userWallet[coin.id]);
+    // Filter to show only the coins owned by the user
+    filteredCoins = filteredCoins.filter(
+      (coin) => userWallet[coin.id] && userWallet[coin.id] > 0
+    );
   }
 
-  const totalBalance = filteredCoins.reduce((acc, coin) => {
+  // Deduplicate coins based on their unique `id`
+  const uniqueCoins = filteredCoins.reduce((acc, coin) => {
+    if (!acc.some((item) => item.id === coin.id)) {
+      acc.push(coin);
+    }
+    return acc;
+  }, []);
+
+  // Calculate total balance based on user wallet
+  const totalBalance = uniqueCoins.reduce((acc, coin) => {
     const userCoinAmount = userWallet[coin.id] || 0;
     return acc + userCoinAmount * coin.currentPrice;
   }, 0);
 
-  const totalFilteredCoins = filteredCoins.length;
+  // Update global state with the new total balance
+  useEffect(() => {
+    setFormData((prev) => ({ ...prev, totalBalance }));
+  }, [totalBalance, setFormData]);
+
+  const totalUniqueCoins = uniqueCoins.length;
 
   // Handle pagination of filtered coins
-  const paginatedCoins = filteredCoins.slice((page - 1) * pageLimit, page * pageLimit);
+  const paginatedCoins = uniqueCoins.slice((page - 1) * pageLimit, page * pageLimit);
 
   const [transaction, setTransaction] = useState(false);
   const [selectedCoin, setSelectedCoin] = useState(null);
@@ -80,32 +97,40 @@ const CryptoPricesTable = () => {
       {/* Full-screen overlay for transaction popup */}
       <div className={`w-full ${!transaction ? 'h-0' : 'h-screen'} overflow-hidden bg-black bg-opacity-60 fixed left-0 top-0 z-50`}>
         <div className='flex flex-col bg-white text-slate-800 rounded-lg shadow-lg m-auto w-[90%] md:w-[60%] p-5 h-full relative'>
-        <button onClick={() => toggleTransaction(null)} className="mt-2 text-slate-800 rounded-full cursor-pointer absolute right-3 top-0">
-                  <X />
-                </button>
+          <button onClick={() => toggleTransaction(null)} className="mt-2 text-slate-800 rounded-full cursor-pointer absolute right-3 top-0">
+            <X />
+          </button>
           <div className='flex flex-wrap justify-around '>
-          <section className='flex flex-row items-center justify-between'>
-            {selectedCoin && (
-              <div className="flex flex-row items-center gap-x-5">
-                <img src={selectedCoin.image} alt={selectedCoin.name} className="w-20 h-20 rounded-full" />
-                <div>
-                  <h2 className="text-xl font-bold">{selectedCoin.name}</h2>
-                  <p className="md:text-lg font-semibold">~{userWallet[selectedCoin.id]?.toFixed(2) || 0}</p>
-                  <p className="md:text-lg font-semibold">
-                    ~ ${(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] * selectedCoin.currentPrice).toFixed(2) : 0)}
-                  </p>
+            <section className='flex flex-row items-center justify-between'>
+              {selectedCoin && (
+                <div className="flex flex-row items-center gap-x-5">
+                  <img src={selectedCoin.image} alt={selectedCoin.name} className="w-20 h-20 rounded-full" />
+                  <div>
+                    <h2 className="text-xl font-bold">{selectedCoin.name}</h2>
+                    <p className="md:text-lg font-semibold">~{userWallet[selectedCoin.id]?.toFixed(2) || 0}</p>
+                    <p className="md:text-lg font-semibold">
+                      ~ ${(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] * selectedCoin.currentPrice).toFixed(2) : 0)}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            )}
-          </section>
-          <div className='flex flex-wrap items-center justify-start gap-x-3 my-4'>
-            <DBButtonOne buttonValue={'Deposit'} />
-            <DBButtonTwo buttonValue={'Withdraw'} />
-          </div>
+              )}
+            </section>
+            <div className='flex flex-wrap items-center justify-start gap-x-3 my-4'>
+              <DBButtonOne buttonValue={'Deposit'} />
+              <DBButtonTwo buttonValue={'Withdraw'} />
             </div>
+          </div>
           <Txn />
         </div>
       </div>
+           {/* Display total balance */}
+      {
+        !showTable && (
+          <div className="mb-4 text-start font-bold px-6">
+        <h2 className="text-lg font-semibold">Total Balance: ${formData.totalBalance.toFixed(2)}</h2>
+      </div>
+        )
+      }
 
       <div className="mb-5 flex justify-between items-center px-5">
         <input
@@ -142,7 +167,12 @@ const CryptoPricesTable = () => {
             <Loader />
           </p>
         ) : error ? (
-          <p className="text-center text-red-500">Error fetching data: {error.message}</p>
+          <div className="text-center text-red-500">
+            <p>Error fetching data: {error.message}</p>
+            <button onClick={refetch} className="mt-4 p-2 bg-blue-500 text-white rounded-md">
+              Retry
+            </button>
+          </div>
         ) : (
           <>
             <table className="min-w-full table-auto">
@@ -182,8 +212,10 @@ const CryptoPricesTable = () => {
                       )}
                       {!showOwnedCoins && (
                         <>
-                          <td className="py-4 px-6 text-right">${coin.currentPrice.toFixed(2)}</td>
-                          <td className={`py-4 px-6 text-right hidden md:table-cell ${coin.priceChange < 0 ? 'text-red-500' : 'text-green-500'}`}>
+                          <td className="py-4 px-6 text-right">
+                            ${coin.currentPrice.toFixed(2)}
+                          </td>
+                          <td className="py-4 px-6 text-right hidden md:table-cell">
                             {coin.priceChange.toFixed(2)}%
                           </td>
                         </>
@@ -194,29 +226,25 @@ const CryptoPricesTable = () => {
               </tbody>
             </table>
 
-            {showOwnedCoins && paginatedCoins.length === 0 && (
-              <p className="text-center py-4 text-sm md:text-base">You do not own any coins yet.</p>
-            )}
-
-            <div className="mt-5 flex justify-center space-x-4">
-              {/* Pagination buttons */}
+            {/* Pagination Controls */}
+          </>
+        )}
+            <div className="flex justify-center gap-x-5 mt-4">
               <button
-                onClick={() => setPage(page > 1 ? page - 1 : page)}
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
                 disabled={page === 1}
-                className={`p-2 px-4 rounded-md ${page === 1 ? '' : 'bg-blue-500 text-white'}`}
+                className="p-2 border rounded-md"
               >
                 Previous
               </button>
               <button
-                onClick={() => setPage(page + 1)}
-                disabled={page * pageLimit >= totalFilteredCoins}
-                className={`p-2 px-4 rounded-md ${page * pageLimit >= totalFilteredCoins ? '' : 'bg-blue-500 text-white'}`}
+                onClick={() => setPage((prev) => Math.min(prev + 1, Math.ceil(totalUniqueCoins / pageLimit)))}
+                disabled={page >= Math.ceil(totalUniqueCoins / pageLimit)}
+                className="p-2 border rounded-md"
               >
                 Next
               </button>
             </div>
-          </>
-        )}
       </div>
     </div>
   );

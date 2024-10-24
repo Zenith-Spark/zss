@@ -1,11 +1,12 @@
 // /pages/usr/invest/page.js
 'use client'
-import { Plans } from '@assets/app/components/resuables/index';
+import { Plans, usrDBSidebar } from '@assets/app/components/resuables/index';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { AiOutlineClose } from 'react-icons/ai'; // Import the close icon
+import { PiGreaterThan } from 'react-icons/pi';
 
 const Page = () => {
   const { formData } = useGlobalState();
@@ -45,7 +46,13 @@ const Page = () => {
   };
 
   return (
-    <div className="flex justify-center py-8">
+   <>
+       <p className="flex flex-row gap-2 items-center text-xs pb-4 font-thin px-6 pt-4">
+              <span>{usrDBSidebar[3].icons}</span>
+              <span><PiGreaterThan /></span>
+              <span>{usrDBSidebar[3].name}</span>
+            </p>
+    <div className="flex justify-center flex-col py-8">
       <div className="flex flex-wrap justify-center gap-x-5 gap-y-8">
         {Plans.map((plan, index) => (
           <div
@@ -111,6 +118,7 @@ const Page = () => {
         </div>
       </Modal>
     </div>
+   </>
   );
 };
 

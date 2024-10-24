@@ -316,7 +316,9 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import { TfiBarChart } from "react-icons/tfi";
 import { FaUserFriends } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
-import { AiOutlineSetting, AiOutlineLogout } from "react-icons/ai";
+import {  AiOutlineLogout } from "react-icons/ai";
+import { MdSecurity } from "react-icons/md";
+
 
 export const usrDBSidebar = [
   {name: 'Dashboard', href: '/usr', icons: <TbLayoutDashboardFilled/>},
@@ -326,6 +328,6 @@ export const usrDBSidebar = [
   {name: 'Investment', href: '/usr/investment', icons: <TfiBarChart/>},
   {name: 'Referrals', href: '/usr/referrals', icons: <FaUserFriends/>},
   {name: 'Profile', href: '/usr/profile', icons: <FiUser/> },
-  {name: 'settings', href: '/usr/settings', icons: <AiOutlineSetting/>},
+  {name: 'Account Security', href: '/usr/accountsecurity', icons: <MdSecurity/>},
   {name: 'Logout', href: '/', icons: <AiOutlineLogout/>},
 ]

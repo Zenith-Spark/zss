@@ -8,7 +8,7 @@ const GlobalStateContext = createContext();
 export const GlobalStateProvider = ({ children }) => {
   const [formData, setFormData] = useState({
     userId: '',
-    userName: '',
+    fullName: '',
     email: '',
     password: '', 
     userWallet: {
@@ -17,6 +17,8 @@ export const GlobalStateProvider = ({ children }) => {
     },
     totalBalance: 0,
   });
+
+  
 
   return (
     <GlobalStateContext.Provider value={{ formData, setFormData }}>
