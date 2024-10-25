@@ -128,7 +128,7 @@ const SideBar = () => {
           onClose={() => setShowLogoutModal(false)}>
            <div className="flex flex-col items-center justify-center p-6">
   {/* Prompt Title */}
-  <h1 className="text-lg font-bold mb-4 text-center">
+  <h1 className="text-lg font-bold mb-4 text-center text-slate-800">
     Are you sure you want to log out?
   </h1>
 
@@ -137,14 +137,12 @@ const SideBar = () => {
     <DBButtonOne 
       Clicked={() => setShowLogoutModal(false)} 
       buttonValue="No" 
-      className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
     />
     
     <Link href="/">
       <ButtonTwo
         Clicked={() => setShowLogoutModal(false)} 
         buttonValue="Yes" 
-        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
       />
     </Link>
   </div>

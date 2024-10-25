@@ -1,4 +1,5 @@
 'use client'
+import { DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
 // /components/SecuritySettings.js
 import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
@@ -6,100 +7,94 @@ import React, { useState } from 'react';
 import { PiGreaterThan } from 'react-icons/pi';
 
 const SecuritySettings = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [action, setAction] = useState(''); // To track the action type (change password or KYC)
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [kycFile, setKycFile] = useState(null);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
-  const handleOpenModal = (actionType) => {
-    setAction(actionType);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setAction('');
-  };
-
-  const handlePasswordSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    // Implement password change logic here
-   alert("Password change submitted");
-    handleCloseModal();
-  };
-
-  const handleKycSubmit = (e) => {
-    e.preventDefault();
-    // Implement KYC upload logic here
-   alert("KYC file upload submitted");
-    handleCloseModal();
+    if (newPassword !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+    setError('');
+    setSuccessMessage("Password updated successfully!");
+    // Additional submit logic here
   };
 
   return (
     <div className="container mx-auto py-12 px-6 sm:px-8 lg:px-12">
-       <p className="flex flex-row gap-2 items-center text-xs pb-4 font-thin px-6 pt-4">
+      <p className="flex flex-row gap-2 items-center text-sm pb-6 font-light px-6 pt-4">
         <span>{usrDBSidebar[7].icons}</span>
         <span><PiGreaterThan /></span>
         <span>{usrDBSidebar[7].name}</span>
       </p>
-      <section className="mb-8">
-        <h1 className="text-3xl font-extrabold mb-4">Account Security </h1>
-        <button
-          onClick={() => handleOpenModal('password')}
-          className="bg-blue-500 px-4 py-2 rounded-md text-white hover:bg-blue-600 mr-4"
-        >
-          Change Password
-        </button>
-        <button
-          onClick={() => handleOpenModal('kyc')}
-          className="bg-green-500 px-4 py-2 rounded-md text-white hover:bg-green-600"
-        >
-          Upload KYC
-        </button>
-      </section>
+      <h1 className="text-4xl font-bold mb-8">Account Security</h1>
+      
+      {/* Password Update Form */}
+      <form onSubmit={handleSubmit} className="border shadow-lg rounded-lg p-6 mb-12 transition-all duration-300 hover:shadow-xl">
+        <h2 className="text-lg font-semibold mb-4">Change Password</h2>
 
-      {/* Modal for changing password */}
-      <Modal
-        isOpen={isModalOpen && action === 'password'}
-        onClose={handleCloseModal}
-        title="Change Password"
-        onSubmit={handlePasswordSubmit}
-      >
         <div className="mb-4">
-          <label htmlFor="newPassword" className="block text-gray-700">New Password</label>
+          <label htmlFor="old_password" className="block text-sm font-medium 0 mb-1">Old Password</label>
+          <input
+            type="password"
+            id="old_password"
+            value={oldPassword}
+            onChange={(e) => setOldPassword(e.target.value)}
+            required
+            className="mt-1 block w-full p-3 border-b bg-transparent outline-none"
+          />
+        </div>
+        
+        <div className="mb-4">
+          <label htmlFor="newPassword" className="block text-sm font-medium 0 mb-1">New Password</label>
           <input
             type="password"
             id="newPassword"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-3 border-b bg-transparent outline-none"
           />
         </div>
+        
         <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-gray-700">Confirm Password</label>
+          <label htmlFor="confirmPassword" className="block text-sm font-medium 0 mb-1">Confirm Password</label>
           <input
             type="password"
             id="confirmPassword"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-3 border-b bg-transparent outline-none"
           />
         </div>
-      </Modal>
+        
+        {error && <p className="text-sm text-red-600 mb-4">{error}</p>}
+        {successMessage && <p className="text-sm text-green-600 mb-4">{successMessage}</p>}
 
-      {/* Modal for uploading KYC */}
-      <Modal
-        isOpen={isModalOpen && action === 'kyc'}
-        onClose={handleCloseModal}
-        title="Upload KYC Document"
-        onSubmit={handleKycSubmit}
-      >
-        <div className="mb-4">
-          <label htmlFor="kycFile" className="block text-gray-700">Choose KYC Document</label>
+        <DBButtonOne buttonValue="Done" />
+      </form>
+      
+      {/* KYC Upload Section */}
+      <section className="border shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
+        <h2 className="text-lg font-semibold mb-4">Upload KYC Document</h2>
+        
+        <div className="mb-6">
+          <label htmlFor="kycFile" className="block text-sm font-medium 0 mb-1">Choose Document</label>
           <input
             type="file"
             id="kycFile"
+            onChange={(e) => setKycFile(e.target.files[0])}
             required
-            className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+            className="mt-1 block w-full p-3 border-b bg-transparent outline-none"
           />
         </div>
-      </Modal>
+      </section>
     </div>
   );
 };

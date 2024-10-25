@@ -226,7 +226,7 @@ const CryptoPricesTable = ({showTable}) => {
             placeholder="Search for coins..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="p-2 border rounded-md w-full md:w-1/2"
+            className="p-2 border rounded-md w-full md:w-1/2 text-slate-800"
           />
         </div>
 
