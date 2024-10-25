@@ -3,6 +3,7 @@ import { DBButtonOne, DBButtonTwo } from '@assets/app/components/resuables/Butto
 import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import { PiGreaterThan } from 'react-icons/pi'; // Assuming you need this import for the icon
+import Link from 'next/link';
 
 const TotalBalance = () => {
   const { formData } = useGlobalState();
@@ -27,8 +28,12 @@ const TotalBalance = () => {
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4 mt-4 md:mt-10 px-6">
             <DBButtonTwo buttonValue="Buy" iconValue={usrDBSidebar[1].icons} />
+            <Link href={'/usr/withdraw'}>
             <DBButtonOne buttonValue="Withdraw" iconValue={usrDBSidebar[2].icons} />
+            </Link>
+            <Link href={'/usr/deposit'}>
             <DBButtonOne buttonValue="Deposit" iconValue={usrDBSidebar[2].icons} />
+            </Link>
           </div>
         </div>
       </div>
