@@ -27,7 +27,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="z-50 fixed w-full dark:bg-slate-800 bg-slate-900 shadow-md">
+      <nav className="z-40 fixed w-full dark:bg-slate-800 bg-slate-900 shadow-md">
         <div className="flex flex-row h-[3rem] items-center w-full justify-between px-4">
           <Link href="/">
             <Image src={NavBarImg} width={80} height={30} alt="Logo" />
@@ -60,7 +60,7 @@ const Navbar = () => {
 
       {/* Sidebar for Mobile */}
       <div
-        className={`fixed top-0 right-0 h-full bg-slate-800 text-white transition-transform duration-500 ease-in-out transform ${
+        className={`fixed top-0 right-0 h-full bg-slate-800 text-white transition-transform duration-500 ease-in-out z-50 transform ${
           navDrawer ? 'translate-x-0' : 'translate-x-full'
         } w-3/4 max-w-xs z-30 shadow-lg`}
       >
