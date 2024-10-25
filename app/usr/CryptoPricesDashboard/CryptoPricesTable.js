@@ -92,23 +92,30 @@ const CryptoPricesTable = ({showTable}) => {
     setPage(1);
   }, [searchQuery, showOwnedCoins]);
 
+  const handleOutsideClick = (e) => {
+    if (transaction && e.target === e.currentTarget) {
+      setTransaction(false); // Close the modal when clicking outside
+    }
+  };
+
   return (
     <div className="container mx-auto pb-5 pt-5">
       {/* Full-screen overlay for transaction popup */}
-      <div className={`w-full ${!transaction ? 'h-0' : 'h-screen'} overflow-hidden bg-black bg-opacity-60 fixed left-0 top-0 z-50`}>
-        <div className='flex flex-col bg-white text-slate-800 rounded-lg shadow-lg m-auto w-[90%] md:w-[60%] p-5 h-full relative'>
-          <button onClick={() => toggleTransaction(null)} className="mt-2 text-slate-800 rounded-full cursor-pointer absolute right-3 top-0">
+      <div className={`w-full ${!transaction ? 'h-0' : 'h-screen'} overflow-hidden bg-black bg-opacity-60 fixed left-0 top-0 z-50 flex justify-center items-center md:px-6`} onClick={handleOutsideClick}>
+        <div className='flex flex-col bg-white text-slate-800 rounded-lg shadow-lg m-auto w-[90%] md:w-[60%] p-5 h-auto relative'>
+          <button onClick={() => setTransaction(false)} className="mt-2 text-slate-800 rounded-full cursor-pointer absolute right-3 top-0">
             <X />
           </button>
-          <div className='flex flex-wrap justify-around '>
+          {/* Modal content */}
+          <div className='flex flex-wrap justify-around'>
             <section className='flex flex-row items-center justify-between'>
               {selectedCoin && (
                 <div className="flex flex-row items-center gap-x-5">
                   <img src={selectedCoin.image} alt={selectedCoin.name} className="w-20 h-20 rounded-full" />
                   <div>
                     <h2 className="text-xl font-bold">{selectedCoin.name}</h2>
-                    <p className="md:text-lg font-semibold">~{userWallet[selectedCoin.id]?.toFixed(2) || 0}</p>
-                    <p className="md:text-lg font-semibold">
+                    <p className="md:text-lg ">~{userWallet[selectedCoin.id]?.toFixed(2) || 0}</p>
+                    <p className="md:text-lg font-thin">
                       ~ ${(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] * selectedCoin.currentPrice).toFixed(2) : 0)}
                     </p>
                   </div>
@@ -192,8 +199,8 @@ const CryptoPricesTable = ({showTable}) => {
                   const coinSymbol = coin.symbol ? coin.symbol.toUpperCase() : '';
 
                   return (
-                    <tr key={coin.id} className="transition duration-200 ease-in-out hover:border-b">
-                      <td className="flex items-center py-4 px-6" onClick={() => toggleTransaction(coin)}>
+                    <tr key={coin.id} className="transition duration-200 ease-in-out hover:border-b" onClick={() => toggleTransaction(coin)}>
+                      <td className="flex items-center py-4 px-6" >
                         <img src={coin.image} alt={coin.name} className="w-8 h-8 mr-4 rounded-full" />
                         <div>
                           <p className="font-semibold">{coin.name}</p>

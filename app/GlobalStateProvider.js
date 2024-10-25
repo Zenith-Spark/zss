@@ -16,6 +16,7 @@ export const GlobalStateProvider = ({ children }) => {
       ethereum: 0.02
     },
     totalBalance: 0,
+    referralLink: '',
   });
 
   

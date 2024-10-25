@@ -5,10 +5,12 @@ import SideBarLogo from '../../../public/svg/zss.svg';
 import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import Link from 'next/link';
 import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
-
+import Modal from '@assets/app/components/resuables/Modal/Modal';
+import { DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
 const SideBar = () => {
   const [sideSlide, setSideSlide] = useState(false);
   const [activeLink, setActiveLink] = useState('');
+  const [showLogoutModal, setShowLogoutModal] = useState(false); // New state for the logout modal
 
   // Effect to check screen size on mount and resize
   useEffect(() => {
@@ -42,6 +44,12 @@ const SideBar = () => {
       setSideSlide(false);
     }
   };
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true); // Open the logout confirmation modal
+  };
+
+ 
 
   return (
     <nav className='fixed w-full h-16 z-50'>
@@ -92,9 +100,38 @@ const SideBar = () => {
                 </Link>
               </div>
             ))}
+            {/* Logout Link */}
+            <div className='border-gray-700'>
+              <button
+                onClick={handleLogoutClick}
+                className="flex items-center ml-4 md:ml-8 gap-2 py-2 text-sm md:text-base hover:text-gray-400 px-3 rounded-xl mr-3 transition duration-200"
+              >
+                <span className='text-xl'>🔒</span> {/* Replace with a logout icon if desired */}
+                <span>Logout</span>
+              </button>
+            </div>
           </div>
         </div>
       </aside>
+
+      {/* Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <Modal
+          isOpen={showLogoutModal}
+          onClose={() => setShowLogoutModal(false)}>
+            <div className={'flex flex-col'}>
+              <h1>
+                Are sure you want to log out 
+              </h1>
+              <span>
+             <DBButtonOne Clicked={() => setShowLogoutModal(false)} buttonValue={'No'}/>
+              <Link href={'/'}>
+             <DBButtonOne Clicked={() => setShowLogoutModal(false)} buttonValue={'Yes'}/>
+              </Link>
+              </span>
+            </div>
+          </Modal>
+      )}
     </nav>
   );
 };

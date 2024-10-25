@@ -329,5 +329,4 @@ export const usrDBSidebar = [
   {name: 'Referrals', href: '/usr/referrals', icons: <FaUserFriends/>},
   {name: 'Profile', href: '/usr/profile', icons: <FiUser/> },
   {name: 'Account Security', href: '/usr/accountsecurity', icons: <MdSecurity/>},
-  {name: 'Logout', href: '/', icons: <AiOutlineLogout/>},
 ]
