@@ -66,7 +66,7 @@ const SubLandingPage = () => {
 
   return (
     <main className='w-full h-auto relative overflow-hidden'>
-      <section className='mx-auto md:h-screen flex flex-col  items-center  text-xl w-[80%] md:text-2xl md:justify-center'>
+      <section className='mx-auto md:h-auto py-5 flex flex-col  items-center  text-xl w-[80%] md:text-2xl md:justify-center'>
       <div className='z-20 w-full'>
   {LandingPageAboutUs.map((text, index) => (
     <div 
@@ -143,11 +143,6 @@ const SubLandingPage = () => {
         <div className='hidden md:flex gap-x-1 z-20 relative rounded-2xl h-[50dvh] w-1/2'>
           <Image src={BGTwo} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6' />
           <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover -translate-y-20 rounded-2xl shadow-2xl w-1/2 skew-y-6' />
-          <Link href={'/about'}>
-        <span className=' absolute z-30  bottom-52 xl:right-[48%] right-[45%] border-[4px] rounded-full'>
-            <ButtonOne IconButton={true} iconValue={(<ArrowLeft/>)}/>
-        </span>
-          </Link>
         </div>
       </section>
 

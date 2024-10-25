@@ -68,14 +68,14 @@ const InvestmentPlan = () => {
         </div>
       </div>
 
-      <section className='mx-auto flex flex-row gap-x-8 items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between'>
+      <section className='mx-auto flex flex-row gap-x-8 items-center py-16 px-10 text-xl w-full bg-slate-800 md:text-2xl md:justify-around text-white'>
         <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
           <Image src={ManBG} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl' />
         </div>
         <div className='z-20 w-full md:w-1/2'>
           {CP.map((texts, index) => (
             <div key={index} className='flex flex-col gap-4'>
-              <h3 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 dark:text-yellow-600 text-yellow-700'>
+              <h3 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4  text-yellow-400'>
                 {texts.title}
               </h3>
               <p>{getLimitedText(texts.firstText)}</p>

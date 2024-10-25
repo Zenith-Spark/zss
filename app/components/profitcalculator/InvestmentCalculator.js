@@ -85,7 +85,7 @@ const InvestmentCalculator = () => {
       <h1 className="text-3xl font-bold text-center mb-8">Investment Profit Calculator</h1>
       
       {/* Plan Selection */}
-      <div className="plan-selection flex flex-wrap items-center justify-center gap-4 my-6">
+      <div className="plan-selection flex flex-wrap items-center justify-center gap-2 my-6">
         {Plans.map((plan, index) => (
           <label 
             key={index} 
@@ -130,17 +130,17 @@ const InvestmentCalculator = () => {
             onChange={handleInvestmentChange}
             className="border rounded-lg p-2 w-full text-gray-800"
           />
-          <span id="investmentAmount" className="text-lg font-semibold mt-3">{investment.toFixed(2)} USD</span>
+          {/* <span id="investmentAmount" className="text-lg font-semibold mt-3">{investment.toFixed(2)} USD</span> */}
         </div>
       </div>
 
       {/* Results */}
       <div className="results bg-gray-100 rounded-lg p-4 my-6 text-center text-gray-800">
-        <h2 className="text-2xl font-semibold mb-4">Investment Summary</h2>
-        <p className="text-lg">Selected Plan: <span id="selectedPlan" className="font-bold">{selectedPlan.heading} - {selectedPlan.interval}</span></p>
-        <p className="text-lg">Investment Amount: <span id="investmentDisplay" className="font-bold">{investment.toFixed(2)} USD</span></p>
-        <p className="text-lg">Daily Profit: <span id="dailyProfit" className="font-bold">{dailyProfit.toFixed(2)} USD</span></p>
-        <p className="text-lg">Total Profit after 30 days: <span id="totalProfit" className="font-bold">{totalProfit.toFixed(2)} USD</span></p>
+        <h2 className="text-2xl font-bold mb-4">Investment Summary</h2>
+        <p className="text-lg">Selected Plan: <span id="selectedPlan" className="font-semibold">{selectedPlan.heading} - {selectedPlan.interval}</span></p>
+        <p className="text-lg">Investment Amount: <span id="investmentDisplay" className="font-semibold">{investment.toFixed(2)} USD</span></p>
+        <p className="text-lg">Daily Profit: <span id="dailyProfit" className="font-semibold">{dailyProfit.toFixed(2)} USD</span></p>
+        <p className="text-lg">Total Profit after 30 days: <span id="totalProfit" className="font-semibold">{totalProfit.toFixed(2)} USD</span></p>
       </div>
 
       {/* Chart */}
