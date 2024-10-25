@@ -1,5 +1,6 @@
 // /components/Modal.js
 
+import { X } from 'lucide-react';
 import React from 'react';
 
 const Modal = ({ isOpen, onClose, title, children, onSubmit }) => {
@@ -22,7 +23,7 @@ const Modal = ({ isOpen, onClose, title, children, onSubmit }) => {
           onClick={onClose}
           aria-label="Close modal"
         >
-          &times;
+          <X/>
         </button>
         {title && (
           <h2 className="text-2xl font-semibold mb-4 text-gray-900">{title}</h2>

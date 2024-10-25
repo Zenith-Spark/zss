@@ -53,15 +53,26 @@ const PersonalInfoPage = () => {
         <h1 className="text-3xl font-extrabold mb-2 ">Personal Information</h1>
       </section>
 
-      <section className=" shadow-lg p-8 rounded-lg mb-8">
-        <div className="grid gap-4 sm:grid-cols-2">
-          <p className=""><strong>First Name:</strong>{formData.firstName ? formData.firstName : 'No First Name found'}</p>
-          <p className=""><strong>Middle Name:</strong> {formData.middleName ? formData.middleName : 'No Middle Name found'}</p>
-          <p className=""><strong>Last Name:</strong> prime-02</p>
-          <p className=""><strong>Email:</strong> {formData.lastName ? formData.lastName : 'No Last Name found'}</p>
-          <p className=""><strong>Current IP:</strong>{IP}</p>
-        </div>
-      </section>
+      <section className="shadow-lg p-8 rounded-lg mb-8">
+  <div className="flex flex-col gap-4">
+    <p className="w-full">
+      <strong>First Name:</strong> {formData.firstName ? formData.firstName : 'No First Name found'}
+    </p>
+    <p className="w-full">
+      <strong>Middle Name:</strong> {formData.middleName ? formData.middleName : 'No Middle Name found'}
+    </p>
+    <p className="w-full">
+      <strong>Last Name:</strong> {formData.lastName ? formData.lastName : 'No Last Name found'}
+    </p>
+    <p className="w-full">
+      <strong>Email:</strong> {formData.email ? formData.email : 'No email found'}
+    </p>
+    <p className="w-full">
+      <strong>Current IP:</strong> {IP}
+    </p>
+  </div>
+</section>
+
       <section className=" shadow-lg p-8 rounded-lg">
         <h2 className="text-2xl font-semibold mb-6 ">Referral Link</h2>
         <div className="flex items-center space-x-4">

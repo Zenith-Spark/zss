@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 import SideBarLogo from '../../../public/svg/zss.svg';
 import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import Link from 'next/link';
-import { AiOutlineMenu, AiOutlineClose } from 'react-icons/ai';
+import { AiOutlineMenu, AiOutlineClose, AiOutlineLogout } from 'react-icons/ai';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
-import { DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
+import { ButtonOne, ButtonTwo, DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
+
 const SideBar = () => {
   const [sideSlide, setSideSlide] = useState(false);
   const [activeLink, setActiveLink] = useState('');
@@ -71,8 +72,8 @@ const SideBar = () => {
         <div className='flex flex-col h-full text-white'>
           {/* Logo section */}
           <div className='flex items-center relative mb-16 mt-8' onClick={closeSideBar}> {/* Close on logo click */}
-            <Image src={SideBarLogo} width={100} height={100} alt="Logo" className='absolute -translate-x-4 lg:-translate-x-0' />
-            <span className='font-bold absolute right-16'>Zenith Spark Station</span>
+            <Image src={SideBarLogo} width={100} height={100} alt="Logo" className='absolute ' />
+            <span className='font-bold absolute left-24'>Zenith Spark Station</span>
           </div>
 
           {/* User Info */}
@@ -81,7 +82,11 @@ const SideBar = () => {
               {usrDBSidebar[6].icons}
             </span>
             <div>
-              <h1 className='font-bold text-lg'>User Name</h1>
+              <h1 className='font-bold text-lg flex flex-col md:flex-row gap-x-2 '>
+                <span></span>
+                <span></span>
+                <span></span>
+              </h1>
               <p>user email</p>
             </div>
           </div>
@@ -104,9 +109,11 @@ const SideBar = () => {
             <div className='border-gray-700'>
               <button
                 onClick={handleLogoutClick}
-                className="flex items-center ml-4 md:ml-8 gap-2 py-2 text-sm md:text-base hover:text-gray-400 px-3 rounded-xl mr-3 transition duration-200"
+                className="flex items-center ml-4 md:ml-8 gap-2 py-1 text-sm md:text-base hover:text-gray-400 px-3 rounded-xl mr-3 transition duration-200"
               >
-                <span className='text-xl'>🔒</span> {/* Replace with a logout icon if desired */}
+                <span className='text-xl'>
+                  <AiOutlineLogout/>
+                  </span> {/* Replace with a logout icon if desired */}
                 <span>Logout</span>
               </button>
             </div>
@@ -119,17 +126,30 @@ const SideBar = () => {
         <Modal
           isOpen={showLogoutModal}
           onClose={() => setShowLogoutModal(false)}>
-            <div className={'flex flex-col'}>
-              <h1>
-                Are sure you want to log out 
-              </h1>
-              <span>
-             <DBButtonOne Clicked={() => setShowLogoutModal(false)} buttonValue={'No'}/>
-              <Link href={'/'}>
-             <DBButtonOne Clicked={() => setShowLogoutModal(false)} buttonValue={'Yes'}/>
-              </Link>
-              </span>
-            </div>
+           <div className="flex flex-col items-center justify-center p-6">
+  {/* Prompt Title */}
+  <h1 className="text-lg font-bold mb-4 text-center">
+    Are you sure you want to log out?
+  </h1>
+
+  {/* Action Buttons */}
+  <div className="flex gap-4">
+    <DBButtonOne 
+      Clicked={() => setShowLogoutModal(false)} 
+      buttonValue="No" 
+      className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300"
+    />
+    
+    <Link href="/">
+      <ButtonTwo
+        Clicked={() => setShowLogoutModal(false)} 
+        buttonValue="Yes" 
+        className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+      />
+    </Link>
+  </div>
+</div>
+
           </Modal>
       )}
     </nav>
