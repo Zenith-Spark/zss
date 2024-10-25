@@ -1,6 +1,5 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import ToggleMenu from '../resuables/Buttons/ToggleMenu.js';
 import { NavItems } from '../resuables/index/index.js';
 import Link from 'next/link';
 import { ButtonOne, ButtonTwo } from '../resuables/Buttons/Buttons.js';
@@ -28,7 +27,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="z-20 fixed w-full dark:bg-slate-800 bg-slate-900 shadow-md">
+      <nav className="z-50 fixed w-full dark:bg-slate-800 bg-slate-900 shadow-md">
         <div className="flex flex-row h-[3rem] items-center w-full justify-between px-4">
           <Link href="/">
             <Image src={NavBarImg} width={80} height={30} alt="Logo" />
