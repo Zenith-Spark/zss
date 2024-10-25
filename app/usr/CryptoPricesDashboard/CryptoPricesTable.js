@@ -303,7 +303,7 @@ const CryptoPricesTable = ({showTable}) => {
                             <td className="py-4 px-6 text-right">
                               ${coin.currentPrice.toFixed(2)}
                             </td>
-                            <td className="py-4 px-6 text-right hidden md:table-cell">
+                            <td className={`py-4 px-6 text-right hidden md:table-cell ${coin.priceChange >= 0 ? 'text-green-500': 'text-red-500'}`}>
                               {coin.priceChange.toFixed(2)}%
                             </td>
                           </>
