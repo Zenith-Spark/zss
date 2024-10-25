@@ -4,26 +4,23 @@ import ToggleMenu from '../resuables/Buttons/ToggleMenu.js';
 import { NavItems } from '../resuables/index/index.js';
 import Link from 'next/link';
 import { ButtonOne, ButtonTwo } from '../resuables/Buttons/Buttons.js';
-import Image from 'next/image.js';
-import NavBarImg from '../../../public/svg/zss.svg'
+import Image from 'next/image';
+import NavBarImg from '../../../public/svg/zss.svg';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
   const [navDrawer, setNavDrawer] = useState(false);
-  
-  // Function to toggle the navDrawer state
+
   const toggleNav = () => {
     setNavDrawer(!navDrawer);
   };
 
   useEffect(() => {
-    // Lock or unlock scroll based on navDrawer state
     if (navDrawer) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
     }
-
-    // Cleanup function to reset scroll behavior on unmount
     return () => {
       document.body.style.overflow = 'auto';
     };
@@ -31,66 +28,74 @@ const Navbar = () => {
 
   return (
     <>
-      <nav
-        className={`z-20 fixed w-full dark:bg-slate-800 bg-slate-900 transition-all duration-1000 overflow-hidden ${navDrawer ? 'h-[20rem]' : 'h-[3rem]'} md:h-[3rem] z-40`}
-      >
-        <div className='flex flex-row h-[3rem] items-center w-full justify-evenly'>
-         <Link href={'/'}>
-         <Image src={NavBarImg} width={80}/>
-         </Link>
-          <div className='hidden md:flex w-[30%] items-center justify-between'>
+      <nav className="z-20 fixed w-full dark:bg-slate-800 bg-slate-900 shadow-md">
+        <div className="flex flex-row h-[3rem] items-center w-full justify-between px-4">
+          <Link href="/">
+            <Image src={NavBarImg} width={80} height={30} alt="Logo" />
+          </Link>
+
+          <div className="hidden md:flex items-center space-x-6">
             {NavItems.map((item, index) => (
-              <ul className='text-white' key={index}>
-                <li onClick={toggleNav}> {/* Toggle on click */}
-                  <Link href={item.href}>
-                    {item.name}
-                  </Link>
-                </li>
-              </ul>
+              <Link href={item.href} key={index}>
+                <span className="text-white hover:text-gray-300 transition-all duration-200">
+                  {item.name}
+                </span>
+              </Link>
             ))}
           </div>
-          <div className='md:hidden my-2'>
-            <ToggleMenu Click={toggleNav} />
-          </div>
-          <div className='gap-x-4 justify-center py-4 hidden md:flex'>
-            <Link href={'/login'}>
-            <span onClick={toggleNav}> {/* Toggle on click */}
-              <ButtonOne buttonValue={`Login`} />
-            </span>
-            </Link>
-            <Link href={'/signup'}>
-            <span onClick={toggleNav}> {/* Toggle on click */}
-              <ButtonTwo buttonValue={`Sign Up`} />
-            </span>
-            </Link>
-          </div>
-        </div>
 
-        <div className='w-full h-max md:hidden flex flex-col items-center justify-evenly gap-5'>
-          {NavItems.map((items, index) => (
-            <ul key={index} className='flex gap-2 hover:text-neutral-500 active:underline pb-2 items-center text-white'>
-              <li onClick={toggleNav}> {/* Toggle on click */}
-                <Link href={items.href}>
-                  {items.name}
-                </Link>
-              </li>
-              <span>{items.icon}</span>
-            </ul>
-          ))}
-          <div className='flex w-1/2 mx-auto gap-x-4 justify-center md:hidden'>
-          <Link href={'/login'}>
-            <span onClick={toggleNav}> {/* Toggle on click */}
-              <ButtonOne buttonValue={`Login`} />
-            </span>
+          <div className="hidden md:flex space-x-4">
+            <Link href="/login">
+              <ButtonOne buttonValue="Login" />
             </Link>
-            <Link href={'/signup'}>
-            <span onClick={toggleNav}> {/* Toggle on click */}
-              <ButtonTwo buttonValue={`Sign Up`} />
-            </span>
+            <Link href="/signup">
+              <ButtonTwo buttonValue="Sign Up" />
             </Link>
+          </div>
+
+          <div className="md:hidden text-white cursor-pointer focus:animate-spin">
+            <Menu onClick={toggleNav} />
           </div>
         </div>
       </nav>
+
+      {/* Sidebar for Mobile */}
+      <div
+        className={`fixed top-0 right-0 h-full bg-slate-800 text-white transition-transform duration-500 ease-in-out transform ${
+          navDrawer ? 'translate-x-0' : 'translate-x-full'
+        } w-3/4 max-w-xs z-30 shadow-lg`}
+      >
+        <div className="flex items-center justify-between px-4 py-6">
+          <button onClick={toggleNav} className="text-white text-lg focus:outline-none">
+            <X/>
+          </button>
+        </div>
+
+        <div className="flex flex-col items-start pl-6 space-y-6 mt-4">
+          {NavItems.map((item, index) => (
+            <Link href={item.href} key={index} onClick={toggleNav}>
+              <span className="text-lg hover:text-gray-300">{item.name}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="flex absolute bottom-8 flex-row items-center mt-10 space-x-4 px-6">
+          <Link href="/login">
+            <ButtonOne buttonValue="Login" onClick={toggleNav} />
+          </Link>
+          <Link href="/signup">
+            <ButtonTwo buttonValue="Sign Up" onClick={toggleNav} />
+          </Link>
+        </div>
+      </div>
+
+      {/* Overlay for Sidebar */}
+      {navDrawer && (
+        <div
+          className="fixed inset-0 bg-black opacity-50 z-20"
+          onClick={toggleNav}
+        />
+      )}
     </>
   );
 };

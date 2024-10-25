@@ -73,7 +73,7 @@ const SubLandingPage = () => {
       key={index} 
       className='w-full flex flex-col items-center text-center py-8 '>
       {/* Title */}
-      <h3 className='text-xl md:text-2xl font-semibold text-gray-800 dark:text-gray-300'>
+      <h3 className='text-xl md:text-2xl font-semibold dark:text-gray-300'>
         {text.title}
       </h3>
       
@@ -83,7 +83,7 @@ const SubLandingPage = () => {
       </h1>
       
       {/* Paragraph */}
-      <p className='text-lg md:text-xl text-gray-700 dark:text-gray-400 leading-relaxed max-w-3xl'>
+      <p className='text-lg md:text-xl   leading-relaxed max-w-3xl'>
         {text.firstText}
       </p>
     </div>

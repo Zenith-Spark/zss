@@ -105,10 +105,10 @@ const InvestmentPlan = () => {
           </div>
           <div className=" top-0 left-0 z-30 flex items-center justify-center h-full gap-x-4 my-5">
             <button onClick={handlePrev} className='cursor-pointer transition hover:scale-105'>
-              <div className={`${dotSize.left} rounded-full border bg-gray-600`}></div>
+              <div className={`${dotSize.left} rounded-full border bg-yellow-400 border-none`}></div>
             </button>
             <button onClick={handleNext} className='cursor-pointer transition  hover:scale-105'>
-              <div className={`${dotSize.right} rounded-full border bg-gray-600`}></div>
+              <div className={`${dotSize.right} rounded-full border bg-yellow-400 border-none`}></div>
             </button>
           </div>
         </div>
