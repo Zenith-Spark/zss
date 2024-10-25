@@ -61,7 +61,7 @@ const SubLandingPage = () => {
   }, []);
 
   // Limit coins to 4 on small screens
-  const displayedCoins = isSmallScreen ? coins.slice(0, 4) : coins;
+  const displayedCoins = isSmallScreen ? coins.slice(0, 6) : coins;
 
 
   return (
@@ -93,8 +93,13 @@ const SubLandingPage = () => {
 
       <div className='flex flex-row w-full items-center justify-evenly pt-16'>
       {displayedCoins.map((coin, index) => (
-        <span key={index} className='text-3xl md:text-4xl'>
+        <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
+          <span>
           {coin.coins}
+          </span>
+          <span className='text-xs font-thin'>
+            {coin.name}
+          </span>
         </span>
       ))}
     </div>

@@ -1,14 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { CP, howToEarn, Plans } from '../resuables/index';
 import ManBG from '../../../public/img/man1.webp';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ButtonOne } from '../resuables/Buttons/Buttons';
-import { ArrowRight, ArrowLeft, ArrowRightCircle } from 'lucide-react';
+import { ArrowRightCircle } from 'lucide-react';
 
 const InvestmentPlan = () => {
   const [showMore, setShowMore] = useState(false);
   const scrollRef = useRef(null); // Reference for the scroll container
+  const [dotSize, setDotSize] = useState({ left: 'w-6 h-6', right: 'w-4 h-4' }); // Set left dot bigger initially
 
   // Function to limit the number of words in firstText
   const getLimitedText = (text) => {
@@ -19,14 +20,55 @@ const InvestmentPlan = () => {
   const handlePrev = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -scrollRef.current.clientWidth, behavior: 'smooth' });
+      setDotSize({ left: 'w-6 h-6', right: 'w-4 h-4' }); // Increase size of left dot
+      resetDotSizes(); // Reset after a delay
     }
   };
 
   const handleNext = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: scrollRef.current.clientWidth, behavior: 'smooth' });
+      setDotSize({ left: 'w-4 h-4', right: 'w-6 h-6' }); // Increase size of right dot
+      resetDotSizes(); // Reset after a delay
     }
   };
+
+  const resetDotSizes = () => {
+    setTimeout(() => {
+      setDotSize({ left: 'w-4 h-4', right: 'w-4 h-4' }); // Reset dot sizes
+    }, 300); // Adjust the delay as needed
+  };
+
+  // Effect to track scroll events
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const scrollLeft = scrollRef.current.scrollLeft;
+        const maxScrollLeft = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+
+        // Determine scroll direction and set dot sizes
+        if (scrollLeft > 0 && scrollLeft < maxScrollLeft) {
+          if (scrollLeft > previousScrollLeft.current) {
+            setDotSize({ left: 'w-4 h-4', right: 'w-6 h-6' }); // Scrolling right
+          } else {
+            setDotSize({ left: 'w-6 h-6', right: 'w-4 h-4' }); // Scrolling left
+          }
+        }
+
+        previousScrollLeft.current = scrollLeft; // Update previous scroll position
+      }
+    };
+
+    const previousScrollLeft = { current: 0 }; // Track the previous scroll position
+    scrollRef.current.addEventListener('scroll', handleScroll); // Add scroll event listener
+
+    // Clean up the event listener on unmount
+    return () => {
+      if (scrollRef.current) {
+        scrollRef.current.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, []);
 
   return (
     <main className="w-full py-12 overflow-hidden">
@@ -61,10 +103,14 @@ const InvestmentPlan = () => {
             </div>
             {/* Slider controls */}
           </div>
-            <div className=" top-0 left-0 z-30 flex items-center justify-center h-full gap-x-4 my-5">
-             <button onClick={handlePrev} className='cursor-pointer focus:bg-yellow-400 hover:scale-105 w-4 h-4 rounded-full border bg-gray-600'></button>
-             <button onClick={handleNext} className='cursor-pointer focus:bg-yellow-400 hover:scale-105 w-4 h-4 rounded-full border bg-gray-600'></button>
-            </div>
+          <div className=" top-0 left-0 z-30 flex items-center justify-center h-full gap-x-4 my-5">
+            <button onClick={handlePrev} className='cursor-pointer transition hover:scale-105'>
+              <div className={`${dotSize.left} rounded-full border bg-gray-600`}></div>
+            </button>
+            <button onClick={handleNext} className='cursor-pointer transition  hover:scale-105'>
+              <div className={`${dotSize.right} rounded-full border bg-gray-600`}></div>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -75,7 +121,7 @@ const InvestmentPlan = () => {
         <div className='z-20 w-full md:w-1/2'>
           {CP.map((texts, index) => (
             <div key={index} className='flex flex-col gap-4'>
-              <h3 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4  text-yellow-400'>
+              <h3 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 text-yellow-400'>
                 {texts.title}
               </h3>
               <p>{getLimitedText(texts.firstText)}</p>

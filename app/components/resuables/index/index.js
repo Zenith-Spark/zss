@@ -281,7 +281,7 @@ export const RoadMapYearThree = [
 
 
 
-import { SiBitcoin } from "react-icons/si";
+import { SiBitcoin, SiCardano, SiChainlink, SiFantom, SiHedera, SiLitecoin, SiPolkadot, SiStellar } from "react-icons/si";
 import { FaEthereum } from "react-icons/fa";
 import { RiBnbFill } from "react-icons/ri";
 import { SiSolana } from "react-icons/si";
@@ -293,14 +293,21 @@ import { SiHiveBlockchain } from "react-icons/si";
 
 
 export const coins = [
- {coins: <SiBitcoin />}, 
-  {coins:  <FaEthereum />},
-  {coins: <RiBnbFill/>},
-  {coins: <SiSolana/>},
-  {coins: <SiTether/>},
-  {coins:<RiXrpFill/>},
-  {coins: <IoLogoUsd/>},
-  {coins: <SiHiveBlockchain/>}
+ {coins: <SiBitcoin />, name: 'Bitcoin'}, 
+  {coins:  <FaEthereum />, name: 'Ethereum'},
+  {coins: <RiBnbFill/>, name: 'BNB'},
+  {coins: <SiSolana/>, name: 'Solana'},
+  {coins: <SiTether/>, name: 'Tether'},
+  {coins:<RiXrpFill/>, name: 'XRP'},
+  {coins: <IoLogoUsd/>, name: 'USD'},
+  {coins: <SiHiveBlockchain/>, name: 'Hive Block Chain'},
+  {coins: <SiChainlink/>, name: 'Chain Link'},
+  {coins: <SiCardano/>, name: 'Cardano'},
+  {coins: <SiPolkadot/>, name: 'Polkadot'},
+  {coins: <SiLitecoin/>, name: 'Lite coin'},
+  {coins: <SiStellar/>, name: 'Stellar'},
+  {coins: <SiHedera/>, name: 'Hedera'},
+  {coins: <SiFantom/>, name: 'Fantom'},
 ]
 
 export const FooterPages = [

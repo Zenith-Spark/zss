@@ -285,7 +285,7 @@ const CryptoPricesTable = ({showTable}) => {
                           <img src={coin.image} alt={coin.name} className="w-8 h-8 mr-4 rounded-full" />
                           <div>
                             <p className="font-semibold">{coin.name}</p>
-                            {!showOwnedCoins && <p className="text-sm">${coin.currentPrice.toFixed(2)}</p>}
+                            {/* {!showOwnedCoins && <p className="text-sm">${coin.currentPrice.toFixed(2)}</p>} */}
                           </div>
                         </td>
                         {showOwnedCoins && (
