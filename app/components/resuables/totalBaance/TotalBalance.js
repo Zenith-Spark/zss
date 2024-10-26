@@ -2,7 +2,7 @@ import React from 'react';
 import { DBButtonOne, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
 import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
-import { PiGreaterThan } from 'react-icons/pi'; // Assuming you need this import for the icon
+import { PiGreaterThan } from 'react-icons/pi'; 
 import Link from 'next/link';
 
 const TotalBalance = () => {
