@@ -50,11 +50,11 @@ const Page = () => {
 
   return (
     <>
-      <p className="flex flex-row gap-2 items-center text-xs pb-4 font-thin px-6 pt-4">
-        <span>{usrDBSidebar[3].icons}</span>
-        <span><PiGreaterThan /></span>
-        <span>{usrDBSidebar[3].name}</span>
-      </p>
+      <p className="flex flex-row gap-2 items-center text-lg  font-thin px-6 mb-14 translate-y-7">
+              <span>{usrDBSidebar[3].icons}</span>
+              <span><PiGreaterThan /></span>
+              <span>{usrDBSidebar[3].name}</span>
+            </p>
       <div className="flex justify-center flex-col py-8">
         <div className="flex flex-wrap justify-center gap-x-5 gap-y-8">
           {Plans.map((plan, index) => (

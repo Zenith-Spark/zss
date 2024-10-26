@@ -27,15 +27,16 @@ const SecuritySettings = () => {
 
   return (
     <div className="container mx-auto py-12 px-6 sm:px-8 lg:px-12">
-      <p className="flex flex-row gap-2 items-center text-sm pb-6 font-light px-6 pt-4">
+       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4 -translate-y-10">
         <span>{usrDBSidebar[7].icons}</span>
         <span><PiGreaterThan /></span>
         <span>{usrDBSidebar[7].name}</span>
       </p>
-      <h1 className="text-4xl font-bold mb-8">Account Security</h1>
+
+      <h1 className="text-4xl text-center font-bold mb-8">Account Security</h1>
       
       {/* Password Update Form */}
-      <form onSubmit={handleSubmit} className="border shadow-lg rounded-lg p-6 mb-12 transition-all duration-300 hover:shadow-xl">
+      <form onSubmit={handleSubmit} className="border shadow-lg rounded-lg p-6 mb-12  w-full md:w-1/2 mx-auto">
         <h2 className="text-lg font-semibold mb-4">Change Password</h2>
 
         <div className="mb-4">
@@ -81,7 +82,7 @@ const SecuritySettings = () => {
       </form>
       
       {/* KYC Upload Section */}
-      <section className="border shadow-lg rounded-lg p-6 transition-all duration-300 hover:shadow-xl">
+      <section className="border shadow-lg rounded-lg p-6   w-full md:w-1/2 mx-auto">
         <h2 className="text-lg font-semibold mb-4">Upload KYC Document</h2>
         
         <div className="mb-6">

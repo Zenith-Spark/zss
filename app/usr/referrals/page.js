@@ -17,7 +17,7 @@ const ReferralPage = () => {
 
   return (
     <div className="p-4">
-      <p className="flex flex-row gap-2 items-center text-xs pb-4 font-thin px-6 pt-4">
+      <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
         <span>{usrDBSidebar[5].icons}</span>
         <span><PiGreaterThan /></span>
         <span>{usrDBSidebar[5].name}</span>

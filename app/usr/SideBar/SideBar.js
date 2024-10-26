@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { AiOutlineMenu, AiOutlineClose, AiOutlineLogout } from 'react-icons/ai';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { ButtonOne, ButtonTwo, DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
+import { IoNotifications } from 'react-icons/io5';
 
 const SideBar = () => {
   const [sideSlide, setSideSlide] = useState(false);
@@ -54,6 +55,15 @@ const SideBar = () => {
 
   return (
     <nav className='fixed w-full h-16 z-50'>
+      <p className='absolute right-5 top-5 flex items-center flex-row text-base md:text-lg font-bold gap-2'>
+        <span className=''>
+        Notification
+        </span>
+        <span>
+          <IoNotifications/>
+        </span>
+        <span className='w-2 h-2 rounded-full bg-red-500 text-white absolute top-1 right-0'></span>
+      </p>
       <div className='flex items-center justify-start h-full px-4'>
         <button onClick={toggleSideSlide} className='md:hidden'>
           {sideSlide ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}
@@ -69,7 +79,7 @@ const SideBar = () => {
       )}
 
       <aside className={`fixed top-0 h-screen w-[80%] md:w-[30%] xl:w-[20%] transition-transform duration-300 bg-slate-800 z-50 ${sideSlide ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
-        <div className='flex flex-col h-full text-white'>
+        <div className='flex flex-col h-full text-white pt-12'>
           {/* Logo section */}
           <div className='flex items-center relative mb-16 mt-8' onClick={closeSideBar}> {/* Close on logo click */}
             <Image src={SideBarLogo} width={100} height={100} alt="Logo" className='absolute ' />
@@ -83,9 +93,9 @@ const SideBar = () => {
             </span>
             <div>
               <h1 className='font-bold text-lg flex flex-col md:flex-row gap-x-2 '>
-                <span></span>
-                <span></span>
-                <span></span>
+                <span>
+                  Full Name
+                </span>
               </h1>
               <p>user email</p>
             </div>
@@ -98,7 +108,7 @@ const SideBar = () => {
                 <Link
                   href={links.href}
                   onClick={() => handleLinkClick(links.href)} // Close on link click
-                  className={`flex items-center ml-4 md:ml-8 gap-2 py-2 hover:text-gray-400 text-sm md:text-base focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''}`}
+                  className={`flex items-center ml-4 md:ml-8 gap-2 py-1 hover:text-gray-400 text-sm md:text-base focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''}`}
                 >
                   <span className='text-xl'>{links.icons}</span>
                   <span>{links.name}</span>

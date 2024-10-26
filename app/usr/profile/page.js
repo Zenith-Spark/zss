@@ -43,11 +43,12 @@ const PersonalInfoPage = () => {
   return (
     <div className="container mx-auto py-12 px-6 sm:px-8 lg:px-12 min-h-screen">
       
-      <div className="flex items-center text-lg pb-4 font-thin mb-4">
+      <p className="flex flex-row gap-2 items-center text-lg pb-4 -translate-y-8 font-thin px-6 pt-4">
         <span>{usrDBSidebar[6].icons}</span>
         <span><PiGreaterThan /></span>
         <span>{usrDBSidebar[6].name}</span>
-      </div>
+      </p>
+
 
       <section className="mb-8 text-center">
         <h1 className="text-3xl font-extrabold mb-2 ">Personal Information</h1>
