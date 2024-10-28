@@ -55,7 +55,7 @@ const SideBar = () => {
  
 
   return (
-    <nav className='fixed w-full h-16 z-50'>
+    <nav className='fixed w-full h-16 z-40'>
       <Notification/>
       <div className='flex items-center justify-start h-full px-4'>
         <button onClick={toggleSideSlide} className='md:hidden'>
@@ -66,7 +66,7 @@ const SideBar = () => {
       {/* Sidebar Overlay */}
       {sideSlide && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
           onClick={closeSideBar} // Close sidebar when overlay is clicked
         ></div>
       )}
