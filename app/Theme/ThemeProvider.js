@@ -42,7 +42,7 @@ const ThemeProvider = ({ children }) => {
         <button
           onClick={toggleTheme}
           aria-label='Toggle theme'
-          className='fixed z-50 text-3xl right-5 bottom-5'
+          className='fixed z-50 text-3xl left-5 bottom-5'
         >
           {theme === 'light' ? (
             <FaMoon className='text-neutral-600' />

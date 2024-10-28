@@ -6,24 +6,23 @@ import { GlobalStateProvider } from "./GlobalStateProvider";
 export const metadata = {
   title: "Zenith Spark Station",
   description: "Innovative Company",
-  icons: {
-    icon: "/public/img/loadingscreen.webp",
-  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>
-            <GlobalStateProvider>
-        <ThemeProvider>
-          {/* Client-side layout handling */}
-          <ClientLayout>
-            {children}
-            </ClientLayout>
-        </ThemeProvider>
-            </GlobalStateProvider>
+      <head>
+        {/* Add favicon here */}
+        <link rel="icon" href="/public/img/loadingscreen.webp" sizes="any" />
+      </head>
+      <body className="antialiased">
+        <GlobalStateProvider>
+          <ThemeProvider>
+            <ClientLayout>{children}</ClientLayout>
+          </ThemeProvider>
+        </GlobalStateProvider>
       </body>
     </html>
   );
 }
+
