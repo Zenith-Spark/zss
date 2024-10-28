@@ -80,10 +80,10 @@ const Navbar = () => {
 
         <div className="flex absolute bottom-8 flex-row items-center mt-10 space-x-4 px-6">
           <Link href="/login">
-            <ButtonOne buttonValue="Login" onClick={toggleNav} />
+            <ButtonOne buttonValue="Login" Clicked={toggleNav} />
           </Link>
           <Link href="/signup">
-            <ButtonTwo buttonValue="Sign Up" onClick={toggleNav} />
+            <ButtonTwo buttonValue="Sign Up" Clicked={toggleNav} />
           </Link>
         </div>
       </div>
