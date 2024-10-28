@@ -6,6 +6,9 @@ import { GlobalStateProvider } from "./GlobalStateProvider";
 export const metadata = {
   title: "Zenith Spark Station",
   description: "Innovative Company",
+  icons: {
+    icon: "/public/img/loadingscreen.webp",
+  },
 };
 
 export default function RootLayout({ children }) {

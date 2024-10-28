@@ -17,6 +17,11 @@ export const GlobalStateProvider = ({ children }) => {
     },
     totalBalance: 0,
     referralLink: '',
+    notification: [
+      { id: 1, title: "New Message", message: "You have a new message from John.", time: "2m ago" },
+      { id: 2, title: "System Update", message: "The system will undergo maintenance at midnight.", time: "1h ago" },
+      { id: 3, title: "Friend Request", message: "Anna has sent you a friend request.", time: "3h ago" },
+    ]
   });
 
   

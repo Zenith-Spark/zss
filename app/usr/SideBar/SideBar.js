@@ -8,6 +8,7 @@ import { AiOutlineMenu, AiOutlineClose, AiOutlineLogout } from 'react-icons/ai';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { ButtonOne, ButtonTwo, DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
 import { IoNotifications } from 'react-icons/io5';
+import Notification from '../notification/Notification';
 
 const SideBar = () => {
   const [sideSlide, setSideSlide] = useState(false);
@@ -55,15 +56,7 @@ const SideBar = () => {
 
   return (
     <nav className='fixed w-full h-16 z-50'>
-      <p className='absolute right-5 top-5 flex items-center flex-row text-base md:text-lg font-bold gap-2'>
-        <span className=''>
-        Notification
-        </span>
-        <span>
-          <IoNotifications/>
-        </span>
-        <span className='w-2 h-2 rounded-full bg-red-500 text-white absolute top-1 right-0'></span>
-      </p>
+      <Notification/>
       <div className='flex items-center justify-start h-full px-4'>
         <button onClick={toggleSideSlide} className='md:hidden'>
           {sideSlide ? <AiOutlineClose size={24} /> : <AiOutlineMenu size={24} />}

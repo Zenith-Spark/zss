@@ -1,11 +1,13 @@
 // app/layout.js (Global Client Layout)
 "use client";
 
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Navbar from './components/Navbar/Navbar';
 import Footer from './components/footer/Footer';
-import Loader from './components/resuables/Loader/Loader';
+import { LoadingScreen } from './components/resuables/Loader/LoadingScreen';
+import LoadingSrn from '../public/img/loadingscreen.webp'
 
 export default function ClientLayout({ children }) {
   const pathname = usePathname(); // Current route path
@@ -25,7 +27,8 @@ export default function ClientLayout({ children }) {
     // Hide loading screen after navigation completes
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 500); // Adjust the delay as necessary
+
+    }, 3000); // Adjust the delay as necessary
 
     return () => clearTimeout(timer); // Clear timeout on unmount
   }, [pathname]);
@@ -34,11 +37,11 @@ export default function ClientLayout({ children }) {
     <>
       {/* Loading screen */}
       {loading && (
-        <div className="fixed z-50 h-screen w-full bg-black opacity-25 justify-center flex items-center">
-           <p className='text-white text-2xl text-center'>
-              Zenith Spark Station
-            </p>
-            <Loader/>
+        <div className="fixed z-50 h-screen w-full backdrop-blur-3xl  justify-center flex flex-col gap-6 items-center overflow-hidden">
+            <Image src={LoadingSrn} width={100} height={100} alt='Loading Screen' className='border rounded-xl' />
+            <span className='animate-bounce'>
+            <LoadingScreen/>
+            </span>
         </div>
       )}
 

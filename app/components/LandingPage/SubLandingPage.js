@@ -107,7 +107,7 @@ const SubLandingPage = () => {
 
       <section className='h-auto w-full mb-20  flex items-center  my-10  gap-x-5 text-md  md:text-xl px-3 md:px-10 bg-slate-800 text-white py-10'>
       <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={AffiliateImgTwo} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl' />
+          <Image src={AffiliateImgTwo} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl border-2' />
         </div>
       <article className="w-full md:w-1/2   mx-auto flex flex-col items-start  z-20 ">
           {WhatWeOffer.map((texts, index) => (
@@ -146,8 +146,8 @@ const SubLandingPage = () => {
           ))}
         </div>
         <div className='hidden md:flex gap-x-1 z-20 relative rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={BGTwo} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6' />
-          <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover -translate-y-20 rounded-2xl shadow-2xl w-1/2 skew-y-6' />
+          <Image src={BGTwo} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6 border-2' />
+          <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover -translate-y-20 rounded-2xl shadow-2xl w-1/2 skew-y-6 border-2' />
         </div>
       </section>
 
@@ -174,7 +174,7 @@ const SubLandingPage = () => {
           </span>
         </article>
         <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={AffiliateImg} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl' />
+          <Image src={AffiliateImg} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl border-2' />
         </div>
       </section>
       <InvestmentPlan/>
