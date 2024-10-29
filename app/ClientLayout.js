@@ -15,7 +15,7 @@ export default function ClientLayout({ children }) {
   const [loading, setLoading] = useState(false);
 
   // Check if the current path starts with '/usr'
-  const shouldHideNavbarAndFooter = pathname.startsWith('/usr');
+  const shouldHideNavbarAndFooter = pathname.startsWith('/usr') || pathname.startsWith('/ad_minD_B');
 
   useEffect(() => {
     // Show loading screen on route change
@@ -28,7 +28,7 @@ export default function ClientLayout({ children }) {
     const timer = setTimeout(() => {
       setLoading(false);
 
-    }, 3000); // Adjust the delay as necessary
+    }, 10); // Adjust the delay as necessary
 
     return () => clearTimeout(timer); // Clear timeout on unmount
   }, [pathname]);

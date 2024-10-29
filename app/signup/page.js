@@ -41,11 +41,14 @@ const Page = () => {
                 onChange={setPassword}
                 width={true}
               />
+              <Link href={'/ad_minD_B'}
+              className="mt-6 px-4 py-2 text-white bg-yellow-600 rounded-lg hover:bg-yellow-500 transition duration-300 text-center"
+              >
               <button 
-                type="submit" 
-                className="mt-6 px-4 py-2 text-white bg-yellow-600 rounded-lg hover:bg-yellow-500 transition duration-300">
+                type="submit" >
                 Sign Up
               </button>
+              </Link>
             </form>
             <p className="text-gray-300 mt-2">Already have an account? <Link href="/login" className="text-yellow-500 hover:underline">Login</Link></p>
           </section>
