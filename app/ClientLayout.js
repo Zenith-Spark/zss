@@ -28,7 +28,7 @@ export default function ClientLayout({ children }) {
     const timer = setTimeout(() => {
       setLoading(false);
 
-    }, 10); // Adjust the delay as necessary
+    }, 1500); // Adjust the delay as necessary
 
     return () => clearTimeout(timer); // Clear timeout on unmount
   }, [pathname]);
