@@ -80,7 +80,7 @@ const SideBar = () => {
           </div>
 
           {/* User Info */}
-          <div className='h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2 mb-3'>
+          <div className='h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2'>
             <span className='text-3xl border rounded-full p-2 bg-slate-500'>
               {usrDBSidebar[6].icons}
             </span>
@@ -95,32 +95,48 @@ const SideBar = () => {
           </div>
 
           {/* Sidebar Links */}
+          <p className="text-gray-500 text-sm font-semibold ml-4 md:ml-8 mb-1">
+          Account
+        </p>
           <div className='flex flex-col gap-y-5 overflow-y-auto'>
-            {usrDBSidebar.map((links, index) => (
-              <div className='border-gray-700' key={index}>
-                <Link
-                  href={links.href}
-                  onClick={() => handleLinkClick(links.href)} // Close on link click
-                  className={`flex items-center ml-4 md:ml-8 gap-2 py-[2px] hover:text-gray-400 text-sm md:text-base focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''}`}
-                >
-                  <span className='text-xl'>{links.icons}</span>
-                  <span>{links.name}</span>
-                </Link>
-              </div>
-            ))}
-            {/* Logout Link */}
-            <div className='border-gray-700'>
-              <button
-                onClick={handleLogoutClick}
-                className="flex items-center ml-4 md:ml-8 gap-2 py-1 text-sm md:text-base hover:text-gray-400 px-3 rounded-xl mr-3 transition duration-200"
-              >
-                <span className='text-xl'>
-                  <AiOutlineLogout/>
-                  </span> {/* Replace with a logout icon if desired */}
-                <span>Logout</span>
-              </button>
-            </div>
-          </div>
+  {usrDBSidebar.map((links, index) => (
+    <React.Fragment key={index}>
+      <div className='border-gray-700'>
+        <Link
+          href={links.href}
+          onClick={() => handleLinkClick(links.href)}
+          className={`flex items-center ml-4 md:ml-8 gap-2 py-[2px] hover:text-gray-400 text-sm md:text-base focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${
+            activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''
+          }`}
+        >
+          <span className='text-xl'>{links.icons}</span>
+          <span>{links.name}</span>
+        </Link>
+      </div>
+
+      {/* Insert Settings label after the 3rd link */}
+      {index === 4 && (
+        <p className="text-gray-500 text-sm font-semibold ml-4 md:ml-8">
+          Settings
+        </p>
+      )}
+    </React.Fragment>
+  ))}
+
+  {/* Logout Link */}
+  <div className='border-gray-700'>
+    <button
+      onClick={handleLogoutClick}
+      className="flex items-center ml-4 md:ml-8 gap-2 py-1 text-sm md:text-base hover:text-gray-400 px-3 rounded-xl mr-3 transition duration-200"
+    >
+      <span className='text-xl'>
+        <AiOutlineLogout />
+      </span>
+      <span>Logout</span>
+    </button>
+  </div>
+</div>
+
         </div>
       </aside>
 

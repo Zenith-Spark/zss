@@ -135,16 +135,43 @@ const InvestmentCalculator = () => {
       </div>
 
       {/* Results */}
-      <div className="results bg-gray-100 rounded-lg p-4 my-6 text-center text-gray-800">
-        <h2 className="text-2xl font-bold mb-4">Investment Summary</h2>
-        <p className="text-lg">Selected Plan: <span id="selectedPlan" className="font-semibold">{selectedPlan.heading} - {selectedPlan.interval}</span></p>
-        <p className="text-lg">Investment Amount: <span id="investmentDisplay" className="font-semibold">{investment.toFixed(2)} USD</span></p>
-        <p className="text-lg">Daily Profit: <span id="dailyProfit" className="font-semibold">{dailyProfit.toFixed(2)} USD</span></p>
-        <p className="text-lg">Total Profit after 30 days: <span id="totalProfit" className="font-semibold">{totalProfit.toFixed(2)} USD</span></p>
-      </div>
+      <div className="investment-summary max-w-lg mx-auto shadow-lg rounded-xl p-6 my-8 text-center">
+  <h2 className="text-3xl font-extrabold mb-6">Investment Summary</h2>
+
+  <div className="summary-item mb-4">
+    <p className="text-sm font-medium">Selected Plan</p>
+    <p id="selectedPlan" className="text-xl font-semibold">
+      {selectedPlan.heading} - {selectedPlan.interval}
+    </p>
+  </div>
+
+  <div className="summary-item mb-4">
+    <p className="text-sm font-medium">Investment Amount</p>
+    <p id="investmentDisplay" className="text-xl font-semibold">
+      {investment.toFixed(2)} USD
+    </p>
+  </div>
+
+  <div className="summary-item mb-4">
+    <p className="text-sm font-medium">Daily Profit</p>
+    <p id="dailyProfit" className="text-xl font-semibold text-green-600">
+      {dailyProfit.toFixed(2)} USD
+    </p>
+  </div>
+
+  <div className="summary-item">
+    <p className="text-sm font-medium">Total Profit after 30 days</p>
+    <p id="totalProfit" className="text-xl font-semibold text-green-600">
+      {totalProfit.toFixed(2)} USD
+    </p>
+  </div>
+</div>
+
 
       {/* Chart */}
+      <div className='hidden'>
       <canvas id="profitChart" className="w-full"></canvas>
+      </div>
     </div>
   );
 };

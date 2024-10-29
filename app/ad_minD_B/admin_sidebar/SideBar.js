@@ -97,7 +97,7 @@ const SideBar = () => {
                 <Link
                   href={links.href}
                   onClick={() => handleLinkClick(links.href)} // Close on link click
-                  className={`flex items-center ml-4 md:ml-8 gap-2 py-[2px] hover:text-gray-400 text-sm md:text-base focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''}`}
+                  className={`flex items-center ml-4 md:ml-8 gap-4 py-3 hover:text-gray-400 text-base md:text-lg focus:bg-white focus:text-slate-800 px-3 rounded-xl mr-3 transition duration-200 ${activeLink === links.href ? 'bg-gray-700 text-gray-200' : ''}`}
                 >
                   <span className='text-xl'>{links.icons}</span>
                   <span>{links.name}</span>
