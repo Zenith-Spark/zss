@@ -3,7 +3,7 @@ import { adminDBSidebar } from '@assets/app/components/resuables/index'
 import React, { useState } from 'react'
 import { PiGreaterThan } from 'react-icons/pi'
 
-const page = () => {
+const Page = () => {
   const [referrals, setReferrals] = useState([])
   return (
     <div className='pt-16 w-full h-auto '>
@@ -42,4 +42,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page
