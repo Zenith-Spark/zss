@@ -323,7 +323,7 @@ import { GiTakeMyMoney } from "react-icons/gi";
 import { TfiBarChart } from "react-icons/tfi";
 import { FaUserFriends } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
-import {  AiOutlineLogout, AiOutlineTransaction } from "react-icons/ai";
+import { AiOutlineTransaction } from "react-icons/ai";
 import { MdSecurity } from "react-icons/md";
 
 
@@ -340,7 +340,7 @@ export const usrDBSidebar = [
 export const adminDBSidebar = [
   {name: 'Users', href: '/ad_minD_B', icons: <TbLayoutDashboardFilled/>},
   {name: 'Transactions', href: '/ad_minD_B/txn', icons: <AiOutlineTransaction/>},
-  {name: 'Invesment Plan', href: '/ad_minD_B/ivmt_pln', icons: <GiTakeMyMoney/>},
+  {name: 'Invesment History', href: '/ad_minD_B/ivmt_hstr', icons: <GiTakeMyMoney/>},
   {name: 'Referral', href: '/ad_minD_B/ref', icons:  <FaUserFriends/>},
   {name: 'Profile', href: '/ad_minD_B/prof', icons: <FiUser/>},
 ]

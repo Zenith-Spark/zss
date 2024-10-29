@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { PiGreaterThan } from 'react-icons/pi';
-import { usrDBSidebar } from '@assets/app/components/resuables/index';
+import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
 
 // Sample data for investments
@@ -33,11 +33,11 @@ const Investment = () => {
   return (
     <div className="p-4">
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-2 pt-4">
-        <span>{usrDBSidebar[1].icons}</span>
+        <span>{adminDBSidebar[2].icons}</span>
         <span><PiGreaterThan /></span>
-        <span>{usrDBSidebar[1].name}</span>
+        <span>{adminDBSidebar[2].name}</span>
       </p>
-      <h2 className="text-xl font-bold mb-4 text-center">Active Investments</h2>
+      <h2 className="text-xl font-bold mb-4 text-center"> Investment History</h2>
 
       {/* Dropdown for filtering */}
       <div className="w-full flex justify-end pr-15">
@@ -54,7 +54,7 @@ const Investment = () => {
               <th className="py-2 text-end">Network</th>
               <th className="py-2 text-end">Method</th>
               <th className="py-2 text-end">Date/Time</th>
-              <th className="py-2 text-end">Verify/Decline</th>
+              <th className="py-2 text-end">Status</th>
             </tr>
           </thead>
           <tbody>
@@ -71,14 +71,22 @@ const Investment = () => {
                   <td className="py-2">${investment.amount.toFixed(2)}</td>
                   <td className="py-2">${investment.expectedProfit.toFixed(2)}</td>
                   <td className="py-2">{investment.invTime}</td>
-                  <td className="py-2">{investment.returnTime}</td>
+                  <td className="py-2">
+                    <select>
+                      <option className='text-green-600'>verify</option>
+                      <option className='text-yellow-600'>Decline</option>
+                    </select>
+                  </td>
                   <td className="py-2">{investment.returnTime}</td>
                   {/* Apply conditional color based on status */}
-                  <td className={`py-2`}>
-                    <select>
-                      <option className='text-green-600'>Verify</option>
-                      <option className='text-red-600'>Decline</option>
-                    </select>
+                  <td className={`py-2 ${
+                    investment.status === 'successful'
+                      ? 'text-green-500'
+                      : investment.status === 'pending'
+                      ? 'text-yellow-500'
+                      : 'text-red-500'
+                  }`}>
+                    {investment.status.charAt(0).toUpperCase() + investment.status.slice(1)}
                   </td>
                 </tr>
               ))
