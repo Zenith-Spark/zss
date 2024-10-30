@@ -36,12 +36,12 @@ const Notification = () => {
   return (
     <div className='relative' ref={notificationRef}>
       <p
-        className='absolute right-5 top-5 flex items-center text-base md:text-lg font-bold gap-2 cursor-pointer'
+        className='absolute right-5 top-5 flex items-center font-bold gap-2 cursor-pointer'
         onClick={toggleNotification}
       >
-        <span>Notification</span>
-        <span><IoNotifications /></span>
-        <span className='w-2 h-2 rounded-full bg-red-500 absolute top-1 right-0'></span>
+        <span className='text-xs'>Notification</span>
+        <span className='text-base md:text-lg'><IoNotifications /></span>
+        <span className='w-2 h-2 rounded-full bg-red-500 absolute top-0 right-0'></span>
       </p>
       
       <section

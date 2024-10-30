@@ -4,8 +4,11 @@
 import React from 'react';
 import SideBar from './SideBar/SideBar';
 import SmartsuppChat from '../components/resuables/chatbox/SmartsuppChat';
+import { useGlobalState } from '../GlobalStateProvider';
+
 
 const UsrLayout = ({ children }) => {
+  const {formData} = useGlobalState()
   return (
     <div className="dashboard-layout flex">
       <header>
@@ -14,7 +17,7 @@ const UsrLayout = ({ children }) => {
       <main className="w-full md:w-[70%] xl:w-[80%] transition  duration-1000 h-auto pt-10 md:ml-[30%] xl:ml-[20%] md:pl-5 xl:pl-8">
         {children}
         <div>
-          <SmartsuppChat />
+          <SmartsuppChat userName={formData.fullName? formData.fullName : 'Unregistered User'} />
         </div>
       </main>
     </div>
