@@ -20,8 +20,10 @@ export const GlobalStateProvider = ({ children }) => {
     totalBalance: 0,
     referralLink: '',
     notification: [], // Notifications array
+    adminNotificaton: []
   });
   const [error, setError] = useState(null);
+  console.log(formData.totalBalance)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -82,7 +84,7 @@ export const GlobalStateProvider = ({ children }) => {
       });
       
       const notificationsData = response.data; // Assume this is the array of notifications
-      console.log(notificationsData);
+      console.log('notification'+notificationsData);
       setFormData(prevState => ({
         ...prevState,
         notification: notificationsData, // Update notifications in formData
@@ -102,6 +104,7 @@ export const GlobalStateProvider = ({ children }) => {
   useEffect(() => {
     console.log('Updated formData:', formData);
   }, [formData]);
+
 
   return (
     <GlobalStateContext.Provider value={{ formData, setFormData, error }}>

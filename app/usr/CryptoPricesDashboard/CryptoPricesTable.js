@@ -216,7 +216,7 @@ const CryptoPricesTable = ({showTable}) => {
         {/* Display total balance */}
         {!showTable && (
           <div className="mb-4 text-start font-bold px-6">
-            <h2 className="text-lg font-semibold">Total Balance: ${formData.totalBalance.toFixed(2)}</h2>
+            <h2 className="text-lg font-semibold">Total Balance:  ${formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formData.totalBalance.toFixed(2) : "0.00"}</h2>
           </div>
         )}
 
