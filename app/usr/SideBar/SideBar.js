@@ -7,10 +7,11 @@ import Link from 'next/link';
 import { AiOutlineMenu, AiOutlineClose, AiOutlineLogout } from 'react-icons/ai';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { ButtonOne, ButtonTwo, DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
-import { IoNotifications } from 'react-icons/io5';
 import Notification from '../notification/Notification';
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
 
 const SideBar = () => {
+  const {formData}= useGlobalState()
   const [sideSlide, setSideSlide] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [showLogoutModal, setShowLogoutModal] = useState(false); // New state for the logout modal
@@ -85,12 +86,14 @@ const SideBar = () => {
               {usrDBSidebar[6].icons}
             </span>
             <div>
-              <h1 className='font-bold text-lg flex flex-col md:flex-row gap-x-2 '>
+              <h1 className='font-bold text-base flex flex-col md:flex-row gap-x-2 '>
                 <span>
-                  Full Name
+                 {formData.fullName? formData.fullName : 'Full Name'}
                 </span>
               </h1>
-              <p>user email</p>
+              <p className='text-xs w-full'>
+              {formData.email? formData.email : 'Email'}
+              </p>
             </div>
           </div>
 

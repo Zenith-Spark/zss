@@ -37,7 +37,7 @@ export default function ClientLayout({ children }) {
     <>
       {/* Loading screen */}
       {loading && (
-        <div className="fixed z-50 h-screen w-full backdrop-blur-3xl  justify-center flex flex-col items-center overflow-hidden">
+        <div className="fixed z-50 h-screen w-full bg-white  justify-center flex flex-col items-center overflow-hidden">
             <Image src={LoadingSrn} width={100} height={100} alt='Loading Screen' className='border rounded-xl' />
             <span>
               <LoadingScreen/>

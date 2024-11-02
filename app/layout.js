@@ -11,10 +11,6 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        {/* Add favicon here */}
-        <link rel="icon" href="/public/img/loadingscreen.webp" sizes="any" />
-      </head>
       <body className="antialiased">
         <GlobalStateProvider>
           <ThemeProvider>

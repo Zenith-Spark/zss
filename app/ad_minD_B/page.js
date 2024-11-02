@@ -3,13 +3,14 @@ import React, { useState } from 'react';
 import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
+import { Edit } from 'lucide-react';
 
 // Sample data for investments
 const investmentData = [
  
 ];
 
-const Investment = () => {
+const Admin = () => {
   const [filter, setFilter] = useState('all');
 
   // Function to handle filter change
@@ -38,14 +39,8 @@ const Investment = () => {
         <span>{adminDBSidebar[0].name}</span>
       </p>
       <h2 className="text-xl font-bold mb-4 text-center">Users</h2>
+      
 
-      {/* Dropdown for filtering */}
-      <div className="w-full flex flex-col justify-end pr-15 gap-2">
-        <p className='font-bold'>
-          KYC Status
-        </p>
-        <Dropdown buttonText={filter.charAt(0).toUpperCase() + filter.slice(1)} items={dropdownItems} />
-        </div>
       {/* Table with scrollable x-direction on mobile */}
       <div className="overflow-x-auto justify-center items-center mt-6">
         <table className="min-w-full w-[60rem]">
@@ -55,9 +50,10 @@ const Investment = () => {
               <th className="py-2 text-start">Full Name</th>
               <th className="py-2 text-end">Email</th>
               <th className="py-2 text-end">Password</th>
-              <th className="py-2 text-end">Amount Invested</th>
-              <th className="py-2 text-end">KYC Docs</th>
-              <th className="py-2 text-end">Verify KYC</th>
+              <th className="py-2 text-end">Total Balance</th>
+              <th className="py-2 text-end">User IP</th>
+              <th className="py-2 text-end">Date Joined</th>
+              <th className="py-2 text-end">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -78,11 +74,7 @@ const Investment = () => {
                   <td className="py-2">{investment.returnTime}</td>
                   {/* Apply conditional color based on status */}
                   <td className={`py-2`}>
-                      <label htmlFor="statusSelect">Status:</label>
-                    <select id="statusSelect" aria-label="Transaction Status">
-                      <option className='text-green-600'>Verify</option>
-                      <option className='text-red-600'>Decline</option>
-                    </select>
+                     <Edit/>
                   </td>
                 </tr>
               ))
@@ -94,4 +86,4 @@ const Investment = () => {
   );
 };
 
-export default Investment;
+export default Admin;

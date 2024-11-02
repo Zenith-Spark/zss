@@ -1,18 +1,14 @@
-export const Input = ({ Labelvalue, Number, width, value, onChange, Password }) => {
-    const handleChange = (event) => {
-      onChange(event.target.value);
-    };
+export const Input = ({ Labelvalue, Email, width, Password, value, onChange }) => {
   
     return (
       <div className="relative">
         <input
-          type={`${Number ? 'number' : Password ? 'password' : 'text'}`}
+          type={`${Email ? 'email' : Password ? 'password' : 'text'}`}
           id="floating_outlined"
           className={`'block px-2.5 pb-2.5 pt-4 text-sm bg-transparent  border-gray-300 appearance-none text-white dark:focus:border-neutral-300 focus:outline-none focus:ring-0 focus:border-slate-800 peer border-b w-full py-2 transition duration-1000 ${width ? 'w-full' : ''}`}
-          placeholder=" "
+          value={value} // Set the value prop here
+          onChange={onChange} // Set the onChange prop here
           required
-          value={value}
-          onChange={handleChange}
         />
         <label
           htmlFor="floating_outlined"

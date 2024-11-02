@@ -1,14 +1,18 @@
 'use client'
 
+import { DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons'
 import { usrDBSidebar } from '@assets/app/components/resuables/index'
 import { useGlobalState } from '@assets/app/GlobalStateProvider'
+import { Copy } from 'lucide-react'
 import React, { useState } from 'react'
 import { PiGreaterThan } from 'react-icons/pi'
+
 const ReferralPage = () => {
   const [referrals, setReferrals] = useState([]); // Example empty referral list
 
-  // Retrieve formData.referralLink from global state
+  // Retrieve formData from global state
   const { formData } = useGlobalState();
+  console.log('Form Data:', formData); // Log formData to check values
 
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text);
@@ -26,7 +30,7 @@ const ReferralPage = () => {
       {/* Referral Program Info */}
       <section className="mb-8 text-center">
         <h1 className="text-2xl font-bold mb-2">Refer Us & Earn</h1>
-        <p className="">Invite friends and earn 5% from their initial deposit.</p>
+        <p>Invite friends and earn 5% from their initial deposit.</p>
       </section>
 
       {/* Referral Link Section */}
@@ -34,15 +38,12 @@ const ReferralPage = () => {
         <div>
           <h2 className="text-lg font-semibold mb-1">Copy Link</h2>
           <div className="flex items-center space-x-2">
-            <span className=" px-4 py-2 rounded-md">{formData.referralLink ? formData.referralLink : 'You will get a referal link on creation of account'}  </span>
+            <span className="px-4 py-2 rounded-md">
+              {formData.referalCode ? formData.referalCode : 'You will get a referral link on creation of account'}
+            </span>
             {
-              formData.referralLink && (
-            <button
-              className="bg-blue-500 px-4 py-2 rounded-md text-white hover:bg-blue-600"
-              onClick={() => copyToClipboard(formData.referralLink)}
-            >
-              Copy Link
-            </button>
+              formData.referalCode && (
+               <DBButtonOne Clicked={() => copyToClipboard(formData.referalCode)} iconValue={(<Copy/>)}/>
               )
             }
           </div>
