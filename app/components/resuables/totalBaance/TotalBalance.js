@@ -7,40 +7,8 @@ import { PiGreaterThan } from 'react-icons/pi';
 import Link from 'next/link';
 
 const TotalBalance = () => {
-  const { formData, setFormData } = useGlobalState();
-  const [error, setError] = useState('');
-
-  const FetchTotalBalance = async () => {
-    try {
-      const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-
-      if (!authToken) {
-        setError('No authentication token found');
-        return;
-      }
-
-      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/total-balance/', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      
-      const { total_balance } = response.data;
-      
-      setFormData(prevState => ({
-        ...prevState,
-        totalBalance: total_balance,
-      }));
-    } catch (err) {
-      console.error('Error fetching total balance:', err);
-      setError('Could not fetch total balance');
-    }
-  };
-
-  useEffect(() => {
-    FetchTotalBalance();
-  }, []);
-
+  const { formData } = useGlobalState();
+ 
   return (
     <div className=''>
       <p className="flex flex-row gap-2 items-center text-lg font-thin px-10 -translate-y-10">
@@ -70,7 +38,6 @@ const TotalBalance = () => {
           </div>
         </div>
       </div>
-      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 };

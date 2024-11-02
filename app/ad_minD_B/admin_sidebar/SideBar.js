@@ -80,18 +80,18 @@ const SideBar = () => {
           {/* User Info */}
           <div className='h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2 mb-3'>
             <span className='text-3xl border rounded-full p-2 bg-slate-500'>
-              {adminDBSidebar[4].icons}
+              {adminDBSidebar[6].icons}
             </span>
             <div>
               <h1 className='font-bold text-lg flex flex-col md:flex-row gap-x-2 '>
                Welcome. Admin
               </h1>
-              <p>user email</p>
+              {/* <p>Admin email</p> */}
             </div>
           </div>
 
           {/* Sidebar Links */}
-          <div className='flex flex-col gap-y-5 overflow-y-auto'>
+          <div className='flex flex-col gap-y-2 overflow-y-auto'>
             {adminDBSidebar.map((links, index) => (
               <div className='border-gray-700' key={index}>
                 <Link

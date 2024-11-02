@@ -105,6 +105,43 @@ export const GlobalStateProvider = ({ children }) => {
     console.log('Updated formData:', formData);
   }, [formData]);
 
+  const FetchTotalBalance = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+
+      if (!authToken) {
+        setError('No authentication token found');
+        return;
+      }
+
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/total-balance/', {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+      
+      const { total_balance } = response.data;
+      console.log('Total Balance from API:', total_balance);
+      
+      setFormData(prevState => ({
+        ...prevState,
+        totalBalance: total_balance,
+      }));
+    } catch (err) {
+      console.error('Error fetching total balance:', err);
+      setError('Could not fetch total balance');
+    }
+  };
+
+  useEffect(() => {
+    FetchTotalBalance();
+  }, []);
+
+  useEffect(() => {
+    // Log formData.totalBalance after setting to verify it's updated
+    console.log('Updated formData.totalBalance:', formData.totalBalance);
+  }, [formData.totalBalance]);
+
 
   return (
     <GlobalStateContext.Provider value={{ formData, setFormData, error }}>
