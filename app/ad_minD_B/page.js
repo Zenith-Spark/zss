@@ -128,13 +128,13 @@ const Admin = () => {
                   <td className="py-2 text-start flex flex-row gap-x-1 items-center">
                       {passwordVisibility[user.id] ? user.password ? user.password : 'Null' : '********'}
                     <button onClick={() => togglePasswordVisibility(user.id)} >
-                    {passwordVisibility[user.id] ? <Eye size={15}/> : <EyeClosed size={15}/>}
+                      {passwordVisibility[user.id] ? <Eye size={15}/> : <EyeClosed size={15}/> }
                     </button>
                   </td>
                   <td className="py-2 text-start">${user.total_balance.toFixed(2) || 'N/A'}</td>
                   <td className="py-2 text-start">{user.ip_address || 'N/A'}</td>
                   <td className="py-2 text-start">{user.gender || 'N/A'}</td>
-                  <td className="py-2 text-start">{user.referred_by || 'N/A'}</td>
+                  <td className="py-2 text-start">{user.referred_by?.full_name || 'N/A'}</td>
                   <td className="py-2 text-start">{user.date_joined ? new Date(user.date_joined).toLocaleDateString() : 'N/A'}</td>
                   <td className="py-2 text-start">
                     <Edit />

@@ -39,13 +39,13 @@ const AdminLoginPage = () => {
         }
 
         // Optionally store user data in global state
-        setFormData((prevState) => ({
-          ...prevState,
-          userId: response.data.user.id, // Assuming the response has user ID
-          fullName: response.data.user.full_name, // Assuming the response has user full name
-          email: email,
-          token: token, // Store token in global state for easy access
-        }));
+        // setFormData((prevState) => ({
+        //   ...prevState,
+        //   userId: response.data.user.id, // Assuming the response has user ID
+        //   fullName: response.data.user.full_name, // Assuming the response has user full name
+        //   email: email,
+        //   token: token, // Store token in global state for easy access
+        // }));
 
         setSuccess('Welcome Back');
 

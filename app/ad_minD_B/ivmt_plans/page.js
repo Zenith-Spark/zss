@@ -6,13 +6,15 @@ import { adminDBSidebar } from '@assets/app/components/resuables/index';
 
 const Plans = () => {
   const [plans, setPlans] = useState([]); // State to hold existing plans
+  const [formType, setFormType] = useState('create'); // Track whether we are creating or editing
+  const [selectedPlan, setSelectedPlan] = useState(null); // State for the plan being edited
   const [newPlan, setNewPlan] = useState({ // State to hold new plan input
     name: '',
     profit_percentage: '',
     duration_days: '',
     minimum_amount: '',
     maximum_amount: '',
-    is_active: true
+    is_active: true,
   });
   const [error, setError] = useState(null); // State for error messages
 
@@ -26,7 +28,7 @@ const Plans = () => {
       }
 
       try {
-        const response = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/get-plans/', {
+        const response = await axios.get('https://zss.pythonanywhere.com/api/v1/get-plans/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -50,40 +52,66 @@ const Plans = () => {
     }));
   };
 
-  // Function to handle form submission for creating a new plan
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
-
+  
     if (!token) {
       setError('No authentication token found');
       return;
     }
-
+  
     try {
-      const response = await axios.post('https://zss.pythonanywhere.com/api/v1/admin/create-plans/', newPlan, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // Optionally, you can reset the form and refetch plans
-      setNewPlan({
-        name: '',
-        profit_percentage: '',
-        duration_days: '',
-        minimum_amount: '',
-        maximum_amount: '',
-        is_active: true
-      });
-      setPlans((prev) => [...prev, response.data]); // Add the new plan to the list
+      console.log('Submitting plan:', newPlan); // Debugging: Log the new plan data
+  
+      if (formType === 'create') {
+        const response = await axios.post('https://zss.pythonanywhere.com/api/v1/admin/create-plans/', newPlan, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setNewPlan({
+          name: '',
+          profit_percentage: '',
+          duration_days: '',
+          minimum_amount: '',
+          maximum_amount: '',
+          is_active: true,
+        });
+        setPlans((prev) => [...prev, response.data]); // Update plans with new plan
+      } else if (formType === 'edit' && selectedPlan) {
+        console.log('Editing plan with ID:', selectedPlan.id); // Log the ID being used
+        const response = await axios.put(`https://zss.pythonanywhere.com/api/v1/admin/update-investments/${selectedPlan.id}/`, newPlan, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setPlans((prev) => prev.map(plan => (plan.id === selectedPlan.id ? response.data : plan)));
+        setFormType('create');
+        setSelectedPlan(null);
+        setNewPlan({ name: '', profit_percentage: '', duration_days: '', minimum_amount: '', maximum_amount: '', is_active: true });
+      }
     } catch (error) {
-      console.error('Error creating plan:', error);
-      setError('Failed to create plan: ' + (error.response?.data?.message || error.message));
+      console.error('Error saving plan:', error);
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        setError('Failed to save plan: ' + (error.response.data.error || error.message));
+      } else {
+        setError('Failed to save plan: ' + error.message);
+      }
     }
+  };
+  
+  
+  // Function to prepare for editing a plan
+  const handleEdit = (plan) => {
+    setFormType('edit');
+    setSelectedPlan(plan);
+    setNewPlan(plan); // Pre-fill form with plan details
   };
 
   return (
-    <div className='pt-16 w-full h-auto'>
+    <div className='py-16 w-full h-auto'>
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
         <span>{adminDBSidebar[3].icons}</span>
         <span><PiGreaterThan /></span>
@@ -93,114 +121,107 @@ const Plans = () => {
       <h2 className="text-2xl font-bold text-center mb-4">Manage Plans</h2>
       {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 
-      <section className="shadow-md p-6 rounded-lg mb-6">
-        <h3 className="text-xl font-semibold mb-4">Create New Plan</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="name">Name</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={newPlan.name}
-              onChange={handleChange}
-              required
-              className="border p-2 w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="profit_percentage">Profit Percentage</label>
-            <input
-              type="text"
-              name="profit_percentage"
-              id="profit_percentage"
-              value={newPlan.profit_percentage}
-              onChange={handleChange}
-              required
-              className="border p-2 w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="duration_days">Duration (Days)</label>
-            <input
-              type="number"
-              name="duration_days"
-              id="duration_days"
-              value={newPlan.duration_days}
-              onChange={handleChange}
-              required
-              className="border p-2 w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="minimum_amount">Minimum Amount</label>
-            <input
-              type="text"
-              name="minimum_amount"
-              id="minimum_amount"
-              value={newPlan.minimum_amount}
-              onChange={handleChange}
-              required
-              className="border p-2 w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700" htmlFor="maximum_amount">Maximum Amount</label>
-            <input
-              type="text"
-              name="maximum_amount"
-              id="maximum_amount"
-              value={newPlan.maximum_amount}
-              onChange={handleChange}
-              required
-              className="border p-2 w-full"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="inline-flex items-center">
-              <input
-                type="checkbox"
-                name="is_active"
-                checked={newPlan.is_active}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              <span>Is Active</span>
-            </label>
-          </div>
-          <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Create Plan</button>
-        </form>
-      </section>
+      <section className="shadow-md p-6 mb-6 max-w-md mx-auto rounded-lg"> {/* Adjusted width */}
+  <h3 className="text-xl font-semibold mb-4">{formType === 'create' ? 'Create New Plan' : 'Edit Plan'}</h3>
+  <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="mb-4">
+      <label className="block" htmlFor="name">Name</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        value={newPlan.name}
+        onChange={handleChange}
+        required
+        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none  transition duration-200 ease-in-out" // Added max width and transition
+      />
+    </div>
+    <div className="mb-4">
+      <label className="block" htmlFor="profit_percentage">Profit Percentage</label>
+      <input
+        type="text"
+        name="profit_percentage"
+        id="profit_percentage"
+        value={newPlan.profit_percentage}
+        onChange={handleChange}
+        required
+        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+      />
+    </div>
+    <div className="mb-4">
+      <label className="block" htmlFor="duration_days">Duration (Days)</label>
+      <input
+        type="number"
+        name="duration_days"
+        id="duration_days"
+        value={newPlan.duration_days}
+        onChange={handleChange}
+        required
+        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+      />
+    </div>
+    <div className="mb-4">
+      <label className="block" htmlFor="minimum_amount">Minimum Amount</label>
+      <input
+        type="text"
+        name="minimum_amount"
+        id="minimum_amount"
+        value={newPlan.minimum_amount}
+        onChange={handleChange}
+        required
+        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+      />
+    </div>
+    <div className="mb-4">
+      <label className="block" htmlFor="maximum_amount">Maximum Amount</label>
+      <input
+        type="text"
+        name="maximum_amount"
+        id="maximum_amount"
+        value={newPlan.maximum_amount}
+        onChange={handleChange}
+        required
+        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+      />
+    </div>
+    <div className="mb-4">
+      <label className="inline-flex items-center">
+        <input
+          type="checkbox"
+          name="is_active"
+          checked={newPlan.is_active}
+          onChange={handleChange}
+          className="mr-2"
+        />
+        <span>Is Active</span>
+      </label>
+    </div>
+    <button type="submit" className="bg-blue-500 rounded-lg text-white px-6 py-3 hover:bg-blue-600 transition duration-200">{formType === 'create' ? 'Create Plan' : 'Update Plan'}</button>
+  </form>
+</section>
 
-      <section className="shadow-md p-6 rounded-lg">
-        <h3 className="text-xl font-semibold mb-4">Existing Plans</h3>
+
+        <h3 className="text-xl font-semibold mb-4 w-full">Existing Plans</h3>
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {plans.length === 0 ? (
-          <p className="text-gray-500">No plans available.</p>
+          <p className="">No plans available.</p>
         ) : (
-          <table className="min-w-full table-auto border-collapse">
-            <thead>
-              <tr>
-                <th className="px-4 py-2 border">Name</th>
-                <th className="px-4 py-2 border">Profit %</th>
-                <th className="px-4 py-2 border">Duration (Days)</th>
-                <th className="px-4 py-2 border">Min Amount</th>
-                <th className="px-4 py-2 border">Max Amount</th>
-                <th className="px-4 py-2 border">Active</th>
-              </tr>
-            </thead>
-            <tbody>
-              {plans.map((plan) => (
-                <tr key={plan.id}>
-                  <td className="px-4 py-2 border">{plan.name}</td>
-                  <td className="px-4 py-2 border">{plan.profit_percentage}</td>
-                  <td className="px-4 py-2 border">{plan.duration_days}</td>
-                  <td className="px-4 py-2 border">{plan.minimum_amount}</td>
-                  <td className="px-4 py-2 border">{plan.maximum_amount}</td>
-                  <td className="px-4 py-2 border">{plan.is_active ? 'Yes' : 'No'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          plans.map((plan) => (
+            <div key={plan.id} className=" shadow-md p-6 rounded-lg">
+              <h4 className="text-lg font-bold">{plan.name}</h4>
+              <p><strong>Profit %:</strong> {plan.profit_percentage}</p>
+              <p><strong>Duration:</strong> {plan.duration_days} days</p>
+              <p><strong>Min Amount:</strong> {plan.minimum_amount}</p>
+              <p><strong>Max Amount:</strong> {plan.maximum_amount}</p>
+              <p><strong>Status:</strong> {plan.is_active ? 'Active' : 'Inactive'}</p>
+              <button
+                onClick={() => handleEdit(plan)}
+                className="mt-4 bg-blue-500 px-4 py-2 hover:bg-blue-600 transition duration-200 rounded-lg text-white"
+              >
+                Edit
+              </button>
+            </div>
+          ))
         )}
       </section>
     </div>
