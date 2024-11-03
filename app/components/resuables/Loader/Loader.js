@@ -49,7 +49,6 @@ const heightAnimation = keyframes`
   }
 `;
 
-// Styled Loader Components
 const LoaderStyle1 = styled.div`
   height: 100px;
   width: 20%;
@@ -57,40 +56,32 @@ const LoaderStyle1 = styled.div`
   text-align: center;
   margin: 0 auto 2em;
 
-  svg path {
-    fill: #000;
-  }
-
-  svg path:nth-child(2) {
-    animation: ${rotate} 0.5s infinite;
+  svg {
+    width: 40px;
+    height: 40px;
+    path {
+      fill: #ff6700;
+    }
+    path:nth-child(2) {
+      animation: ${rotate} 0.5s infinite;
+      transform-origin: center; /* Ensure it rotates around its center */
+    }
   }
 `;
 
-const LoaderStyle2 = styled.div`
-  height: 100px;
-  width: 20%;
-  display: inline-block;
-  text-align: center;
-  margin: 0 auto 2em;
-
+// Repeat the same for LoaderStyle2 and LoaderStyle3
+const LoaderStyle2 = styled(LoaderStyle1)`
   svg path {
-    fill: #000;
     animation: ${rotate} 0.6s infinite;
   }
 `;
 
-const LoaderStyle3 = styled.div`
-  height: 100px;
-  width: 20%;
-  display: inline-block;
-  text-align: center;
-  margin: 0 auto 2em;
-
+const LoaderStyle3 = styled(LoaderStyle1)`
   svg path {
-    fill: #000;
     animation: ${rotate} 0.6s infinite;
   }
 `;
+
 
 // Styled Loader Components
 const LoaderStyle4 = styled.div`
@@ -100,7 +91,7 @@ const LoaderStyle4 = styled.div`
   text-align: center;
 
   svg rect {
-    fill: #333;
+    fill: #ff6700;
   }
 `;
 
@@ -111,7 +102,7 @@ const LoaderStyle5 = styled.div`
   text-align: center;
 
   svg rect {
-    fill: #333;
+    fill: #ff6700;
   }
 `;
 
@@ -122,7 +113,7 @@ const LoaderStyle6 = styled.div`
   text-align: center;
 
   svg rect {
-    fill: #333;
+    fill: #ff6700;
     animation: ${heightAnimation} 0.6s infinite;
   }
 `;
@@ -134,7 +125,7 @@ const LoaderStyle7 = styled.div`
   text-align: center;
 
   svg rect {
-    fill: #333;
+    fill: #ff6700;
     animation: ${fadeOpacity} 0.6s infinite;
   }
 `;
@@ -146,17 +137,54 @@ const LoaderStyle8 = styled.div`
   text-align: center;
 
   svg rect {
-    fill: #333;
+    fill: #ff6700;
     opacity: 0.2;
   }
 `;
 
 
 
-// More loader styles would follow similarly...
+// @assets/app/components/Loader.js
+import { FaSpinner } from 'react-icons/fa';
+
+// Animation for the spinner
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+// Styled Loader Container
+const LoaderContainer = styled.div`
+  margin: 0 auto 2em;
+  height: 100px;
+  width: 20%;
+  display: inline-block;
+  vertical-align: top;
+  text-align: center;
+`;
+
+// Styled Spinner Icon
+const Spinner = styled(FaSpinner)`
+  animation: ${spin} 0.6s linear infinite;
+  color: #ff6700; /* Change this to your desired color */
+  font-size: 40px; /* Size of the spinner */
+`;
+
+export const Loader = () => {
+  return (
+    <LoaderContainer>
+      <Spinner />
+    </LoaderContainer>
+  );
+};
+
 
 // Loader Components
-export const Loader = () => (
+export const LoaderOne = () => (
   <LoaderStyle1>
     <svg width="40px" height="40px" viewBox="0 0 40 40">
       <path opacity="0.2" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946 s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634 c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z" />
@@ -222,21 +250,22 @@ export const LoaderStyle6Component = () => (
   <LoaderStyle6>
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       width="24px" height="30px" viewBox="0 0 24 30" style={{ enableBackground: 'new 0 0 50 50' }} xmlSpace="preserve">
-      <rect x="0" y="13" width="4" height="5">
-        <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0s" dur="0.6s" repeatCount="indefinite" />
-        <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0s" dur="0.6s" repeatCount="indefinite" />
+      <rect x="0" y="10" width="4" height="10">
+        <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
+        <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0s" dur="0.6s" repeatCount="indefinite" />
       </rect>
-      <rect x="10" y="13" width="4" height="5">
-        <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
-        <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+      <rect x="8" y="10" width="4" height="10">
+        <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
+        <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.15s" dur="0.6s" repeatCount="indefinite" />
       </rect>
-      <rect x="20" y="13" width="4" height="5">
-        <animate attributeName="height" attributeType="XML" values="5;21;5" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
-        <animate attributeName="y" attributeType="XML" values="13; 5; 13" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+      <rect  x="16" y="10" width="4" height="10">
+        <animate attributeName="height" attributeType="XML" values="10; 20; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
+        <animate attributeName="y" attributeType="XML" values="10; 5; 10" begin="0.3s" dur="0.6s" repeatCount="indefinite" />
       </rect>
     </svg>
   </LoaderStyle6>
 );
+
 
 // Loader Style 7
 export const LoaderStyle7Component = () => (
@@ -244,17 +273,18 @@ export const LoaderStyle7Component = () => (
     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
       width="24px" height="30px" viewBox="0 0 24 30" style={{ enableBackground: 'new 0 0 50 50' }} xmlSpace="preserve">
       <rect x="0" y="0" width="4" height="20">
-        <animate attributeName="opacity" attributeType="XML" values="1; .2; 1" begin="0s" dur="0.6s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1; 0.2; 1" dur="0.6s" repeatCount="indefinite" />
       </rect>
       <rect x="7" y="0" width="4" height="20">
-        <animate attributeName="opacity" attributeType="XML" values="1; .2; 1" begin="0.2s" dur="0.6s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1; 0.2; 1" dur="0.6s" repeatCount="indefinite" begin="0.2s" />
       </rect>
       <rect x="14" y="0" width="4" height="20">
-        <animate attributeName="opacity" attributeType="XML" values="1; .2; 1" begin="0.4s" dur="0.6s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1; 0.2; 1" dur="0.6s" repeatCount="indefinite" begin="0.4s" />
       </rect>
     </svg>
   </LoaderStyle7>
 );
+
 
 // Loader Style 8
 export const LoaderStyle8Component = () => (
@@ -348,47 +378,5 @@ export const LoaderStyle8Component = () => (
 
 
 
-// // @assets/app/components/Loader.js
-// 'use client';
-// import React from 'react';
-// import styled, { keyframes } from 'styled-components';
-// import { FaSpinner } from 'react-icons/fa';
-
-// // Animation for the spinner
-// const spin = keyframes`
-//   from {
-//     transform: rotate(0deg);
-//   }
-//   to {
-//     transform: rotate(360deg);
-//   }
-// `;
-
-// // Styled Loader Container
-// const LoaderContainer = styled.div`
-//   margin: 0 auto 2em;
-//   height: 100px;
-//   width: 20%;
-//   display: inline-block;
-//   vertical-align: top;
-//   text-align: center;
-// `;
-
-// // Styled Spinner Icon
-// const Spinner = styled(FaSpinner)`
-//   animation: ${spin} 0.6s linear infinite;
-//   color: #ff6700; /* Change this to your desired color */
-//   font-size: 40px; /* Size of the spinner */
-// `;
-
-// const Loader = () => {
-//   return (
-//     <LoaderContainer>
-//       <Spinner />
-//     </LoaderContainer>
-//   );
-// };
-
-// export default Loader;
 
 

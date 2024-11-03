@@ -75,7 +75,8 @@ const SecuritySettings = () => {
           },
         }
       );
-
+      console.log('change password'+response.data);
+      
       if (response.status === 200) {
         setSuccessMessage('KYC document uploaded successfully!');
         setKycFile(null); // Reset file input after successful upload

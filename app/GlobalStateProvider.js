@@ -20,7 +20,7 @@ export const GlobalStateProvider = ({ children }) => {
       bitcoin: 1,
       ethereum: 1,
       tether: 1,
-      shiba: 1,
+      'shiba-inu': 1,
     },
     totalBalance: 0,
     referralLink: '',

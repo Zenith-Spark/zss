@@ -6,6 +6,7 @@ import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import { X } from 'lucide-react';
 import Txn from '../transaction/Txn';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
+import { LoaderStyle6Component } from '@assets/app/components/resuables/Loader/Loader';
 
 
 const CryptoPricesTable = ({showTable}) => {
@@ -252,7 +253,7 @@ const CryptoPricesTable = ({showTable}) => {
         <div className="overflow-hidden">
           {loading ? (
             <div className="text-center translate-x-3 md:translate-x-16">
-              <Loader />
+              <LoaderStyle6Component />
             </div>
           ) : error ? (
             <div className="text-center text-red-500">

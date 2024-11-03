@@ -1,4 +1,3 @@
-// /pages/usr/invest/page.js
 'use client';
 import { Plans, usrDBSidebar } from '@assets/app/components/resuables/index';
 import Link from 'next/link';
@@ -7,6 +6,7 @@ import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { AiOutlineClose } from 'react-icons/ai'; // Import the close icon
 import { PiGreaterThan } from 'react-icons/pi';
+import axios from 'axios'; // Import axios
 
 const Page = () => {
   const { formData } = useGlobalState();
@@ -34,27 +34,61 @@ const Page = () => {
     setInvestmentAmount(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const coinValue = formData.userWallet[selectedCoin];
     const equivalentValue = investmentAmount / coinValue;
-
+  
     // Check if the investment is valid
     if (investmentAmount > 0 && investmentAmount <= coinValue) {
-      alert(`You are investing $${investmentAmount} in ${selectedCoin} with the ${selectedPlan.title}.`);
-      closeModal(); // Close modal after submission
+      // Retrieve token from local or session storage
+      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+      if (!token) {
+        alert('No token found. Please log in.');
+        return; // Exit if no token is found
+      }
+  
+      try {
+        // Prepare the investment data
+        const investmentData = {
+          investment_plan_name: selectedPlan.title,
+          amount: investmentAmount,
+          network_name: selectedCoin.charAt(0).toUpperCase() + selectedCoin.slice(1).toLowerCase(),
+        };
+  
+        console.log('Investment Data:', investmentData); // Log the data being sent
+  
+        // Make the POST request
+        const response = await axios.post('https://zss.pythonanywhere.com/api/v1/investments/', investmentData, {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`, // Include the token in the header
+          },
+        });
+  
+        console.log('Investment response:', response.data); // Log the response data
+  
+        // Handle the response as needed
+        alert(`You have successfully invested $${investmentAmount} in ${investmentData.network_name} with the ${selectedPlan.title}.`);
+        closeModal(); // Close modal after submission
+  
+      } catch (error) {
+        console.error('Investment failed:', error);
+        alert('There was an error processing your investment. Please try again.');
+      }
     } else {
       alert('Insufficient value of the selected coin for this investment.');
     }
   };
+  
 
   return (
     <>
-      <p className="flex flex-row gap-2 items-center text-lg  font-thin px-6 mb-14 translate-y-7">
-              <span>{usrDBSidebar[3].icons}</span>
-              <span><PiGreaterThan /></span>
-              <span>{usrDBSidebar[3].name}</span>
-            </p>
+      <p className="flex flex-row gap-2 items-center text-lg font-thin px-6 mb-14 translate-y-7">
+        <span>{usrDBSidebar[3].icons}</span>
+        <span><PiGreaterThan /></span>
+        <span>{usrDBSidebar[3].name}</span>
+      </p>
       <div className="flex justify-center flex-col py-8">
         <div className="flex flex-wrap justify-center gap-x-5 gap-y-8">
           {Plans.map((plan, index) => (
