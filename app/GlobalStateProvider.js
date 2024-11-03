@@ -16,7 +16,12 @@ export const GlobalStateProvider = ({ children }) => {
     lastLoginIP: '',
     referalCode: '',
     referredBy: '',
-    userWallet: {},
+    userWallet: {
+      bitcoin: 1,
+      ethereum: 1,
+      tether: 1,
+      shiba: 1,
+    },
     totalBalance: 0,
     referralLink: '',
     notification: [], // Notifications array

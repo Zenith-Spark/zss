@@ -17,7 +17,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-slate-900 text-white py-10">
+    <footer className="bg-slate-900 text-white py-10 w-full">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-start px-5 lg:px-20 space-y-8 md:space-y-0">
         
         {/* Company Information Section */}

@@ -2,11 +2,11 @@
 import React, { useEffect, useState } from 'react';
 import useCryptoPrices from '@assets/app/components/resuables/CryptoPrices/CryptoPrices';
 import { ButtonOne, DBButtonOne, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
-import Loader from '@assets/app/components/resuables/Loader/Loader';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import { X } from 'lucide-react';
 import Txn from '../transaction/Txn';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
+
 
 const CryptoPricesTable = ({showTable}) => {
   const { formData, setFormData } = useGlobalState();
