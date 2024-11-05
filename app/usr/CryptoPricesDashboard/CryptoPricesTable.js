@@ -7,11 +7,14 @@ import { X } from 'lucide-react';
 import Txn from '../transaction/Txn';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { LoaderStyle6Component } from '@assets/app/components/resuables/Loader/Loader';
+import axios from 'axios';
+
 
 
 const CryptoPricesTable = ({showTable}) => {
   const { formData, setFormData } = useGlobalState();
   const userWallet = formData.userWallet;
+  
 
   const [currency, setCurrency] = useState('usd');
   const [page, setPage] = useState(1);
@@ -20,6 +23,15 @@ const CryptoPricesTable = ({showTable}) => {
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdrawal, setShowWithdrawal] = useState(false);
   const { coinsData, loading, error, refetch } = useCryptoPrices(currency, page);
+  const [depositAmount, setDepositAmount] = useState('')
+  const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+  const [withdrawal, setWithdrawal] = useState('')
+  const [userWalletAdd, setUserWalletAdd] = useState('')
+  const [txnloading, settxnLoading] = useState('')
+  const [Txnerror, settxnerror] = useState('')
+  const [depositHistory, setDepositHistory] = useState([]);
+  const [withdrawalHistory, setWithdrawalHistory] = useState([]);
+
 
   const pageLimit = 10; // Display 10 coins per page
 
@@ -119,8 +131,8 @@ const CryptoPricesTable = ({showTable}) => {
 
   // Function to copy wallet address based on selected coin
   const copyWalletAddress = () => {
+  const walletAddress = walletAddresses[selectedCoin.id.toLowerCase()];
     if (selectedCoin) {
-      const walletAddress = walletAddresses[selectedCoin.id.toLowerCase()];
       if (walletAddress) {
         navigator.clipboard.writeText(walletAddress)
           .then(() => {
@@ -137,6 +149,133 @@ const CryptoPricesTable = ({showTable}) => {
     }
   };
 
+  
+const handleSubmitDeposit = async (e) => {
+  e.preventDefault();
+  
+  if (!selectedCoin || !depositAmount) {
+    alert('Please select a coin and enter an amount.');
+    return;
+  }
+
+  try {
+    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/deposits/${selectedCoin.name}/`, 
+      {
+        amount_usd: depositAmount,
+      }, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 || response.status === 201) {
+      alert('Deposit successful');
+      setDepositAmount(''); // Reset the deposit amount
+      setShowDeposit(false); // Close the modal
+  fetchTransactions()
+    } else {
+      alert('Deposit failed');
+    }
+  } catch (err) {
+    console.error('Error during deposit:', err);
+    setDepositAmount(''); // Reset the deposit amount
+    alert('An error occurred while processing your deposit. Please try again.');
+  }
+};
+
+const handleSubmitwithdrawal = async (e) => {
+  e.preventDefault();
+  
+  if (!selectedCoin || !withdrawal) {
+    alert('Please select a coin and enter an amount.');
+    return;
+  }
+
+  // Calculate the total value of the selected coin owned by the user
+  const userCoinAmount = userWallet[selectedCoin.id] || 0;
+  const userTotalValue = userCoinAmount * selectedCoin.currentPrice;
+
+  // Check if the withdrawal amount exceeds the total value of the owned coins
+  if (parseFloat(withdrawal) > userTotalValue) {
+    alert(`Insufficient funds. You can withdraw up to $${userTotalValue.toFixed(2)} for ${selectedCoin.name}.`);
+    setWithdrawal(''); 
+    setUserWalletAdd('');
+    return;
+  }
+
+  try {
+    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/withdrawals/${selectedCoin.name}/`, 
+      {
+        amount_usd: withdrawal,
+        wallet_address: userWalletAdd
+      }, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.status === 200 || response.status === 201) {
+      alert('Withdrawal successful');
+      setWithdrawal(''); 
+      setUserWalletAdd('');
+      setShowWithdrawal(false); // Close the modal
+  fetchTransactions()
+    } else {
+      alert('Withdrawal failed');
+    }
+  } catch (err) {
+    console.error('Error during withdrawal:', err);
+    setWithdrawal(''); 
+    setUserWalletAdd('');
+    alert('An error occurred while processing your withdrawal. Please try again.');
+  }
+};
+
+const fetchTransactions = async () => {
+  try {
+    // Fetch deposits
+    const depositResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/deposits/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Fetch withdrawals
+    const withdrawalResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/withdrawals/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Set the states for deposits and withdrawals
+    setDepositHistory(depositResponse.data.map(deposit => ({
+      id: deposit.transaction_id,
+      amount: deposit.amount_usd, // Assuming you want to show the USD amount
+      status: deposit.status,
+      date: deposit.created_at,
+    })));
+
+    setWithdrawalHistory(withdrawalResponse.data.map(withdrawal => ({
+      id: withdrawal.transaction_id,
+      amount: withdrawal.amount_usd, // Assuming you want to show the USD amount
+      status: withdrawal.status,
+      date: withdrawal.created_at,
+    })));
+  } catch (err) {
+    settxnerror(err);
+    console.error('Error fetching transactions:', err);
+  } finally {
+    settxnLoading(false);
+  }
+};
+useEffect(() => {
+  fetchTransactions();
+}, [token]);
+ 
   return (
     <>
       <div className="container mx-auto pb-5 pt-5">
@@ -168,7 +307,11 @@ const CryptoPricesTable = ({showTable}) => {
                   <DBButtonTwo buttonValue={'Withdraw'} Clicked={handleShowWithdrawal} />
                 </div>
               </div>
-              <Txn />
+              {
+                txnloading ? 'Loading' : Txnerror ? `error fetching data` : (
+                  <Txn depositHistory={depositHistory} withdrawalHistory={withdrawalHistory} />
+                )
+              }
             </div>
           </div>
         )}
@@ -178,13 +321,18 @@ const CryptoPricesTable = ({showTable}) => {
             onClose={() => setShowDeposit(false)}
             title={`Deposit ${selectedCoin.id}`}
           >
-            <div className="text-slate-800 p-5 flex flex-col gap-y-5">
+            <form className="text-slate-800 p-5 flex flex-col gap-y-5" onSubmit={handleSubmitDeposit}>
             <ButtonOne buttonValue={`Copy ${selectedCoin.id} Wallet Address`} Clicked={copyWalletAddress} />
-            <input placeholder='Amount' className='border-b border-slate-800 outline-none p-2 '/>
+            <input 
+            placeholder='Amount (USD)' 
+            className='border-b border-slate-800 outline-none p-2 '
+            value={depositAmount}
+            onChange={(e) => setDepositAmount(e.target.value)}
+            />
             <span className='w-1/2'>
             <DBButtonOne buttonValue={'Proceed'}/>
             </span>
-            </div>
+            </form >
           </Modal>
         )}
         {showWithdrawal && (
@@ -193,25 +341,30 @@ const CryptoPricesTable = ({showTable}) => {
             onClose={() => setShowWithdrawal(false)}
             title={`Withdraw ${selectedCoin.name} to wallet`}
           >
-            <div className="text-slate-800 p-5">
+            <form className="text-slate-800 p-5" onSubmit={handleSubmitwithdrawal}>
             <div className="text-slate-800 p-5 flex flex-col gap-y-5">
               <span className='flex flex-col'>
               <label htmlFor='withdraw_amount' className='font-bold'>
                 Input Amount {'(USD):'}
               </label>
-            <input placeholder='Amount' className='border-b border-slate-800 outline-none p-2' id='withdraw_amount'/>
+            <input placeholder='Amount' className='border-b border-slate-800 outline-none p-2' id='withdraw_amount' 
+             value={withdrawal}
+            onChange={(e) => setWithdrawal(e.target.value)}/>
               </span>
               <span className='flex flex-col'>
               <label htmlFor='wallet_address' className='font-bold'>
               Wallet Address:
               </label>
-            <input placeholder='Wallet Address' className='border-b border-slate-800 outline-none p-2' id='wallet_address'/>
+            <input placeholder='Wallet Address' className='border-b border-slate-800 outline-none p-2' id='wallet_address' 
+             value={userWalletAdd}
+             onChange={(e) => setUserWalletAdd(e.target.value)}
+            />
               </span>
             <span className='w-1/2'>
             <DBButtonOne buttonValue={'Proceed'}/>
             </span>
             </div>
-            </div>
+            </form>
           </Modal>
         )}
         {/* Display total balance */}

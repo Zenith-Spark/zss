@@ -30,6 +30,7 @@ export const ButtonTwo = ({ buttonValue, iconValue, IconButton, Clicked }) => (
 );
 export const DBButtonOne = ({ buttonValue, iconValue, IconButton, Clicked }) => (
   <button
+  type='submit'
     onClick={Clicked}
     className={`flex items-center justify-center text-sm transition-all duration-300 cursor-pointer shadow-md active:translate-y-1 ${
       IconButton

@@ -91,9 +91,9 @@ const SideBar = () => {
                  {formData.fullName? formData.fullName : 'Full Name'}
                 </span>
               </h1>
-              <p className='text-xs w-full'>
+              <marquee className='text-xs w-full'>
               {formData.email? formData.email : 'Email'}
-              </p>
+              </marquee>
             </div>
           </div>
 

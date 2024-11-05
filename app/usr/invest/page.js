@@ -52,7 +52,7 @@ const Page = () => {
         // Prepare the investment data
         const investmentData = {
           investment_plan_name: selectedPlan.title,
-          amount: investmentAmount,
+          amount_usd: investmentAmount,
           network_name: selectedCoin.charAt(0).toUpperCase() + selectedCoin.slice(1).toLowerCase(),
         };
   

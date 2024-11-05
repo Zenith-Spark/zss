@@ -17,10 +17,10 @@ export const GlobalStateProvider = ({ children }) => {
     referalCode: '',
     referredBy: '',
     userWallet: {
-      bitcoin: 1,
-      ethereum: 1,
-      tether: 1,
-      'shiba-inu': 1,
+      bitcoin: 0,
+      ethereum: 0,
+      tether: 0,
+      'shiba-inu': 0,
     },
     totalBalance: 0,
     referralLink: '',
@@ -28,7 +28,7 @@ export const GlobalStateProvider = ({ children }) => {
     adminNotificaton: []
   });
   const [error, setError] = useState(null);
-  console.log(formData.totalBalance)
+  console.log(formData.totalBalance);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,7 +89,7 @@ export const GlobalStateProvider = ({ children }) => {
       });
       
       const notificationsData = response.data; // Assume this is the array of notifications
-      console.log('notification'+notificationsData);
+      console.log('notification', notificationsData);
       setFormData(prevState => ({
         ...prevState,
         notification: notificationsData, // Update notifications in formData
@@ -110,6 +110,7 @@ export const GlobalStateProvider = ({ children }) => {
     console.log('Updated formData:', formData);
   }, [formData]);
 
+  // Function to fetch total balance and network balances
   const FetchTotalBalance = async () => {
     try {
       const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
@@ -119,18 +120,25 @@ export const GlobalStateProvider = ({ children }) => {
         return;
       }
 
-      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/total-balance/', {
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/network-balances/', {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
       
-      const { total_balance } = response.data;
+      const { total_balance, network_balances } = response.data;
       console.log('Total Balance from API:', total_balance);
       
+      // Update formData with the total balance and network balances
       setFormData(prevState => ({
         ...prevState,
         totalBalance: total_balance,
+        userWallet: {
+          bitcoin: network_balances.Bitcoin.balance,
+          ethereum: network_balances.Ethereum.balance,
+          tether: network_balances.Tether.balance,
+          'shiba-inu': network_balances['Shiba Inu'].balance,
+        },
       }));
     } catch (err) {
       console.error('Error fetching total balance:', err);
@@ -146,7 +154,6 @@ export const GlobalStateProvider = ({ children }) => {
     // Log formData.totalBalance after setting to verify it's updated
     console.log('Updated formData.totalBalance:', formData.totalBalance);
   }, [formData.totalBalance]);
-
 
   return (
     <GlobalStateContext.Provider value={{ formData, setFormData, error }}>
