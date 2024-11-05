@@ -9,6 +9,7 @@ import { PiGreaterThan } from 'react-icons/pi'
 
 const ReferralPage = () => {
   const [referrals, setReferrals] = useState([]); // Example empty referral list
+  const [reffCode, setReffCode] = useState('')
 
   // Retrieve formData from global state
   const { formData } = useGlobalState();
@@ -28,14 +29,11 @@ const ReferralPage = () => {
       </p>
 
       {/* Referral Program Info */}
-      <section className="mb-8 text-center">
-        <h1 className="text-2xl font-bold mb-2">Refer Us & Earn</h1>
-        <p>Invite friends and earn 5% from their initial deposit.</p>
-      </section>
+        <h1 className="text-2xl font-bold mb-2 text-center">Refer Us & Earn</h1>
 
       {/* Referral Link Section */}
-      <section className="shadow-md p-6 rounded-lg mb-8">
-        <div>
+      <section className="shadow-md p-6 rounded-lg mb-8 w-full flex flex-col md:flex-row">
+        <div className='w-full md:w-1/2'>
           <h2 className="text-lg font-semibold mb-1">Copy Link</h2>
           <div className="flex items-center space-x-2">
             <span className="px-4 py-2 rounded-md">
@@ -48,6 +46,22 @@ const ReferralPage = () => {
             }
           </div>
         </div>
+        <form className='w-full md:w-1/2'>
+        <h2 className="text-lg font-semibold mb-1">Get Bonus</h2>
+             
+        <div className="mb-4">
+          <label htmlFor="bonus" className="block text-sm font-medium mb-1">Enter referral code to claim bones</label>
+          <input
+            type="text"
+            id="bonus"
+            value={reffCode}
+            onChange={(e) => setReffCode(e.target.value)}
+            placeholder='Refferal Code...'
+            required
+            className="mt-1 block w-full p-3 border-b bg-transparent outline-none"
+          />
+        </div>
+        </form>
       </section>
 
       {/* Referrals Table */}

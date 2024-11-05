@@ -24,136 +24,109 @@ export const GlobalStateProvider = ({ children }) => {
     },
     totalBalance: 0,
     referralLink: '',
-    notification: [], // Notifications array
-    adminNotificaton: []
+    notification: [],
+    adminNotification: []
   });
   const [error, setError] = useState(null);
-  console.log(formData.totalBalance);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const authToken =
-          localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+  // Function to handle errors
+  const handleError = (message, err = null) => {
+    setError(message);
+    if (err) console.error(message, err);
+  };
 
-        if (!authToken) {
-          setError('No authentication token found');
-          return;
-        }
+  // Function to fetch user profile data
+  const fetchData = async (authToken) => {
+    try {
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/profile/', {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
 
-        const response = await axios.get('https://zss.pythonanywhere.com/api/v1/profile/', {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
+      const userData = response.data.data;
 
-        const apiData = response.data;
-        const userData = apiData.data;
-
-        setFormData(prevState => ({
-          ...prevState,
-          userId: userData.id || '',
-          fullName: userData.full_name || '',
-          email: userData.email_address || '',
-          dateJoined: userData.date_joined || '',
-          gender: userData.gender || '',
-          IP: userData.ip_address || '',
-          lastLoginIP: userData.last_login_ip || '',
-          referalCode: userData.referral_code || '',
-          referredBy: userData.referred_by || '',
-        }));
-      } catch (err) {
-        console.error('Error fetching profile data', err);
-        setError('Could not fetch data');
-      }
-    };
-
-    fetchData();
-  }, []); // Only run once when the component mounts
+      setFormData(prevState => ({
+        ...prevState,
+        userId: userData.id || '',
+        fullName: userData.full_name || '',
+        email: userData.email_address || '',
+        dateJoined: userData.date_joined || '',
+        gender: userData.gender || '',
+        IP: userData.ip_address || '',
+        lastLoginIP: userData.last_login_ip || '',
+        referalCode: userData.referral_code || '',
+        referredBy: userData.referred_by || '',
+      }));
+    } catch (err) {
+      handleError('Could not fetch profile data', err);
+    }
+  };
 
   // Function to fetch notifications
-  const fetchNotifications = async () => {
+  const fetchNotifications = async (authToken) => {
     try {
-      const authToken =
-        localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-
-      if (!authToken) {
-        setError('No authentication token found');
-        return;
-      }
-
       const response = await axios.get('https://zss.pythonanywhere.com/api/v1/notifications/', {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      
-      const notificationsData = response.data; // Assume this is the array of notifications
-      console.log('notification', notificationsData);
+
       setFormData(prevState => ({
         ...prevState,
-        notification: notificationsData, // Update notifications in formData
+        notification: response.data, // Assuming response is an array of notifications
       }));
     } catch (err) {
-      console.error('Error fetching notifications:', err);
-      setError('Could not fetch notifications');
+      handleError('Could not fetch notifications', err);
     }
   };
 
-  // Fetch notifications when the component mounts
-  useEffect(() => {
-    fetchNotifications();
-  }, []); // Run once on mount
-
-  // Track changes in formData for debugging
-  useEffect(() => {
-    console.log('Updated formData:', formData);
-  }, [formData]);
-
   // Function to fetch total balance and network balances
-  const FetchTotalBalance = async () => {
+  const fetchTotalBalance = async (authToken) => {
     try {
-      const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
-
-      if (!authToken) {
-        setError('No authentication token found');
-        return;
-      }
-
       const response = await axios.get('https://zss.pythonanywhere.com/api/v1/network-balances/', {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
-      
+  
       const { total_balance, network_balances } = response.data;
-      console.log('Total Balance from API:', total_balance);
-      
-      // Update formData with the total balance and network balances
+  
       setFormData(prevState => ({
         ...prevState,
-        totalBalance: total_balance,
+        totalBalance: total_balance || 0,
         userWallet: {
-          bitcoin: network_balances.Bitcoin.balance,
-          ethereum: network_balances.Ethereum.balance,
-          tether: network_balances.Tether.balance,
-          'shiba-inu': network_balances['Shiba Inu'].balance,
+          bitcoin: network_balances?.Bitcoin?.balance || 0,
+          ethereum: network_balances?.Ethereum?.balance || 0,
+          tether: network_balances?.Tether?.balance || 0,
+          'shiba-inu': network_balances?.['Shiba Inu']?.balance || 0,
         },
       }));
     } catch (err) {
-      console.error('Error fetching total balance:', err);
-      setError('Could not fetch total balance');
+      console.error('Could not fetch total balance:', err);
+      handleError('Could not fetch total balance', err);
     }
   };
+  
+  
 
+  // Fetch data when the component mounts
   useEffect(() => {
-    FetchTotalBalance();
+    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    if (!authToken) {
+      handleError('No authentication token found');
+      return;
+    }
+
+    fetchData(authToken);
+    fetchNotifications(authToken);
+    fetchTotalBalance(authToken);
   }, []);
 
+  // Log updates to formData for debugging
   useEffect(() => {
-    // Log formData.totalBalance after setting to verify it's updated
-    console.log('Updated formData.totalBalance:', formData.totalBalance);
-  }, [formData.totalBalance]);
+    console.log('Updated formData:', formData);
+  }, [formData]);
 
   return (
     <GlobalStateContext.Provider value={{ formData, setFormData, error }}>

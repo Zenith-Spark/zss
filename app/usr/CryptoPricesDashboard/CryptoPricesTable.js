@@ -65,10 +65,6 @@ const CryptoPricesTable = ({showTable}) => {
     return acc + userCoinAmount * coin.currentPrice;
   }, 0);
 
-  // Update global state with the new total balance
-  useEffect(() => {
-    setFormData((prev) => ({ ...prev, totalBalance }));
-  }, [totalBalance, setFormData]);
 
   const totalUniqueCoins = uniqueCoins.length;
 
@@ -199,7 +195,7 @@ const handleSubmitwithdrawal = async (e) => {
 
   // Check if the withdrawal amount exceeds the total value of the owned coins
   if (parseFloat(withdrawal) > userTotalValue) {
-    alert(`Insufficient funds. You can withdraw up to $${userTotalValue.toFixed(2)} for ${selectedCoin.name}.`);
+    alert(`Insufficient funds. You can withdraw up to $${userTotalValue} for ${selectedCoin.name}.`);
     setWithdrawal(''); 
     setUserWalletAdd('');
     return;
@@ -294,9 +290,9 @@ useEffect(() => {
                       <img src={selectedCoin.image} alt={selectedCoin.name} className="w-20 h-20 rounded-full" />
                       <div>
                         <h2 className="text-xl font-bold">{selectedCoin.name}</h2>
-                        <p className="md:text-lg ">~{userWallet[selectedCoin.id]?.toFixed(2) || 0}</p>
+                        <p className="md:text-lg ">~ {userWallet[selectedCoin.id] || 0}</p>
                         <p className="md:text-lg font-thin">
-                          ~ ${(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] * selectedCoin.currentPrice).toFixed(2) : 0)}
+                          ~ ${(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] / selectedCoin.currentPrice) : 0)}
                         </p>
                       </div>
                     </div>
@@ -368,11 +364,10 @@ useEffect(() => {
           </Modal>
         )}
         {/* Display total balance */}
-        {!showTable && (
           <div className="mb-4 text-start font-bold px-6">
-            <h2 className="text-lg font-semibold">Total Balance:  ${formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formData.totalBalance.toFixed(2) : "0.00"}</h2>
+            <h2 className="text-lg font-semibold">Total Balance: ${formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formData.totalBalance.toFixed(2) : 0.00}
+            </h2>
           </div>
-        )}
 
         <div className="mb-5 flex justify-between items-center px-5">
           <input
@@ -421,8 +416,8 @@ useEffect(() => {
                 <thead>
                   <tr>
                     <th className="text-left px-6">Coins</th>
-                    {showOwnedCoins && <th className="text-right px-6">Owned</th>}
                     {showOwnedCoins && <th className="text-right px-6">Worth (USD)</th>}
+                    {showOwnedCoins && <th className="text-right px-6">eqv (coin)</th>}
                     {!showOwnedCoins && <th className="text-right px-6">Rate</th>}
                     {!showOwnedCoins && <th className="text-right px-6 hidden md:table-cell">Price Change</th>}
                   </tr>
@@ -430,7 +425,7 @@ useEffect(() => {
                 <tbody className="text-xs md:text-base">
                   {paginatedCoins.map((coin) => {
                     const userCoinAmount = userWallet[coin.id] || 0;
-                    const userTotalValue = userCoinAmount * coin.currentPrice;
+                    const userTotalValue = userCoinAmount / coin.currentPrice;
                     const coinSymbol = coin.symbol ? coin.symbol.toUpperCase() : '';
 
                     return (
@@ -439,26 +434,25 @@ useEffect(() => {
                           <img src={coin.image} alt={coin.name} className="w-8 h-8 mr-4 rounded-full" />
                           <div>
                             <p className="font-semibold">{coin.name}</p>
-                            {/* {!showOwnedCoins && <p className="text-sm">${coin.currentPrice.toFixed(2)}</p>} */}
                           </div>
                         </td>
                         {showOwnedCoins && (
                           <>
                             <td className="py-4 px-6 text-right">
-                              {userCoinAmount.toFixed(2)} {coinSymbol}
+                            $ {userCoinAmount.toFixed(2)} 
                             </td>
                             <td className="py-4 px-6 text-right">
-                              ${userTotalValue.toFixed(2)}
+                              {userTotalValue} {coinSymbol}
                             </td>
                           </>
                         )}
                         {!showOwnedCoins && (
                           <>
                             <td className="py-4 px-6 text-right">
-                              ${coin.currentPrice.toFixed(2)}
+                              ${coin.currentPrice}
                             </td>
                             <td className={`py-4 px-6 text-right hidden md:table-cell ${coin.priceChange >= 0 ? 'text-green-500': 'text-red-500'}`}>
-                              {coin.priceChange.toFixed(2)}%
+                              {coin.priceChange}%
                             </td>
                           </>
                         )}
