@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
-import { DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
-import { Download } from 'lucide-react';
+import { ButtonOne, ButtonTwo, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
+import { Download, Eye } from 'lucide-react';
 import axios from 'axios';
 
 // Define the Kyc component
@@ -12,7 +12,7 @@ const Kyc = () => {
   const [filter, setFilter] = useState('all');
   const [kycDocuments, setKycDocuments] = useState([]);
   const [error, setError] = useState(''); // State to hold error messages
-  const BASE_URL = 'https://zss.pythonanywhere.com/'; // Base URL for document access
+  const BASE_URL = 'https://zss.pythonanywhere.com'; // Base URL for document access
 
   // Function to handle filter change
   const handleFilterChange = (newFilter) => {
@@ -129,27 +129,31 @@ const Kyc = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredDocuments.map((doc) => (
-              <tr key={doc.id} className='text-end border-b'>
-                <td className="py-2 text-start">{doc.id}</td> {/* Using doc.id for User ID */}
-                <td className="py-2 text-start">{doc.user_full_name}</td> {/* Using user_full_name */}
-                <td className="py-2 text-start">
-                  <a href={`${BASE_URL}${doc.documents}`} download>
-                    <DBButtonTwo buttonValue={'Download'} iconValue={<Download />} />
-                  </a>
-                </td>
-                <td className="py-2 text-start flex flex-row gap-2">
-                  <Dropdown
-                    buttonText={doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}
-                    items={[
-                      { label: 'Approve', onClick: () => updateKycStatus(doc.id, 'approved') },
-                      { label: 'Reject', onClick: () => updateKycStatus(doc.id, 'rejected') },
-                    ]}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
+              {filteredDocuments.map((doc) => {
+                console.log(doc.document); // Log the documents to the console
+                return (
+                  <tr key={doc.id} className='text-end border-b'>
+                    <td className="py-2 text-start">{doc.id}</td> {/* Using doc.id for User ID */}
+                    <td className="py-2 text-start">{doc.user_full_name}</td> {/* Using user_full_name */}
+                    <td className="py-2 text-start">
+                      <a href={`${BASE_URL}${doc.document}`} download className='flex gap-1'>
+                        <ButtonOne iconValue={<Eye />} buttonValue={'Open'} />
+                      </a>
+                    </td>
+                    <td className="py-2 text-start flex flex-row gap-2">
+                      <Dropdown
+                        buttonText={doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}
+                        items={[
+                          { label: 'Approve', onClick: () => updateKycStatus(doc.id, 'approved') },
+                          { label: 'Reject', onClick: () => updateKycStatus(doc.id, 'rejected') },
+                        ]}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+
         </table>
       </div>
     </div>
