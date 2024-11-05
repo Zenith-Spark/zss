@@ -5,6 +5,7 @@ import axios from 'axios';
 const GlobalStateContext = createContext();
 
 export const GlobalStateProvider = ({ children }) => {
+const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     userId: '',
     fullName: '',
@@ -27,7 +28,6 @@ export const GlobalStateProvider = ({ children }) => {
     notification: [],
     adminNotification: []
   });
-  const [error, setError] = useState(null);
 
   // Function to handle errors
   const handleError = (message, err = null) => {

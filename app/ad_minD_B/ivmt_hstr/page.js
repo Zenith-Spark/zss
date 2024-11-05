@@ -120,9 +120,9 @@ const Investment = () => {
   return (
     <div className="p-4">
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-2 pt-4">
-        <span>{adminDBSidebar[2].icons}</span>
+        <span>{adminDBSidebar[3].icons}</span>
         <span><PiGreaterThan /></span>
-        <span>{adminDBSidebar[2].name}</span>
+        <span>{adminDBSidebar[3].name}</span>
       </p>
       <h2 className="text-xl font-bold mb-4 text-center">Investment History</h2>
 

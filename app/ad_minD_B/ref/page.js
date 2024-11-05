@@ -45,9 +45,9 @@ const Page = () => {
   return (
     <div className='pt-16 w-full h-auto'>
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
-        <span>{adminDBSidebar[3].icons}</span>
+        <span>{adminDBSidebar[5].icons}</span>
         <span><PiGreaterThan /></span>
-        <span>{adminDBSidebar[3].name}</span>
+        <span>{adminDBSidebar[5].name}</span>
       </p>
 
       <h2 className="text-2xl font-bold text-center mb-4">All Referrals</h2>

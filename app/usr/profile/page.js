@@ -28,8 +28,6 @@ const PersonalInfoPage = () => {
       );
 
       if (response.data.data === 'ok') {
-        console.log('Gender updated successfully');
-        // Optionally, you could update the global state or local state here to reflect the change
         setFormData((prevData) => ({
           ...prevData,
           gender: newGender, // Update gender in the form data
