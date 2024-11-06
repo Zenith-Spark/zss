@@ -346,4 +346,27 @@ export const adminDBSidebar = [
   {name: 'KYC', href: '/ad_minD_B/usr_kyc', icons: <Verified/>},
   {name: 'Referral', href: '/ad_minD_B/ref', icons:  <FaUserFriends/>},
   {name: 'Profile', href: '/ad_minD_B/prof', icons: <FiUser/>},
-]
+];
+
+export const kycUploadRules = [
+  {
+    rule: "File Size Limit",
+    description: "The KYC document should not exceed 5MB in size. If the file exceeds this limit, you will need to choose a smaller document or compress it before uploading."
+  },
+  {
+    rule: "Supported File Formats",
+    description: "Only certain file formats are accepted for KYC document uploads. Ensure your document is in one of the following supported formats: PDF, JPG, JPEG, PNG. Files in other formats (e.g., DOCX, PPT) will be rejected."
+  },
+  {
+    rule: "Document Type",
+    description: "The uploaded file should be a clear, readable copy of your KYC document, such as a government-issued ID, passport, or utility bill. Ensure the document is legible and not blurry or distorted."
+  },
+  {
+    rule: "Single File Upload",
+    description: "Only one document can be uploaded at a time. If you need to submit multiple documents, ensure they are combined into one file (e.g., using a PDF editor)."
+  },
+  {
+    rule: "No Watermarks or Edited Documents",
+    description: "The document must not have watermarks, signatures, or edits that could obscure critical information. It should be a clean copy of the original document without alterations."
+  }
+];

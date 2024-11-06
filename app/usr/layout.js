@@ -1,14 +1,29 @@
 // app/usr/layout.js (for Next.js 13 and later)
 "use client"; // Ensure this is a Client Component
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import SideBar from './SideBar/SideBar';
 import SmartsuppChat from '../components/resuables/chatbox/SmartsuppChat';
 import { useGlobalState } from '../GlobalStateProvider';
 
 
 const UsrLayout = ({ children }) => {
-  const {formData} = useGlobalState()
+    const { formData, fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments } = useGlobalState();
+
+
+  useEffect(() => {
+    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    if (!authToken) {
+      handleError('No authentication token found');
+      return;
+    }
+
+    fetchData(authToken);
+    fetchNotifications(authToken);
+    fetchTotalBalance(authToken);
+    fetchPlans(authToken)
+    fetchInvestments(authToken)
+  }, []);
   return (
     <div className="dashboard-layout flex">
       <header>

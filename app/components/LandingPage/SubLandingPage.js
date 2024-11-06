@@ -93,14 +93,14 @@ const SubLandingPage = () => {
 
       <div className='flex flex-row w-full items-center justify-evenly pt-16'>
       {displayedCoins.map((coin, index) => (
-        <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
+        <marquee key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
           <span>
           {coin.coins}
           </span>
           <span className='text-xs font-thin'>
             {coin.name}
           </span>
-        </span>
+        </marquee>
       ))}
     </div>
       </section>

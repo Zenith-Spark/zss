@@ -134,7 +134,7 @@ const Investment = () => {
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       <div className="overflow-x-auto justify-center items-center mt-6">
-        <table className="min-w-full w-[60rem]">
+        <table className="min-w-full w-[80rem]">
           <thead>
             <tr className="text-start">
               <th className="py-2 text-start">User Id</th>
@@ -203,7 +203,6 @@ const Investment = () => {
                       >
                         <option value="active">Active</option>
                         <option value="pending">Pending</option>
-                        <option value="cancelled">Cancelled</option>
                         <option value="failed">Failed</option>
                       </select>
                     ) : (

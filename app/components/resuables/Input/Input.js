@@ -14,6 +14,8 @@ export const Input = ({ Labelvalue, Email, width, Password, value, onChange }) =
     <div className="relative">
       <input
         type={Email ? 'email' : Password ? (passwordVisible ? 'text' : 'password') : 'text'}
+        // pattern={Password && '(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}'}
+        // title={Password &&"Password must contain at least one number, one uppercase and lowercase letter, and at least 8 or more characters"}
         id="floating_outlined"
         className={`block px-2.5 pb-2.5 pt-4 text-sm bg-transparent border-gray-300 appearance-none text-white dark:focus:border-neutral-300 focus:outline-none focus:ring-0 focus:border-slate-800 peer border-b w-full py-2 transition duration-1000 ${width ? 'w-full' : ''}`}
         value={value}

@@ -23,7 +23,7 @@ const Kyc = () => {
   useEffect(() => {
     const fetchKycDocuments = async () => {
       const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
-      console.log('Token:', token); // Log the token for debugging
+      console.log('Token:', token); // Log token
 
       if (!token) {
         setError('No authentication token found');
@@ -36,6 +36,7 @@ const Kyc = () => {
             Authorization: `Bearer ${token}`,
           },
         });
+        console.log('Fetched documents:', response.data); // Log fetched documents
         setKycDocuments(response.data);
       } catch (error) {
         if (error.response) {
@@ -97,10 +98,6 @@ const Kyc = () => {
     }
   };
 
-  // Render nothing if there are no documents
-  if (filteredDocuments.length === 0) {
-    return null; // Return null to not display anything
-  }
 
   return (
     <div className="p-4">
@@ -119,42 +116,53 @@ const Kyc = () => {
 
       {/* Table with scrollable x-direction on mobile */}
       <div className="overflow-x-auto justify-center items-center mt-6">
-        <table className="w-full border-collapse">
-          <thead>
-            <tr className="text-start border-b">
-              <th className="py-2 text-start">User ID</th>
-              <th className="py-2 text-start">User Name</th>
-              <th className="py-2 text-start">KYC Document</th>
-              <th className="py-2 text-start">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-              {filteredDocuments.map((doc) => {
-                console.log(doc.document); // Log the documents to the console
-                return (
-                  <tr key={doc.id} className='text-end border-b'>
-                    <td className="py-2 text-start">{doc.id}</td> {/* Using doc.id for User ID */}
-                    <td className="py-2 text-start">{doc.user_full_name}</td> {/* Using user_full_name */}
-                    <td className="py-2 text-start">
-                      <a href={`${BASE_URL}${doc.document}`} download className='flex gap-1'>
-                        <ButtonOne iconValue={<Eye />} buttonValue={'Open'} />
-                      </a>
-                    </td>
-                    <td className="py-2 text-start flex flex-row gap-2">
-                      <Dropdown
-                        buttonText={doc.status.charAt(0).toUpperCase() + doc.status.slice(1)}
-                        items={[
-                          { label: 'Approve', onClick: () => updateKycStatus(doc.id, 'approved') },
-                          { label: 'Reject', onClick: () => updateKycStatus(doc.id, 'rejected') },
-                        ]}
-                      />
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
+      <table className="w-full border-collapse">
+  <thead>
+    <tr className="text-start border-b">
+      <th className="py-2 text-start">User ID</th>
+      <th className="py-2 text-start">User Name</th>
+      <th className="py-2 text-start">KYC Document</th>
+      <th className="py-2 text-start">Action</th>
+    </tr>
+  </thead>
 
-        </table>
+  {/* Check if there are no filtered documents */}
+  <tbody>
+    {filteredDocuments.length === 0 ? (
+      <tr>
+        <td colSpan="4" className="py-2 text-center">
+          {error ? (
+            <p className="text-red-500">{error}</p>
+          ) : (
+            <p>No KYC documents found.</p>
+          )}
+        </td>
+      </tr>
+    ) : (
+      filteredDocuments.map((doc) => (
+        <tr key={doc.id} className="text-end border-b">
+          <td className="py-2 text-start">{doc.id}</td>
+          <td className="py-2 text-start">{doc.user_full_name}</td>
+          <td className="py-2 text-start">
+            <a href={`${BASE_URL}${doc.document}`} download className="flex gap-1">
+              <ButtonOne iconValue={<Eye />} buttonValue={'Open'} />
+            </a>
+          </td>
+          <td className="py-2 text-start flex flex-row gap-2">
+            <select
+              value={doc.status}
+              onChange={(e) => updateKycStatus(doc.id, e.target.value)}
+              className="border rounded px-2 py-1"
+            >
+              <option value="approved">Approve</option>
+              <option value="rejected">Reject</option>
+            </select>
+          </td>
+        </tr>
+      ))
+    )}
+  </tbody>
+</table>
       </div>
     </div>
   );

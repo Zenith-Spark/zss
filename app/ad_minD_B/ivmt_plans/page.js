@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
+import { toast } from 'react-toastify';
 
 const Plans = () => {
   const [plans, setPlans] = useState([]); // State to hold existing plans
@@ -16,14 +17,13 @@ const Plans = () => {
     maximum_amount: '',
     is_active: true,
   });
-  const [error, setError] = useState(null); // State for error messages
 
   // Fetch existing plans when the component mounts
   useEffect(() => {
     const fetchPlans = async () => {
       const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
       if (!token) {
-        setError('No authentication token found');
+        toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
         return;
       }
 
@@ -33,10 +33,11 @@ const Plans = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setPlans(response.data); // Assuming response.data contains an array of plans
+        setPlans(response.data);
+        toast.success('Plans fetched successfully.', { position: "top-right", autoClose: 3000 });
       } catch (error) {
         console.error('Error fetching plans:', error);
-        setError('Failed to fetch plans: ' + (error.response?.data?.message || error.message));
+        toast.error('Failed to fetch plans: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
       }
     };
 
@@ -57,13 +58,11 @@ const Plans = () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
   
     if (!token) {
-      setError('No authentication token found');
+      toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
       return;
     }
   
     try {
-      console.log('Submitting plan:', newPlan); // Debugging: Log the new plan data
-  
       if (formType === 'create') {
         const response = await axios.post('https://zss.pythonanywhere.com/api/v1/admin/create-plans/', newPlan, {
           headers: {
@@ -78,36 +77,42 @@ const Plans = () => {
           maximum_amount: '',
           is_active: true,
         });
-        setPlans((prev) => [...prev, response.data]); // Update plans with new plan
+        setPlans((prev) => [...prev, response.data]);
+        toast.success('New plan created successfully.', { position: "top-right", autoClose: 3000 });
       } else if (formType === 'edit' && selectedPlan) {
-        console.log('Editing plan with ID:', selectedPlan.id); // Log the ID being used
-        const response = await axios.put(`https://zss.pythonanywhere.com/api/v1/admin/update-investments/${selectedPlan.id}/`, newPlan, {
+        const response = await axios.put(`https://zss.pythonanywhere.com/api/v1/admin/update-plans/${encodeURIComponent(selectedPlan.name)}/`, newPlan, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setPlans((prev) => prev.map(plan => (plan.id === selectedPlan.id ? response.data : plan)));
+        setPlans((prev) =>
+          prev.map((plan) =>
+            plan.name === selectedPlan.name ? response.data : plan
+          )
+        );
         setFormType('create');
         setSelectedPlan(null);
-        setNewPlan({ name: '', profit_percentage: '', duration_days: '', minimum_amount: '', maximum_amount: '', is_active: true });
+        setNewPlan({
+          name: '',
+          profit_percentage: '',
+          duration_days: '',
+          minimum_amount: '',
+          maximum_amount: '',
+          is_active: true,
+        });
+        toast.success('Plan updated successfully.', { position: "top-right", autoClose: 3000 });
       }
     } catch (error) {
       console.error('Error saving plan:', error);
-      if (error.response) {
-        console.error('Error response:', error.response.data);
-        setError('Failed to save plan: ' + (error.response.data.error || error.message));
-      } else {
-        setError('Failed to save plan: ' + error.message);
-      }
+      toast.error('Failed to save plan: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
     }
   };
-  
-  
+
   // Function to prepare for editing a plan
   const handleEdit = (plan) => {
     setFormType('edit');
     setSelectedPlan(plan);
-    setNewPlan(plan); // Pre-fill form with plan details
+    setNewPlan({ ...plan });
   };
 
   return (
@@ -119,107 +124,100 @@ const Plans = () => {
       </p>
 
       <h2 className="text-2xl font-bold text-center mb-4">Manage Plans</h2>
-      {error && <p className="text-red-500">{error}</p>} {/* Display error message */}
 
-      <section className="shadow-md p-6 mb-6 max-w-md mx-auto rounded-lg"> {/* Adjusted width */}
-  <h3 className="text-xl font-semibold mb-4">{formType === 'create' ? 'Create New Plan' : 'Edit Plan'}</h3>
-  <form onSubmit={handleSubmit} className="space-y-4">
-    <div className="mb-4">
-      <label className="block" htmlFor="name">Name</label>
-      <input
-        type="text"
-        name="name"
-        id="name"
-        value={newPlan.name}
-        onChange={handleChange}
-        required
-        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none  transition duration-200 ease-in-out" // Added max width and transition
-      />
-    </div>
-    <div className="mb-4">
-      <label className="block" htmlFor="profit_percentage">Profit Percentage</label>
-      <input
-        type="text"
-        name="profit_percentage"
-        id="profit_percentage"
-        value={newPlan.profit_percentage}
-        onChange={handleChange}
-        required
-        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
-      />
-    </div>
-    <div className="mb-4">
-      <label className="block" htmlFor="duration_days">Duration (Days)</label>
-      <input
-        type="number"
-        name="duration_days"
-        id="duration_days"
-        value={newPlan.duration_days}
-        onChange={handleChange}
-        required
-        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
-      />
-    </div>
-    <div className="mb-4">
-      <label className="block" htmlFor="minimum_amount">Minimum Amount</label>
-      <input
-        type="text"
-        name="minimum_amount"
-        id="minimum_amount"
-        value={newPlan.minimum_amount}
-        onChange={handleChange}
-        required
-        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
-      />
-    </div>
-    <div className="mb-4">
-      <label className="block" htmlFor="maximum_amount">Maximum Amount</label>
-      <input
-        type="text"
-        name="maximum_amount"
-        id="maximum_amount"
-        value={newPlan.maximum_amount}
-        onChange={handleChange}
-        required
-        className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
-      />
-    </div>
-    <div className="mb-4">
-      <label className="inline-flex items-center">
-        <input
-          type="checkbox"
-          name="is_active"
-          checked={newPlan.is_active}
-          onChange={handleChange}
-          className="mr-2"
-        />
-        <span>Is Active</span>
-      </label>
-    </div>
-    <button type="submit" className="bg-blue-500 rounded-lg text-white px-6 py-3 hover:bg-blue-600 transition duration-200">{formType === 'create' ? 'Create Plan' : 'Update Plan'}</button>
-  </form>
-</section>
+      <section className="shadow-md p-6 mb-6 max-w-md mx-auto rounded-lg">
+        <h3 className="text-xl font-semibold mb-4">{formType === 'create' ? 'Create New Plan' : 'Edit Plan'}</h3>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="mb-4">
+            <label className="block" htmlFor="name">Name</label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={newPlan.name}
+              onChange={handleChange}
+              required
+              className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block" htmlFor="profit_percentage">Profit Percentage</label>
+            <input
+              type="text"
+              name="profit_percentage"
+              id="profit_percentage"
+              value={newPlan.profit_percentage}
+              onChange={handleChange}
+              required
+              className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block" htmlFor="duration_days">Duration (Days)</label>
+            <input
+              type="number"
+              name="duration_days"
+              id="duration_days"
+              value={newPlan.duration_days}
+              onChange={handleChange}
+              required
+              className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block" htmlFor="minimum_amount">Minimum Amount</label>
+            <input
+              type="text"
+              name="minimum_amount"
+              id="minimum_amount"
+              value={newPlan.minimum_amount}
+              onChange={handleChange}
+              required
+              className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block" htmlFor="maximum_amount">Maximum Amount</label>
+            <input
+              type="text"
+              name="maximum_amount"
+              id="maximum_amount"
+              value={newPlan.maximum_amount}
+              onChange={handleChange}
+              required
+              className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                name="is_active"
+                checked={newPlan.is_active}
+                onChange={handleChange}
+                className="mr-2"
+              />
+              <span>Is Active</span>
+            </label>
+          </div>
+          <button type="submit" className="bg-blue-500 rounded-lg text-white px-6 py-3 hover:bg-blue-600 transition duration-200">{formType === 'create' ? 'Create Plan' : 'Update Plan'}</button>
+        </form>
+      </section>
 
-
-        <h3 className="text-xl font-semibold mb-4 w-full">Existing Plans</h3>
+      <h3 className="text-xl font-semibold mb-4 w-full">Existing Plans</h3>
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {plans.length === 0 ? (
-          <p className="">No plans available.</p>
+          <p>No plans available.</p>
         ) : (
           plans.map((plan) => (
-            <div key={plan.id} className=" shadow-md p-6 rounded-lg">
+            <div key={plan.id} className="shadow-md p-6 rounded-lg">
               <h4 className="text-lg font-bold">{plan.name}</h4>
               <p><strong>Profit %:</strong> {plan.profit_percentage}</p>
               <p><strong>Duration:</strong> {plan.duration_days} days</p>
               <p><strong>Min Amount:</strong> {plan.minimum_amount}</p>
               <p><strong>Max Amount:</strong> {plan.maximum_amount}</p>
               <p><strong>Status:</strong> {plan.is_active ? 'Active' : 'Inactive'}</p>
-              <button
-                onClick={() => handleEdit(plan)}
-                className="mt-4 bg-blue-500 px-4 py-2 hover:bg-blue-600 transition duration-200 rounded-lg text-white"
-              >
-                Edit
-              </button>
+              <button onClick={() => handleEdit(plan)} className="text-blue-500 hover:underline mt-4">Edit</button>
             </div>
           ))
         )}

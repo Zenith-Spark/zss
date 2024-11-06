@@ -7,6 +7,7 @@ import formBg from '../../public/img/formbg.webp';
 import { Input } from '../components/resuables/Input/Input';
 import Link from 'next/link';
 import { useGlobalState } from '../GlobalStateProvider';
+import { Loader } from '../components/resuables/Loader/Loader';
 
 const AdminLoginPage = () => {
   const { formData, setFormData } = useGlobalState();
@@ -16,11 +17,13 @@ const AdminLoginPage = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setLoading(true)
 
     try {
       const response = await axios.post('https://zss.pythonanywhere.com/api/v1/login/', {
@@ -37,24 +40,17 @@ const AdminLoginPage = () => {
         } else {
           sessionStorage.setItem('AdminAuthToken', token);
         }
-
-        // Optionally store user data in global state
-        // setFormData((prevState) => ({
-        //   ...prevState,
-        //   userId: response.data.user.id, // Assuming the response has user ID
-        //   fullName: response.data.user.full_name, // Assuming the response has user full name
-        //   email: email,
-        //   token: token, // Store token in global state for easy access
-        // }));
-
         setSuccess('Welcome Back');
-
+        
+        
         // Redirect after a short delay to ensure state update completes
         setTimeout(() => router.push('/ad_minD_B'), 500);
+        setLoading(false)
 
         console.log('Token:', token);
       } else {
         setError('Login failed. Please try again.');
+        setLoading(false)
       }
 
     } catch (err) {
@@ -99,16 +95,13 @@ const AdminLoginPage = () => {
                 <label htmlFor="rememberMe" className="ml-2 text-gray-300">Remember Me</label>
               </div>
               <button
-                type="submit"
-                className="mt-4 px-4 py-2 text-white bg-yellow-600 rounded-lg hover:bg-yellow-500 transition duration-300 text-center"
-              >
-                Login
-              </button>
+                  type="submit"
+                  className="mt-4 px-4 py-2 text-white bg-yellow-600 rounded-lg hover:bg-yellow-500 transition duration-300 text-center flex items-center justify-center"
+                  disabled={loading} // Disable button while loading
+                >
+                  {loading ? <Loader fill="#ffffff" /> : 'Login'} {/* Show loader or text */}
+                </button>
             </form>
-            <div className="flex flex-col items-center mt-4">
-              <a href="/forgot-password" className="text-yellow-500 hover:underline">Forgot Password?</a>
-              <p className="text-gray-300 mt-2">Don’t have an account? <Link href="/signup" className="text-yellow-500 hover:underline">Sign Up</Link></p>
-            </div>
           </section>
         </div>
       </div>

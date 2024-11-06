@@ -107,7 +107,6 @@ const Admin = () => {
               <th className="py-2 text-start">Total Balance</th>
               <th className="py-2 text-start">IP Address</th>
               <th className="py-2 text-start">Gender</th>
-              <th className="py-2 text-start">Referred By</th>
               <th className="py-2 text-start">Date Joined</th>
               <th className="py-2 text-start">Action</th>
             </tr>
@@ -134,7 +133,6 @@ const Admin = () => {
                   <td className="py-2 text-start">${user.total_balance.toFixed(2) || 'N/A'}</td>
                   <td className="py-2 text-start">{user.ip_address || 'N/A'}</td>
                   <td className="py-2 text-start">{user.gender || 'N/A'}</td>
-                  <td className="py-2 text-start">{user.referred_by?.full_name || 'N/A'}</td>
                   <td className="py-2 text-start">{user.date_joined ? new Date(user.date_joined).toLocaleDateString() : 'N/A'}</td>
                   <td className="py-2 text-start">
                     <Edit />

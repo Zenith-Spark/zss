@@ -53,7 +53,11 @@ const SideBar = () => {
     setShowLogoutModal(true); // Open the logout confirmation modal
   };
 
- 
+ const LogoutUser = ()=>{
+  localStorage.removeItem('authToken');
+  sessionStorage.removeItem('authToken');
+  setShowLogoutModal(false)
+ }
 
   return (
     <nav className='fixed w-full h-16 z-40'>
@@ -163,7 +167,7 @@ const SideBar = () => {
     
     <Link href="/">
       <ButtonTwo
-        Clicked={() => setShowLogoutModal(false)} 
+        Clicked={LogoutUser} 
         buttonValue="Yes" 
       />
     </Link>

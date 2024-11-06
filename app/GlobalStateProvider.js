@@ -5,7 +5,7 @@ import axios from 'axios';
 const GlobalStateContext = createContext();
 
 export const GlobalStateProvider = ({ children }) => {
-const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     userId: '',
     fullName: '',
@@ -26,7 +26,9 @@ const [error, setError] = useState(null);
     totalBalance: 0,
     referralLink: '',
     notification: [],
-    adminNotification: []
+    adminNotification: [],
+    plans: [],
+    investments: []
   });
 
   // Function to handle errors
@@ -107,8 +109,47 @@ const [error, setError] = useState(null);
       handleError('Could not fetch total balance', err);
     }
   };
+
+  // Function to fetch plans
+  const fetchPlans = async (authToken) => {
+    try {
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/get-plans/', {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      if (response.status === 200) {
+        setFormData(prevState => ({
+          ...prevState,
+          plans: response.data, // Store plans in the state
+        }));
+      }
+    } catch (err) {
+      handleError('Could not fetch plans', err);
+    }
+  };
+
+  // Function to fetch investments
+  const fetchInvestments = async (authToken) => {
+    try {
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/investments/', {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
   
-  
+      if (response.status === 200) {
+        setFormData(prevState => ({
+          ...prevState,
+          investments: response.data, // Store investments in the state
+        }));
+        console.log('Investment data:', response.data); // Corrected log statement
+      }
+    } catch (err) {
+      handleError('Could not fetch investments', err);
+    }
+  };
 
   // Fetch data when the component mounts
   useEffect(() => {
@@ -121,6 +162,8 @@ const [error, setError] = useState(null);
     fetchData(authToken);
     fetchNotifications(authToken);
     fetchTotalBalance(authToken);
+    fetchPlans(authToken); // Fetch plans as well
+    fetchInvestments(authToken); // Fetch investments
   }, []);
 
   // Log updates to formData for debugging
@@ -129,7 +172,7 @@ const [error, setError] = useState(null);
   }, [formData]);
 
   return (
-    <GlobalStateContext.Provider value={{ formData, setFormData, error }}>
+    <GlobalStateContext.Provider value={{ formData, setFormData, error, fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments }}>
       {children}
     </GlobalStateContext.Provider>
   );
