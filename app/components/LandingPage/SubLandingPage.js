@@ -90,19 +90,20 @@ const SubLandingPage = () => {
   ))}
 </div>
 
-
+      <marquee>
       <div className='flex flex-row w-full items-center justify-evenly pt-16'>
       {displayedCoins.map((coin, index) => (
-        <marquee key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
+        <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
           <span>
           {coin.coins}
           </span>
           <span className='text-xs font-thin'>
             {coin.name}
           </span>
-        </marquee>
+        </span>
       ))}
     </div>
+      </marquee>
       </section>
 
       <section className='h-auto w-full mb-20  flex items-center  my-10  gap-x-5 text-md  md:text-xl px-3 md:px-10 bg-slate-800 text-white py-10'>

@@ -319,7 +319,7 @@ export const FooterPages = [
 
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { PiHandWithdrawFill, PiHandDepositFill } from "react-icons/pi";
-import { GiTakeMyMoney } from "react-icons/gi";
+import { GiTakeMyMoney, GiTwoCoins } from "react-icons/gi";
 import { TfiBarChart } from "react-icons/tfi";
 import { FaUserFriends } from "react-icons/fa";
 import { FiTrendingUp, FiUser } from "react-icons/fi";
@@ -343,6 +343,7 @@ export const adminDBSidebar = [
   {name: 'Transactions', href: '/ad_minD_B/txn', icons: <AiOutlineTransaction/>},
   {name: 'Invesment Plans', href: '/ad_minD_B/ivmt_plans', icons: <FiTrendingUp/>},
   {name: 'Invesment History', href: '/ad_minD_B/ivmt_hstr', icons: <GiTakeMyMoney/>},
+  {name: 'Manage Coins', href: '/ad_minD_B/mng_coins', icons: <GiTwoCoins/>},
   {name: 'KYC', href: '/ad_minD_B/usr_kyc', icons: <Verified/>},
   {name: 'Referral', href: '/ad_minD_B/ref', icons:  <FaUserFriends/>},
   {name: 'Profile', href: '/ad_minD_B/prof', icons: <FiUser/>},

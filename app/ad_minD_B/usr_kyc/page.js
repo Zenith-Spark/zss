@@ -152,10 +152,10 @@ const Kyc = () => {
             <select
               value={doc.status}
               onChange={(e) => updateKycStatus(doc.id, e.target.value)}
-              className="border rounded px-2 py-1"
+              className="border-b px-2 py-1 bg-transparent"
             >
-              <option value="approved">Approve</option>
-              <option value="rejected">Reject</option>
+              <option value="approved" className=' text-black'>Approve</option>
+              <option value="rejected" className=' text-black'>Reject</option>
             </select>
           </td>
         </tr>
