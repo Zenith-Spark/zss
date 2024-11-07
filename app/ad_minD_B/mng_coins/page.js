@@ -1,9 +1,11 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
+import { LoaderOne } from '@assets/app/components/resuables/Loader/Loader';
+
 
 const NetworksPage = () => {
     const [networks, setNetworks] = useState([]);
@@ -14,6 +16,8 @@ const NetworksPage = () => {
         symbol: '',
         wallet_address: '',
     });
+    const [isLoading, setIsLoading] = useState(false); // Loading state for button
+    const formRef = useRef(null); // Reference for the form section
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
 
     // Fetch all networks on component mount
@@ -52,6 +56,8 @@ const NetworksPage = () => {
             return;
         }
 
+        setIsLoading(true); // Set loading to true when submitting
+
         try {
             if (formType === 'create') {
                 await axios.post('https://zss.pythonanywhere.com/api/v1/networks/', networkForm, {
@@ -61,7 +67,7 @@ const NetworksPage = () => {
             } else if (formType === 'edit' && selectedNetwork) {
                 await axios.patch(
                     `https://zss.pythonanywhere.com/api/v1/networks/${encodeURIComponent(selectedNetwork.name)}/`,
-                    networkForm,
+                    { wallet_address: networkForm.wallet_address }, // Only send wallet_address in patch
                     { headers: { Authorization: `Bearer ${token}` } }
                 );
                 toast.success('Network updated successfully.', { position: "top-right", autoClose: 3000 });
@@ -78,54 +84,63 @@ const NetworksPage = () => {
         } catch (error) {
             console.error('Error saving network:', error);
             toast.error('Failed to save network: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
+        } finally {
+            setIsLoading(false); // Reset loading state after completion
         }
     };
 
-    // Prepare the form for editing a network
+    // Prepare the form for editing a network and scroll to the form section
     const handleEdit = (network) => {
         setFormType('edit');
         setSelectedNetwork(network);
-        setNetworkForm({ ...network });
+        setNetworkForm({ wallet_address: network.wallet_address }); // Only set wallet_address for editing
+
+        // Scroll to the form section
+        formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
     return (
         <div className='py-16 w-full h-auto'>
             <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
-                <span>{adminDBSidebar[2].icons}</span>
+                <span>{adminDBSidebar[4].icons}</span>
                 <span><PiGreaterThan /></span>
-                <span>{adminDBSidebar[2].name}</span>
+                <span>{adminDBSidebar[4].name}</span>
             </p>
 
             <h2 className="text-2xl font-bold text-center mb-4">Manage Networks</h2>
 
             {/* Form for creating or editing a network */}
-            <section className="shadow-md p-6 mb-6 max-w-md mx-auto rounded-lg">
+            <section ref={formRef} className="shadow-md p-6 mb-6 max-w-md mx-auto rounded-lg">
                 <h3 className="text-xl font-semibold mb-4">{formType === 'create' ? 'Create New Network' : 'Edit Network'}</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <div className="mb-4">
-                        <label className="block" htmlFor="name">Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={networkForm.name}
-                            onChange={handleChange}
-                            required
-                            className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block" htmlFor="symbol">Symbol</label>
-                        <input
-                            type="text"
-                            name="symbol"
-                            id="symbol"
-                            value={networkForm.symbol}
-                            onChange={handleChange}
-                            required
-                            className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
-                        />
-                    </div>
+                    {formType === 'create' && (
+                        <>
+                            <div className="mb-4">
+                                <label className="block" htmlFor="name">Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    value={networkForm.name}
+                                    onChange={handleChange}
+                                    required
+                                    className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block" htmlFor="symbol">Symbol</label>
+                                <input
+                                    type="text"
+                                    name="symbol"
+                                    id="symbol"
+                                    value={networkForm.symbol}
+                                    onChange={handleChange}
+                                    required
+                                    className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
+                                />
+                            </div>
+                        </>
+                    )}
                     <div className="mb-4">
                         <label className="block" htmlFor="wallet_address">Wallet Address</label>
                         <input
@@ -138,7 +153,13 @@ const NetworksPage = () => {
                             className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
                         />
                     </div>
-                    <button type="submit" className="bg-blue-500 rounded-lg text-white px-6 py-3 hover:bg-blue-600 transition duration-200">{formType === 'create' ? 'Create Network' : 'Update Network'}</button>
+                    <button 
+                        type="submit" 
+                        className={`bg-blue-500 rounded-lg text-white px-6 py-3 transition duration-200 ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-600'}`}
+                        disabled={isLoading} // Disable button when loading
+                    >
+                        {isLoading ? (<LoaderOne fill={'#ffffff'}/>) : formType === 'create' ? 'Create Network' : 'Update Network'}
+                    </button>
                 </form>
             </section>
 

@@ -15,12 +15,11 @@ const TransactionHistory = () => {
   const [editedData, setEditedData] = useState({
     created_at: '',
     amount: '',
-    network: '', // For editing network directly
+    network: '',
+    status: '',
   });
 
-  const handleFilterChange = (newFilter) => {
-    setFilter(newFilter);
-  };
+  const handleFilterChange = (newFilter) => setFilter(newFilter);
 
   const fetchTransactions = async () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
@@ -32,9 +31,7 @@ const TransactionHistory = () => {
 
     try {
       const response = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/history/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.data && Array.isArray(response.data.transactions)) {
@@ -71,6 +68,7 @@ const TransactionHistory = () => {
       created_at: new Date(transaction.created_at).toISOString().slice(0, 16),
       amount: transaction.amount,
       network: transaction.network,
+      status: transaction.status,
     });
   };
 
@@ -84,38 +82,69 @@ const TransactionHistory = () => {
       setError('No token found. Please log in.');
       return;
     }
-
+  
     try {
       setUpdatingStatus(true);
-      await axios.put(
-        `https://zss.pythonanywhere.com/api/v1/admin/deposit/${transactionId}/edit/`,
+  
+      const transaction = transactions.find(t => t.transaction_id === transactionId);
+      const urlType = transaction.method === 'deposit' ? 'deposit' : 'withdrawal';
+      const url = `https://zss.pythonanywhere.com/api/v1/admin/${urlType}/${transactionId}/edit/`;
+  
+      let requestData = {};
+  
+      if (editedData.status && editedData.status !== transaction.status) {
+        // If editing the status
+        requestData = { status: editedData.status.toLowerCase() };  // Only send status
+      } else if (editedData.created_at && editedData.created_at !== transaction.created_at) {
+        // If editing the date
+        const formatDate = (date) => {
+          const d = new Date(date);
+          const year = d.getFullYear();
+          const month = String(d.getMonth() + 1).padStart(2, '0');
+          const day = String(d.getDate()).padStart(2, '0');
+          const hours = String(d.getHours()).padStart(2, '0');
+          const minutes = String(d.getMinutes()).padStart(2, '0');
+          const seconds = String(d.getSeconds()).padStart(2, '0');
+          return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        };
+  
+        // Prepare date-related fields
+        requestData = {
+          created_at: formatDate(editedData.created_at),
+          updated_at: formatDate(new Date()),  // You can change this as needed
+        };
+      }
+  
+      console.log('Request Data:', requestData);  // Log request data
+  
+      const response = await axios.put(
+        url,
+        requestData,
         {
-          created_at: new Date(editedData.created_at).toISOString(),
-          amount: parseFloat(editedData.amount),
-          network: editedData.network,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+  
+      console.log('Response:', response);  // Log the API response
+  
+      // Update the state after successful API call
       setTransactions(prevTransactions =>
         prevTransactions.map(transaction =>
           transaction.transaction_id === transactionId
-            ? { ...transaction, ...editedData }
+            ? { ...transaction, ...editedData, created_at: new Date(editedData.created_at).toISOString() }
             : transaction
         )
       );
-
+  
       setEditMode(null); // Exit edit mode after saving
     } catch (err) {
+      console.error('Error:', err.response ? err.response.data : err);  // Log detailed error if available
       setError('Failed to save changes. Please check your Internet connection or login status.');
     } finally {
       setUpdatingStatus(false);
     }
   };
+  
 
   return (
     <div className="p-4">
@@ -179,28 +208,50 @@ const TransactionHistory = () => {
                     )}
                   </td>
                   <td className="py-2">
-                    <span className={`${
-                      transaction.status === 'completed' 
-                        ? 'text-green-500'
-                        : transaction.status === 'pending'
-                        ? 'text-yellow-500'
-                        : 'text-red-500'
-                    }`}>
-                      {transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
-                    </span>
-                  </td>
-                  <td className="py-2 text-start flex gap-2">
                     {editMode === transaction.transaction_id ? (
-                      <>
-                        <button onClick={() => handleSave(transaction.transaction_id)} className="bg-blue-500 text-white px-3 py-1 rounded">
-                          Save
+                      <select
+                        value={editedData.status}
+                        onChange={(e) => handleEditChange('status', e.target.value)}
+                        className="border p-1 rounded"
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                        <option value="failed">Failed</option>
+                      </select>
+                    ) : (
+                      <span className={`${
+                        transaction.status === 'completed' 
+                          ? 'text-green-500'
+                          : transaction.status === 'pending'
+                          ? 'text-yellow-500'
+                          : 'text-red-500'
+                      }`}>
+                        {transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
+                      </span>
+                    )}
+                  </td>
+                  <td className="py-2">
+                    {editMode === transaction.transaction_id ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleSave(transaction.transaction_id)}
+                          className="bg-green-500 text-white p-1 rounded"
+                          disabled={updatingStatus}
+                        >
+                          {updatingStatus ? 'Saving...' : 'Save'}
                         </button>
-                        <button onClick={() => setEditMode(null)} className="bg-gray-500 text-white px-3 py-1 rounded">
+                        <button
+                          onClick={() => setEditMode(null)}
+                          className="bg-red-500 text-white p-1 rounded"
+                        >
                           Cancel
                         </button>
-                      </>
+                      </div>
                     ) : (
-                      <button onClick={() => handleEditClick(transaction)} className="bg-yellow-500 text-white px-3 py-1 rounded">
+                      <button
+                        onClick={() => handleEditClick(transaction)}
+                        className="bg-blue-500 text-white p-1 rounded"
+                      >
                         Edit
                       </button>
                     )}

@@ -10,9 +10,9 @@ const PersonalInfoPage = () => {
     <div className="container mx-auto py-12 px-6 sm:px-8 lg:px-12 min-h-screen">
       
       <p className="flex flex-row gap-2 items-center text-lg pb-4 -translate-y-8 font-thin px-6 pt-4">
-        <span>{adminDBSidebar[6].icons}</span>
+        <span>{adminDBSidebar[7].icons}</span>
         <span><PiGreaterThan /></span>
-        <span>{adminDBSidebar[6].name}</span>
+        <span>{adminDBSidebar[7].name}</span>
       </p>
 
 

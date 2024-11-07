@@ -103,9 +103,9 @@ const Kyc = () => {
     <div className="p-4">
       {error && <p className="text-red-500">{error}</p>} {/* Display any error messages */}
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-2 pt-4">
-        <span>{adminDBSidebar[4].icons}</span>
+        <span>{adminDBSidebar[5].icons}</span>
         <span><PiGreaterThan /></span>
-        <span>{adminDBSidebar[4].name}</span>
+        <span>{adminDBSidebar[5].name}</span>
       </p>
       <h2 className="text-xl font-bold mb-4 text-center">KYC Documents</h2>
 
