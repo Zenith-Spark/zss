@@ -4,6 +4,7 @@ import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
 import axios from 'axios';
+import { toast } from 'react-toastify'; // Import react-toastify
 
 const Investment = () => {
   const [filter, setFilter] = useState('all');
@@ -31,6 +32,7 @@ const Investment = () => {
     }
 
     try {
+      setLoading(true); // Start loading state
       const response = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/get-investments/', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -39,14 +41,16 @@ const Investment = () => {
 
       if (Array.isArray(response.data)) {
         setInvestments(response.data);
+        toast.success('Investments fetched successfully.', { position: "top-right", autoClose: 3000 });
       } else {
         setError('Unexpected response structure.');
+        toast.error('Unexpected response structure.', { position: "top-right", autoClose: 3000 });
       }
-
-      setLoading(false);
+      setLoading(false); // End loading state
     } catch (err) {
       setError('Failed to fetch investments. Please check your Internet connection or login status.');
-      setLoading(false);
+      toast.error('Failed to fetch investments. Please check your Internet connection or login status.', { position: "top-right", autoClose: 3000 });
+      setLoading(false); // End loading state
     }
   };
 
@@ -82,6 +86,7 @@ const Investment = () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!token) {
       setError('No token found. Please log in.');
+      toast.error('No token found. Please log in.', { position: "top-right", autoClose: 3000 });
       return;
     }
 
@@ -110,8 +115,10 @@ const Investment = () => {
       );
 
       setEditMode(null); // Exit edit mode after saving
+      toast.success('Investment updated successfully.', { position: "top-right", autoClose: 3000 });
     } catch (err) {
       setError('Failed to save changes. Please check your Internet connection or login status.');
+      toast.error('Failed to save changes. Please check your Internet connection or login status.', { position: "top-right", autoClose: 3000 });
     } finally {
       setUpdatingStatus(false);
     }
@@ -168,6 +175,7 @@ const Investment = () => {
                   <td className="py-2">{investment.duration_days} days</td>
                   <td className="py-2">${parseFloat(investment.expected_profit).toFixed(2)}</td>
                   
+
                   <td className="py-2">
                     {editMode === investment.id ? (
                       <input

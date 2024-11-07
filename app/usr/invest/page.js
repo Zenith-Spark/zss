@@ -16,6 +16,7 @@ const Page = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [investmentAmount, setInvestmentAmount] = useState('');
   const [selectedCoin, setSelectedCoin] = useState(Object.keys(formData.userWallet)[0]);
+  const [isInvesting, setIsInvesting] = useState(false); // New state for loading
 
   const Plans = formData.plans;
 
@@ -40,9 +41,9 @@ const Page = () => {
 
   const coinValue = formData.userWallet[selectedCoin];
   const equivalentValue = investmentAmount / coinValue;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
 
     if (investmentAmount > 0 && investmentAmount <= coinValue) {
       const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
@@ -50,16 +51,18 @@ const Page = () => {
         toast.error('No token found. Please log in.');
         return;
       }
-  
+
       try {
+        setIsInvesting(true); // Set loading to true before the request
+
         const investmentData = {
           investment_plan_name: selectedPlan.name,
           amount: investmentAmount,
-          network_name: selectedCoin,
+          network_name: selectedCoin.toLowerCase().replace(/\s+/g, '-'), // Make the coin lowercase and replace spaces with hyphens
         };
-  
+
         console.log('Investment Data:', investmentData);
-  
+
         const response = await axios.post(
           'https://zss.pythonanywhere.com/api/v1/investments/',
           investmentData,
@@ -70,19 +73,20 @@ const Page = () => {
             },
           }
         );
-  
+
         console.log('Investment response:', response.data);
-        toast.success(`You have successfully invested $${investmentAmount} in ${selectedCoin} with the ${selectedPlan.name} plan.`);
+        toast.success(`You have successfully invested $${investmentAmount} in ${selectedCoin} with the ${selectedPlan.name}.`);
         closeModal();
       } catch (error) {
         console.error('Investment failed:', error);
-        toast.error('There was an error processing your investment. Please Make sure to take note of the minimum and maximum price for each plan.');
+        toast.error('There was an error processing your investment. Please make sure to take note of the minimum and maximum price for each plan.');
+      } finally {
+        setIsInvesting(false); // Set loading to false after the request
       }
     } else {
-      toast.error(`Insufficient Funds in your ${selectedCoin} wallet. try again with a different coin or fund your ZSS wallet.`);
+      toast.error(`Insufficient Funds in your ${selectedCoin} wallet. Try again with a different coin or fund your ZSS wallet.`);
     }
   };
-  
 
   return (
     <>
@@ -147,9 +151,13 @@ const Page = () => {
                     <span className='font-semibold'>
                       Equivalent value in {selectedCoin}
                     </span>
-                    <span>
-                    {`${equivalentValue} ${selectedCoin}`}
-                    </span>
+                    {
+                      isNaN(equivalentValue) || equivalentValue === Infinity ? 'No funds for selected coin' : (
+                        <span>
+                          {`${equivalentValue} ${selectedCoin}`}
+                        </span>
+                      )
+                    }
                   </span>
                 </label>
                 <input
@@ -162,8 +170,12 @@ const Page = () => {
                   required
                 />
               </div>
-              <button type="submit" className="bg-blue-500 text-white rounded-lg px-4 py-2">
-                Invest
+              <button 
+                type="submit" 
+                className="bg-blue-500 text-white rounded-lg px-4 py-2"
+                disabled={isInvesting} // Disable the button during investment processing
+              >
+                {isInvesting ? 'Processing...' : 'Invest'}
               </button>
             </form>
           </div>

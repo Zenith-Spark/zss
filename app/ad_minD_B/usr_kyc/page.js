@@ -6,12 +6,15 @@ import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
 import { ButtonOne, ButtonTwo, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
 import { Download, Eye } from 'lucide-react';
 import axios from 'axios';
+import { toast } from 'react-toastify'; // Import react-toastify
 
 // Define the Kyc component
 const Kyc = () => {
   const [filter, setFilter] = useState('all');
   const [kycDocuments, setKycDocuments] = useState([]);
-  const [error, setError] = useState(''); // State to hold error messages
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false); // State for loading
+  const [updatingStatus, setUpdatingStatus] = useState(false); // State for updating status
   const BASE_URL = 'https://zss.pythonanywhere.com'; // Base URL for document access
 
   // Function to handle filter change
@@ -23,33 +26,25 @@ const Kyc = () => {
   useEffect(() => {
     const fetchKycDocuments = async () => {
       const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
-      console.log('Token:', token); // Log token
-
       if (!token) {
         setError('No authentication token found');
         return;
       }
 
       try {
+        setLoading(true); // Start loading
         const response = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/kyc-list/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log('Fetched documents:', response.data); // Log fetched documents
         setKycDocuments(response.data);
+        toast.success('KYC documents fetched successfully.', { position: "top-right", autoClose: 3000 });
       } catch (error) {
-        if (error.response) {
-          console.error('Error response data:', error.response.data);
-          console.error('Error response status:', error.response.status);
-          setError('Failed to fetch KYC documents: ' + (error.response.data.message || error.message));
-        } else if (error.request) {
-          console.error('Error request:', error.request);
-          setError('No response received from server');
-        } else {
-          console.error('Error message:', error.message);
-          setError('Error in setting up request: ' + error.message);
-        }
+        setError('Failed to fetch KYC documents: ' + (error.response ? error.response.data.message : error.message));
+        toast.error('Failed to fetch KYC documents.', { position: "top-right", autoClose: 3000 });
+      } finally {
+        setLoading(false); // End loading
       }
     };
 
@@ -74,10 +69,12 @@ const Kyc = () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!token) {
       setError('No authentication token found');
+      toast.error('No authentication token found.', { position: "top-right", autoClose: 3000 });
       return;
     }
 
     try {
+      setUpdatingStatus(true); // Start updating status
       await axios.put(`https://zss.pythonanywhere.com/api/v1/admin/kyc-update/${id}/`, 
         { status },
         {
@@ -93,11 +90,14 @@ const Kyc = () => {
         },
       });
       setKycDocuments(response.data);
+      toast.success('KYC status updated successfully.', { position: "top-right", autoClose: 3000 });
     } catch (error) {
       setError('Failed to update KYC status: ' + (error.response ? error.response.data.message : error.message));
+      toast.error('Failed to update KYC status.', { position: "top-right", autoClose: 3000 });
+    } finally {
+      setUpdatingStatus(false); // End updating status
     }
   };
-
 
   return (
     <div className="p-4">
@@ -114,55 +114,59 @@ const Kyc = () => {
         <Dropdown buttonText={filter.charAt(0).toUpperCase() + filter.slice(1)} items={dropdownItems} />
       </div>
 
+      {/* Loading state */}
+      {loading && <p className="text-center">Loading KYC documents...</p>}
+
       {/* Table with scrollable x-direction on mobile */}
       <div className="overflow-x-auto justify-center items-center mt-6">
-      <table className="w-full border-collapse">
-  <thead>
-    <tr className="text-start border-b">
-      <th className="py-2 text-start">User ID</th>
-      <th className="py-2 text-start">User Name</th>
-      <th className="py-2 text-start">KYC Document</th>
-      <th className="py-2 text-start">Action</th>
-    </tr>
-  </thead>
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="text-start border-b">
+              <th className="py-2 text-start">User ID</th>
+              <th className="py-2 text-start">User Name</th>
+              <th className="py-2 text-start">KYC Document</th>
+              <th className="py-2 text-start">Action</th>
+            </tr>
+          </thead>
 
-  {/* Check if there are no filtered documents */}
-  <tbody>
-    {filteredDocuments.length === 0 ? (
-      <tr>
-        <td colSpan="4" className="py-2 text-center">
-          {error ? (
-            <p className="text-red-500">{error}</p>
-          ) : (
-            <p>No KYC documents found.</p>
-          )}
-        </td>
-      </tr>
-    ) : (
-      filteredDocuments.map((doc) => (
-        <tr key={doc.id} className="text-end border-b">
-          <td className="py-2 text-start">{doc.id}</td>
-          <td className="py-2 text-start">{doc.user_full_name}</td>
-          <td className="py-2 text-start">
-            <a href={`${BASE_URL}${doc.document}`} download className="flex gap-1">
-              <ButtonOne iconValue={<Eye />} buttonValue={'Open'} />
-            </a>
-          </td>
-          <td className="py-2 text-start flex flex-row gap-2">
-            <select
-              value={doc.status}
-              onChange={(e) => updateKycStatus(doc.id, e.target.value)}
-              className="border-b px-2 py-1 bg-transparent"
-            >
-              <option value="approved" className=' text-black'>Approve</option>
-              <option value="rejected" className=' text-black'>Reject</option>
-            </select>
-          </td>
-        </tr>
-      ))
-    )}
-  </tbody>
-</table>
+          {/* Check if there are no filtered documents */}
+          <tbody>
+            {filteredDocuments.length === 0 ? (
+              <tr>
+                <td colSpan="4" className="py-2 text-center">
+                  {error ? (
+                    <p className="text-red-500">{error}</p>
+                  ) : (
+                    <p>No KYC documents found.</p>
+                  )}
+                </td>
+              </tr>
+            ) : (
+              filteredDocuments.map((doc) => (
+                <tr key={doc.id} className="text-end border-b">
+                  <td className="py-2 text-start">{doc.id}</td>
+                  <td className="py-2 text-start">{doc.user_full_name}</td>
+                  <td className="py-2 text-start">
+                    <a href={`${BASE_URL}${doc.document}`} download className="flex gap-1">
+                      <ButtonOne iconValue={<Eye />} buttonValue={'Open'} />
+                    </a>
+                  </td>
+                  <td className="py-2 text-start flex flex-row gap-2">
+                    <select
+                      value={doc.status}
+                      onChange={(e) => updateKycStatus(doc.id, e.target.value)}
+                      className="border-b px-2 py-1 bg-transparent"
+                      disabled={updatingStatus} // Disable during status update
+                    >
+                      <option value="approved" className='text-black'>Approve</option>
+                      <option value="rejected" className='text-black'>Reject</option>
+                    </select>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

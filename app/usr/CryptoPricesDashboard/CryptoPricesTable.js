@@ -8,6 +8,8 @@ import Txn from '../transaction/Txn';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { LoaderStyle6Component } from '@assets/app/components/resuables/Loader/Loader';
 import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
+
 
 
 
@@ -119,11 +121,13 @@ const CryptoPricesTable = ({showTable}) => {
   }
 
   // Define wallet addresses for each coin
-  const walletAddresses = {
-    bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Example address
-    ethereum: '0x32Be343B94f860124dC4fEe278FDCBD38C102D88', // Example address
-    // Add more coins and their associated wallet addresses as needed
-  };
+  const walletAddresses = formData.walletAddresses
+  
+  // {
+  //   bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Example address
+  //   ethereum: '0x32Be343B94f860124dC4fEe278FDCBD38C102D88', // Example address
+  //   // Add more coins and their associated wallet addresses as needed
+  // };
 
   // Function to copy wallet address based on selected coin
   const copyWalletAddress = () => {
@@ -132,16 +136,16 @@ const CryptoPricesTable = ({showTable}) => {
       if (walletAddress) {
         navigator.clipboard.writeText(walletAddress)
           .then(() => {
-            alert(`Wallet address copied: ${walletAddress}`);
+            toast.success(`Wallet address copied: ${walletAddress}`);
           })
           .catch(err => {
             console.error('Failed to copy wallet address: ', err);
           });
       } else {
-        alert(`No wallet address available for ${selectedCoin.name}`);
+        toast.error(`No wallet address available for ${selectedCoin.name}`);
       }
     } else {
-      alert('Please select a coin first.');
+      toast.warn('Please select a coin first.');
     }
   };
 
@@ -150,12 +154,12 @@ const handleSubmitDeposit = async (e) => {
   e.preventDefault();
   
   if (!selectedCoin || !depositAmount) {
-    alert('Please select a coin and enter an amount.');
+    toast.warn('Please select a coin and enter an amount.');
     return;
   }
 
   try {
-    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/deposits/${selectedCoin.name}/`, 
+    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/deposits/${selectedCoin.id}/`, 
       {
         amount_usd: depositAmount,
       }, 
@@ -167,17 +171,17 @@ const handleSubmitDeposit = async (e) => {
     );
 
     if (response.status === 200 || response.status === 201) {
-      alert('Deposit successful');
+      toast.success('Deposit successful');
       setDepositAmount(''); // Reset the deposit amount
       setShowDeposit(false); // Close the modal
   fetchTransactions()
     } else {
-      alert('Deposit failed');
+      toast.error('Deposit failed');
     }
   } catch (err) {
     console.error('Error during deposit:', err);
     setDepositAmount(''); // Reset the deposit amount
-    alert('An error occurred while processing your deposit. Please try again.');
+    toast.error('An error occurred while processing your deposit. Please try again.');
   }
 };
 
@@ -185,7 +189,7 @@ const handleSubmitwithdrawal = async (e) => {
   e.preventDefault();
   
   if (!selectedCoin || !withdrawal) {
-    alert('Please select a coin and enter an amount.');
+    toast.warn('Please select a coin and enter an amount.');
     return;
   }
 
@@ -195,14 +199,14 @@ const handleSubmitwithdrawal = async (e) => {
 
   // Check if the withdrawal amount exceeds the total value of the owned coins
   if (parseFloat(withdrawal) > userTotalValue) {
-    alert(`Insufficient funds. You can withdraw up to $${userTotalValue} for ${selectedCoin.name}.`);
+    toast.warn(`Insufficient funds. You can withdraw up to $${userTotalValue} for ${selectedCoin.name}.`);
     setWithdrawal(''); 
     setUserWalletAdd('');
     return;
   }
 
   try {
-    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/withdrawals/${selectedCoin.name}/`, 
+    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/withdrawals/${selectedCoin.id}/`, 
       {
         amount_usd: withdrawal,
         wallet_address: userWalletAdd
@@ -215,19 +219,19 @@ const handleSubmitwithdrawal = async (e) => {
     );
 
     if (response.status === 200 || response.status === 201) {
-      alert('Withdrawal successful');
+      toast.success('Withdrawal successful');
       setWithdrawal(''); 
       setUserWalletAdd('');
       setShowWithdrawal(false); // Close the modal
   fetchTransactions()
     } else {
-      alert('Withdrawal failed');
+      toast.error('Withdrawal failed');
     }
   } catch (err) {
     console.error('Error during withdrawal:', err);
     setWithdrawal(''); 
     setUserWalletAdd('');
-    alert('An error occurred while processing your withdrawal. Please try again.');
+    toast.error('An error occurred while processing your withdrawal. Please try again.');
   }
 };
 
@@ -274,6 +278,7 @@ useEffect(() => {
  
   return (
     <>
+    <ToastContainer/>
       <div className="container mx-auto pb-5 pt-5">
         {/* Full-screen overlay for transaction popup */}
         {transaction && (

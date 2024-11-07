@@ -3,9 +3,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import { LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
+
 
 const Plans = () => {
+  const [loading, setLoading] = useState(false); // Loading state for form submit
+  const [loadingPlan, setLoadingPlan] = useState(false); // Loading state for fetching plans
   const [plans, setPlans] = useState([]); // State to hold existing plans
   const [formType, setFormType] = useState('create'); // Track whether we are creating or editing
   const [selectedPlan, setSelectedPlan] = useState(null); // State for the plan being edited
@@ -20,10 +24,12 @@ const Plans = () => {
 
   // Fetch existing plans when the component mounts
   useEffect(() => {
+    setLoadingPlan(true);
     const fetchPlans = async () => {
       const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
       if (!token) {
         toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
+        setLoadingPlan(false);
         return;
       }
 
@@ -35,9 +41,11 @@ const Plans = () => {
         });
         setPlans(response.data);
         toast.success('Plans fetched successfully.', { position: "top-right", autoClose: 3000 });
+        setLoadingPlan(false);
       } catch (error) {
         console.error('Error fetching plans:', error);
         toast.error('Failed to fetch plans: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
+        setLoadingPlan(false);
       }
     };
 
@@ -55,10 +63,12 @@ const Plans = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading state to true for button
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
   
     if (!token) {
       toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
+      setLoading(false);
       return;
     }
   
@@ -105,6 +115,8 @@ const Plans = () => {
     } catch (error) {
       console.error('Error saving plan:', error);
       toast.error('Failed to save plan: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
+    } finally {
+      setLoading(false); // Set loading state back to false after request completes
     }
   };
 
@@ -113,9 +125,17 @@ const Plans = () => {
     setFormType('edit');
     setSelectedPlan(plan);
     setNewPlan({ ...plan });
+    
+    // Scroll to the top of the page
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // Adds smooth scrolling
+    });
   };
 
   return (
+   <>
+   <ToastContainer/>
     <div className='py-16 w-full h-auto'>
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
         <span>{adminDBSidebar[3].icons}</span>
@@ -137,6 +157,8 @@ const Plans = () => {
               value={newPlan.name}
               onChange={handleChange}
               required
+              pattern="^[A-Za-z ]*$"
+              title="Only letters and spaces are allowed."
               className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
             />
           </div>
@@ -149,6 +171,9 @@ const Plans = () => {
               value={newPlan.profit_percentage}
               onChange={handleChange}
               required
+              pattern="^[0-9]*$"
+              inputMode="numeric"
+              title="Only numeric values from 0-9  are allowed."
               className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
             />
           </div>
@@ -161,6 +186,9 @@ const Plans = () => {
               value={newPlan.duration_days}
               onChange={handleChange}
               required
+              pattern="^[0-9]*$"
+              inputMode="numeric"
+              title="Only numeric values from 0-9 are allowed."
               className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
             />
           </div>
@@ -173,6 +201,9 @@ const Plans = () => {
               value={newPlan.minimum_amount}
               onChange={handleChange}
               required
+              pattern="^[0-9]*$"
+              inputMode="numeric"
+              title="Only numeric values from 0-9  are allowed."
               className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
             />
           </div>
@@ -185,6 +216,9 @@ const Plans = () => {
               value={newPlan.maximum_amount}
               onChange={handleChange}
               required
+              pattern="^[0-9]*$"
+              inputMode="numeric"
+              title="Only numeric values from 0-9 are allowed."
               className="border-b bg-transparent focus:border-blue-600 p-3 w-full max-w-xs focus:outline-none transition duration-200 ease-in-out"
             />
           </div>
@@ -200,7 +234,13 @@ const Plans = () => {
               <span>Is Active</span>
             </label>
           </div>
-          <button type="submit" className="bg-blue-500 rounded-lg text-white px-6 py-3 hover:bg-blue-600 transition duration-200">{formType === 'create' ? 'Create Plan' : 'Update Plan'}</button>
+          <button type="submit" className="bg-blue-500 rounded-lg text-white px-6 py-3 hover:bg-blue-600 transition duration-200" disabled={loading}>
+            {loading ? (formType === 'create' ? (
+              <LoaderStyle8Component fill={'#ffffff'}/>
+            ) : (
+              <LoaderStyle8Component fill={'#ffffff'}/>
+            )) : (formType === 'create' ? 'Create Plan' : 'Update Plan')}
+          </button>
         </form>
       </section>
 
@@ -223,6 +263,7 @@ const Plans = () => {
         )}
       </section>
     </div>
+   </>
   );
 };
 

@@ -4,6 +4,7 @@ import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const TransactionHistory = () => {
   const [filter, setFilter] = useState('all');
@@ -26,6 +27,7 @@ const TransactionHistory = () => {
     if (!token) {
       setError('No token found. Please log in.');
       setLoading(false);
+      toast.error('No token found. Please log in.');
       return;
     }
 
@@ -38,12 +40,14 @@ const TransactionHistory = () => {
         setTransactions(response.data.transactions);
       } else {
         setError('Unexpected response structure.');
+        toast.error('Unexpected response structure.');
       }
 
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch transactions. Please check your Internet connection or login status.');
       setLoading(false);
+      toast.error('Failed to fetch transactions. Please check your Internet connection or login status.');
     }
   };
 
@@ -80,18 +84,19 @@ const TransactionHistory = () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!token) {
       setError('No token found. Please log in.');
+      toast.error('No token found. Please log in.');
       return;
     }
-  
+
     try {
       setUpdatingStatus(true);
-  
+
       const transaction = transactions.find(t => t.transaction_id === transactionId);
       const urlType = transaction.method === 'deposit' ? 'deposit' : 'withdrawal';
       const url = `https://zss.pythonanywhere.com/api/v1/admin/${urlType}/${transactionId}/edit/`;
-  
+
       let requestData = {};
-  
+
       if (editedData.status && editedData.status !== transaction.status) {
         // If editing the status
         requestData = { status: editedData.status.toLowerCase() };  // Only send status
@@ -107,16 +112,16 @@ const TransactionHistory = () => {
           const seconds = String(d.getSeconds()).padStart(2, '0');
           return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         };
-  
+
         // Prepare date-related fields
         requestData = {
           created_at: formatDate(editedData.created_at),
           updated_at: formatDate(new Date()),  // You can change this as needed
         };
       }
-  
+
       console.log('Request Data:', requestData);  // Log request data
-  
+
       const response = await axios.put(
         url,
         requestData,
@@ -124,9 +129,9 @@ const TransactionHistory = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-  
+
       console.log('Response:', response);  // Log the API response
-  
+
       // Update the state after successful API call
       setTransactions(prevTransactions =>
         prevTransactions.map(transaction =>
@@ -135,16 +140,17 @@ const TransactionHistory = () => {
             : transaction
         )
       );
-  
+
       setEditMode(null); // Exit edit mode after saving
+      toast.success('Transaction updated successfully!');
     } catch (err) {
       console.error('Error:', err.response ? err.response.data : err);  // Log detailed error if available
       setError('Failed to save changes. Please check your Internet connection or login status.');
+      toast.error('Failed to save changes. Please check your Internet connection or login status.');
     } finally {
       setUpdatingStatus(false);
     }
   };
-  
 
   return (
     <div className="p-4">
@@ -160,8 +166,6 @@ const TransactionHistory = () => {
       </div>
 
       {loading && <p className="text-center">Loading transactions...</p>}
-      {error && <p className="text-red-500 text-center">{error}</p>}
-
       <div className="overflow-x-auto justify-center items-center mt-6">
         <table className="min-w-full w-[100rem]">
           <thead>

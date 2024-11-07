@@ -6,18 +6,19 @@ import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import { LoaderOne } from '@assets/app/components/resuables/Loader/Loader';
 
-
 const NetworksPage = () => {
-    const [networks, setNetworks] = useState([]);
-    const [formType, setFormType] = useState('create'); // Track whether we are creating or editing
-    const [selectedNetwork, setSelectedNetwork] = useState(null); // Track selected network for editing
+    const [networks, setNetworks] = useState([]); // State for networks list
+    const [formType, setFormType] = useState('create'); // To track form mode (create/edit)
+    const [selectedNetwork, setSelectedNetwork] = useState(null); // State for the selected network to edit
     const [networkForm, setNetworkForm] = useState({
         name: '',
         symbol: '',
         wallet_address: '',
-    });
-    const [isLoading, setIsLoading] = useState(false); // Loading state for button
+    }); // Form state for new or edited network
+    const [isLoading, setIsLoading] = useState(false); // Loading state for form submission button
+    const [loadingNetworks, setLoadingNetworks] = useState(false); // Loading state for fetching networks
     const formRef = useRef(null); // Reference for the form section
+
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
 
     // Fetch all networks on component mount
@@ -26,6 +27,8 @@ const NetworksPage = () => {
             toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
             return;
         }
+
+        setLoadingNetworks(true); // Set loading state when fetching networks
         try {
             const response = await axios.get('https://zss.pythonanywhere.com/api/v1/networks/', {
                 headers: { Authorization: `Bearer ${token}` },
@@ -35,11 +38,13 @@ const NetworksPage = () => {
         } catch (error) {
             console.error('Error fetching networks:', error);
             toast.error('Failed to fetch networks: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
+        } finally {
+            setLoadingNetworks(false); // Reset loading state after fetch completes
         }
     };
 
     useEffect(() => {
-        fetchNetworks();
+        fetchNetworks(); // Fetch networks when the component mounts
     }, [token]);
 
     // Handle form input changes
@@ -49,45 +54,54 @@ const NetworksPage = () => {
     };
 
     // Handle form submission for creating or updating networks
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!token) {
-            toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
-            return;
+   // Handle form submission for creating or updating networks
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!token) {
+        toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
+        return;
+    }
+
+    setIsLoading(true); // Set loading to true when submitting form
+
+    // Modify networkForm.name before submitting
+    const formattedName = networkForm.name
+        .toLowerCase()
+        .replace(/\s+/g, '-'); // Convert to lowercase and replace spaces with hyphens
+
+    const formData = { ...networkForm, name: formattedName };
+
+    try {
+        if (formType === 'create') {
+            await axios.post('https://zss.pythonanywhere.com/api/v1/networks/', formData, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            toast.success('Network created successfully.', { position: "top-right", autoClose: 3000 });
+        } else if (formType === 'edit' && selectedNetwork) {
+            await axios.patch(
+                `https://zss.pythonanywhere.com/api/v1/networks/${encodeURIComponent(selectedNetwork.name)}/`,
+                { wallet_address: networkForm.wallet_address }, // Only send wallet_address in patch
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            toast.success('Network updated successfully.', { position: "top-right", autoClose: 3000 });
         }
 
-        setIsLoading(true); // Set loading to true when submitting
+        // Refetch networks after successful create/update
+        fetchNetworks();
 
-        try {
-            if (formType === 'create') {
-                await axios.post('https://zss.pythonanywhere.com/api/v1/networks/', networkForm, {
-                    headers: { Authorization: `Bearer ${token}` },
-                });
-                toast.success('Network created successfully.', { position: "top-right", autoClose: 3000 });
-            } else if (formType === 'edit' && selectedNetwork) {
-                await axios.patch(
-                    `https://zss.pythonanywhere.com/api/v1/networks/${encodeURIComponent(selectedNetwork.name)}/`,
-                    { wallet_address: networkForm.wallet_address }, // Only send wallet_address in patch
-                    { headers: { Authorization: `Bearer ${token}` } }
-                );
-                toast.success('Network updated successfully.', { position: "top-right", autoClose: 3000 });
-            }
+        // Reset the form fields and form state
+        setNetworkForm({ name: '', symbol: '', wallet_address: '' });
+        setFormType('create');
+        setSelectedNetwork(null);
+    } catch (error) {
+        console.error('Error saving network:', error);
+        toast.error('Failed to save network: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
+    } finally {
+        setIsLoading(false); // Reset loading state after form submission
+    }
+};
 
-            // Refetch networks after successful update
-            fetchNetworks();
-
-            // Reset the form fields and form state
-            setNetworkForm({ name: '', symbol: '', wallet_address: '' });
-            setFormType('create');
-            setSelectedNetwork(null);
-
-        } catch (error) {
-            console.error('Error saving network:', error);
-            toast.error('Failed to save network: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
-        } finally {
-            setIsLoading(false); // Reset loading state after completion
-        }
-    };
 
     // Prepare the form for editing a network and scroll to the form section
     const handleEdit = (network) => {
@@ -95,7 +109,7 @@ const NetworksPage = () => {
         setSelectedNetwork(network);
         setNetworkForm({ wallet_address: network.wallet_address }); // Only set wallet_address for editing
 
-        // Scroll to the form section
+        // Scroll to the form section for editing
         formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
 
@@ -166,17 +180,19 @@ const NetworksPage = () => {
             {/* Display existing networks */}
             <h3 className="text-xl font-semibold mb-4 w-full">Existing Networks</h3>
             <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {networks.length === 0 ? (
-                <p>No networks available.</p>
-            ) : (
-                networks.map((network, index) => (
-                    <div key={network.id || `${network.name}-${index}`} className="shadow-md p-6 rounded-lg">
-                        <h4 className="text-lg font-bold">{network?.name || '(No Name)'} ({network?.symbol || ''})</h4>
-                        <p><strong>Wallet:</strong> {network?.wallet_address || '(No Wallet Address)'}</p>
-                        <button onClick={() => handleEdit(network)} className="text-blue-500 hover:underline mt-4">Edit</button>
-                    </div>                        
-                ))
-            )}
+                {loadingNetworks ? (
+                    <p>Loading networks...</p>
+                ) : networks.length === 0 ? (
+                    <p>No networks available.</p>
+                ) : (
+                    networks.map((network, index) => (
+                        <div key={network.id || `${network.name}-${index}`} className="shadow-md p-6 rounded-lg">
+                            <h4 className="text-lg font-bold">{network?.name || '(No Name)'} ({network?.symbol || ''})</h4>
+                            <p><strong>Wallet:</strong> {network?.wallet_address || '(No Wallet Address)'}</p>
+                            <button onClick={() => handleEdit(network)} className="text-blue-500 hover:underline mt-4">Edit</button>
+                        </div>
+                    ))
+                )}
             </section>
         </div>
     );

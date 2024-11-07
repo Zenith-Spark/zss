@@ -17,18 +17,15 @@ export const GlobalStateProvider = ({ children }) => {
     lastLoginIP: '',
     referalCode: '',
     referredBy: '',
-    userWallet: {
-      bitcoin: 0,
-      ethereum: 0,
-      tether: 0,
-      'shiba-inu': 0,
-    },
+    userWallet: {},
+    walletAddresses: {},
     totalBalance: 0,
     referralLink: '',
     notification: [],
     adminNotification: [],
     plans: [],
-    investments: []
+    investments: [],
+
   });
 
   // Function to handle errors
@@ -94,21 +91,64 @@ export const GlobalStateProvider = ({ children }) => {
   
       const { total_balance, network_balances } = response.data;
   
+      // Fetch network details to update userWallet and walletAddresses
+      const networkResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/networks/', {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+  
+      const networks = networkResponse.data;
+      console.log('Networks:', networks); // Log the network data before updating state
+  
+      // Populate userWallet and walletAddresses from the network data
+      const userWallet = {};
+      const walletAddresses = {};
+  
+      networks.forEach(network => {
+        // Ensure the name is lowercase and spaces are replaced with hyphens
+        const formattedName = network.name.toLowerCase().replace(/\s+/g, '-');
+  
+        // Log the formatted name and network balance before assigning
+        const networkBalance = network_balances[network.name]; // Access balance by network name
+        console.log(`Network: ${network.name}, Formatted Name: ${formattedName}, Network Balance: ${networkBalance ? networkBalance.balance : 'No balance'}`);
+  
+        // Assign the network balance to userWallet
+        userWallet[formattedName] = networkBalance ? networkBalance.balance : 0; // Assign the balance
+  
+        // Log the wallet address before assigning to walletAddresses
+        const walletAddress = network.wallet_address;
+        console.log(`Network: ${network.name}, Wallet Address: ${walletAddress}`);
+  
+        // Assign the wallet address to walletAddresses using the formatted name
+        walletAddresses[formattedName] = walletAddress;
+      });
+  
+      console.log('userWallet before setFormData:', userWallet);
+      console.log('walletAddresses before setFormData:', walletAddresses);
+  
+      // Now update formData with userWallet and walletAddresses
       setFormData(prevState => ({
         ...prevState,
         totalBalance: total_balance || 0,
-        userWallet: {
-          bitcoin: network_balances?.Bitcoin?.balance || 0,
-          ethereum: network_balances?.Ethereum?.balance || 0,
-          tether: network_balances?.Tether?.balance || 0,
-          'shiba-inu': network_balances?.['Shiba Inu']?.balance || 0,
-        },
+        userWallet,
+        walletAddresses,
       }));
+  
+      console.log('formData after setFormData update:', {
+        ...formData,
+        totalBalance: total_balance || 0,
+        userWallet,
+        walletAddresses,
+      });
+  
     } catch (err) {
-      console.error('Could not fetch total balance:', err);
-      handleError('Could not fetch total balance', err);
+      console.error('Could not fetch total balance or networks:', err);
+      handleError('Could not fetch total balance or networks', err);
     }
   };
+  
+  
 
   // Function to fetch plans
   const fetchPlans = async (authToken) => {
