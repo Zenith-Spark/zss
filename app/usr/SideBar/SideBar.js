@@ -85,21 +85,22 @@ const SideBar = () => {
           </div>
 
           {/* User Info */}
-          <div className='h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2'>
-            <span className='text-3xl border rounded-full p-2 bg-slate-500'>
-              {usrDBSidebar[6].icons}
+          <div className="h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2">
+            <span className="text-3xl border rounded-full h-12 w-12 bg-slate-500 flex items-center justify-center">
+              {formData.fullName ? <strong>{formData.fullName.charAt(0)}</strong> : usrDBSidebar[6].icons}
             </span>
             <div>
-              <h1 className='font-bold text-base flex flex-col md:flex-row gap-x-2 '>
+              <h1 className="font-bold text-base flex flex-col md:flex-row gap-x-2">
                 <span>
-                 {formData.fullName? formData.fullName : 'Full Name'}
+                  {formData.fullName ? formData.fullName : 'Full Name'}
                 </span>
               </h1>
-              <marquee className='text-xs w-full'>
-              {formData.email? formData.email : 'Email'}
+              <marquee className="text-xs w-full">
+                {formData.email ? formData.email : 'Email'}
               </marquee>
             </div>
           </div>
+
 
           {/* Sidebar Links */}
           <p className="text-gray-500 text-sm font-semibold ml-4 md:ml-8 mb-1">

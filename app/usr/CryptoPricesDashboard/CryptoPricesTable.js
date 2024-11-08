@@ -6,7 +6,7 @@ import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import { X } from 'lucide-react';
 import Txn from '../transaction/Txn';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
-import { LoaderStyle6Component } from '@assets/app/components/resuables/Loader/Loader';
+import { LoaderStyle6Component, LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 
@@ -33,6 +33,8 @@ const CryptoPricesTable = ({showTable}) => {
   const [Txnerror, settxnerror] = useState('')
   const [depositHistory, setDepositHistory] = useState([]);
   const [withdrawalHistory, setWithdrawalHistory] = useState([]);
+  const [laoding, setLoading] = useState(false)
+  
 
 
   const pageLimit = 10; // Display 10 coins per page
@@ -150,91 +152,92 @@ const CryptoPricesTable = ({showTable}) => {
   };
 
   
-const handleSubmitDeposit = async (e) => {
-  e.preventDefault();
-  
-  if (!selectedCoin || !depositAmount) {
-    toast.warn('Please select a coin and enter an amount.');
-    return;
-  }
+  const handleSubmitDeposit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/deposits/${selectedCoin.id}/`, 
-      {
-        amount_usd: depositAmount,
-      }, 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (response.status === 200 || response.status === 201) {
-      toast.success('Deposit successful');
-      setDepositAmount(''); // Reset the deposit amount
-      setShowDeposit(false); // Close the modal
-  fetchTransactions()
-    } else {
-      toast.error('Deposit failed');
+    // Prevent multiple submissions
+    
+    setLoading(true);
+    if (loading) return;
+    
+    if (!selectedCoin || !depositAmount) {
+      toast.warn('Please select a coin and enter an amount.');
+      setLoading(false);
+      return;
     }
-  } catch (err) {
-    console.error('Error during deposit:', err);
-    setDepositAmount(''); // Reset the deposit amount
-    toast.error('An error occurred while processing your deposit. Please try again.');
-  }
-};
 
-const handleSubmitwithdrawal = async (e) => {
-  e.preventDefault();
-  
-  if (!selectedCoin || !withdrawal) {
-    toast.warn('Please select a coin and enter an amount.');
-    return;
-  }
+    try {
+      const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/deposits/${selectedCoin.id}/`, 
+        { amount_usd: depositAmount }, 
+        { headers: { Authorization: `Bearer ${token}` }}
+      );
 
-  // Calculate the total value of the selected coin owned by the user
-  const userCoinAmount = userWallet[selectedCoin.id] || 0;
-  const userTotalValue = userCoinAmount * selectedCoin.currentPrice;
-
-  // Check if the withdrawal amount exceeds the total value of the owned coins
-  if (parseFloat(withdrawal) > userTotalValue) {
-    toast.warn(`Insufficient funds. You can withdraw up to $${userTotalValue} for ${selectedCoin.name}.`);
-    setWithdrawal(''); 
-    setUserWalletAdd('');
-    return;
-  }
-
-  try {
-    const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/withdrawals/${selectedCoin.id}/`, 
-      {
-        amount_usd: withdrawal,
-        wallet_address: userWalletAdd
-      }, 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      if (response.status === 200 || response.status === 201) {
+        toast.success('Deposit successful');
+        setDepositAmount(''); // Reset the deposit amount
+      } else {
+        toast.error('Deposit failed');
       }
-    );
+    } catch (err) {
+      console.error('Error during deposit:', err);
+      toast.error('An error occurred while processing your deposit. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    if (response.status === 200 || response.status === 201) {
-      toast.success('Withdrawal successful');
+  const handleSubmitwithdrawal = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+  
+    if (!selectedCoin || !withdrawal) {
+      toast.warn('Please enter your wallet address and an amount.');
+      setLoading(false);
+      return;
+    }
+  
+    // Calculate the total value of the selected coin owned by the user
+    const userTotalValue = userWallet[selectedCoin.id] || 0
+  
+    // Check if the withdrawal amount exceeds the total value of the owned coins
+    if (parseFloat(withdrawal) > userTotalValue) {
+      toast.warn(`Insufficient funds. You can withdraw up to $${userTotalValue.toFixed(2)} for ${selectedCoin.name}.`);
+      setLoading(false);
       setWithdrawal(''); 
       setUserWalletAdd('');
-      setShowWithdrawal(false); // Close the modal
-  fetchTransactions()
-    } else {
-      toast.error('Withdrawal failed');
+      return;
     }
-  } catch (err) {
-    console.error('Error during withdrawal:', err);
-    setWithdrawal(''); 
-    setUserWalletAdd('');
-    toast.error('An error occurred while processing your withdrawal. Please try again.');
-  }
-};
-
+  
+    try {
+      const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/withdrawals/${selectedCoin.id}/`, 
+        {
+          amount_usd: withdrawal,
+          wallet_address: userWalletAdd
+        }, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.status === 200 || response.status === 201) {
+        toast.success('Withdrawal successful');
+        setWithdrawal(''); 
+        setUserWalletAdd('');
+        setShowWithdrawal(false); // Close the modal
+        fetchTransactions();
+      } else {
+        toast.error('Withdrawal failed');
+      }
+    } catch (err) {
+      console.error('Error during withdrawal:', err);
+      toast.error('An error occurred while processing your withdrawal. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
 const fetchTransactions = async () => {
   try {
     // Fetch deposits
@@ -295,9 +298,9 @@ useEffect(() => {
                       <img src={selectedCoin.image} alt={selectedCoin.name} className="w-20 h-20 rounded-full" />
                       <div>
                         <h2 className="text-xl font-bold">{selectedCoin.name}</h2>
-                        <p className="md:text-lg ">~ {userWallet[selectedCoin.id] || 0}</p>
+                        <p className="md:text-lg ">~ {(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] / selectedCoin.currentPrice) : 0)}</p>
                         <p className="md:text-lg font-thin">
-                          ~ ${(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] / selectedCoin.currentPrice) : 0)}
+                          ~ ${userWallet[selectedCoin.id] || 0} 
                         </p>
                       </div>
                     </div>
@@ -331,8 +334,10 @@ useEffect(() => {
             onChange={(e) => setDepositAmount(e.target.value)}
             />
             <span className='w-1/2'>
-            <DBButtonOne buttonValue={'Proceed'}/>
-            </span>
+            <DBButtonOne buttonValue={loading ? (
+              <LoaderStyle8Component fill={'#ffffff'}/>
+            ) : 'Proceed'} disabled={loading}/>
+             </span>
             </form >
           </Modal>
         )}
@@ -362,7 +367,9 @@ useEffect(() => {
             />
               </span>
             <span className='w-1/2'>
-            <DBButtonOne buttonValue={'Proceed'}/>
+            <DBButtonOne buttonValue={loading ? (
+              <LoaderStyle8Component fill={'#ffffff'}/>
+            ) : 'Proceed'} disabled={loading}/>
             </span>
             </div>
             </form>

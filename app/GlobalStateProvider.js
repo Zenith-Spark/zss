@@ -1,6 +1,7 @@
 'use client';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer } from 'react-toastify';
 
 const GlobalStateContext = createContext();
 
@@ -212,9 +213,12 @@ export const GlobalStateProvider = ({ children }) => {
   }, [formData]);
 
   return (
+   <>
+   <ToastContainer/>
     <GlobalStateContext.Provider value={{ formData, setFormData, error, fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments }}>
       {children}
     </GlobalStateContext.Provider>
+   </>
   );
 };
 

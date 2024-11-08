@@ -14,7 +14,7 @@ const Txn = ({ depositHistory = [], withdrawalHistory = [] }) => {
   };
 
   return (
-    <div className="w-full h-full mt-4 text-slate-800">
+    <div className="w-full max-h-[50dvh] h-auto mt-4 text-slate-800 overflow-scroll scrollbar-thin">
       <div className="text-center w-full mb-4">
         <div className="flex justify-center gap-4">
           <button
