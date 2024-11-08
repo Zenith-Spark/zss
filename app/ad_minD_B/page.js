@@ -98,7 +98,7 @@ const Admin = () => {
           <span>{adminDBSidebar[0].name}</span>
         </p>
         <h2 className="text-xl font-bold mb-4 text-center">Users</h2>
-
+        
         <div className="text-center mb-4">
           <h3 className="text-lg font-semibold">Total Users: {totalUsers}</h3>
         </div>
