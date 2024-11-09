@@ -12,7 +12,7 @@ const UsrLayout = ({ children }) => {
 
 
   useEffect(() => {
-    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken') || localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!authToken) {
       alert('No authentication token found');
       return;

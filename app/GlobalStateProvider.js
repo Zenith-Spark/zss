@@ -24,10 +24,21 @@ export const GlobalStateProvider = ({ children }) => {
     totalBalance: 0,
     referralLink: '',
     notification: [],
-    adminNotification: [],
     plans: [],
     investments: [],
 
+
+  // Admin-specific fields
+  adminFullName: '',
+  adminEmail: '',
+  adminPassword: '',
+  adminDateJoined: '',
+  adminGender: '',
+  adminIP: '',
+  adminLastLogin: '',
+  adminReferralCode: '',
+  adminReferredBy: '',
+  adminNotification: [],
   });
 
   // Function to handle errors
@@ -63,6 +74,38 @@ export const GlobalStateProvider = ({ children }) => {
       handleError('Could not fetch profile data', err);
     }
   };
+  // Function to fetch admin profile data
+  const fetchAdminData = async () => {
+    const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+    if (!token) {
+      handleError('No admin authentication token found');
+      return;
+    }
+    try {
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/profile/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const adminData = response.data.data;
+
+      setFormData(prevState => ({
+        ...prevState,
+        adminFullName: adminData.full_name || '',
+        adminEmail: adminData.email_address || '',
+        adminDateJoined: adminData.date_joined || '',
+        adminGender: adminData.gender || '',
+        adminIP: adminData.ip_address || '',
+        adminLastLogin: adminData.last_login_ip || '',
+        adminReferralCode: adminData.referral_code || '',
+        adminReferredBy: adminData.referred_by || '',
+      }));
+    } catch (err) {
+      handleError('Could not fetch admin profile data', err);
+    }
+  };
+
 
   // Function to fetch notifications
   const fetchNotifications = async (authToken) => {
@@ -83,25 +126,25 @@ export const GlobalStateProvider = ({ children }) => {
   };
 
 
+  // Function to fetch admin notifications
   const fetchAdminNotifications = async () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!token) {
-      toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
+      handleError('No admin authentication token found');
       return;
-  }
-  try {
+    }
+    try {
       const response = await axios.get('https://zss.pythonanywhere.com/api/v1/notifications/', {
-          headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
-     
+
       setFormData(prevState => ({
         ...prevState,
         adminNotification: response.data, // Assuming response is an array of notifications
       }));
-  } catch (err) {
-    handleError('Could not fetch notifications', err);
-     
-  } 
+    } catch (err) {
+      handleError('Could not fetch admin notifications', err);
+    }
   };
 
   // Function to fetch total balance and network balances
@@ -202,7 +245,7 @@ export const GlobalStateProvider = ({ children }) => {
 
   // Fetch data when the component mounts
   useEffect(() => {
-    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken') ||  localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!authToken) {
       handleError('No authentication token found');
       return;
@@ -213,13 +256,14 @@ export const GlobalStateProvider = ({ children }) => {
     fetchTotalBalance(authToken);
     fetchPlans(authToken); // Fetch plans as well
     fetchInvestments(authToken); // Fetch investments
+    fetchAdminData(authToken); // Fetch investments
   }, []);
 
  
   return (
    <>
    <ToastContainer/>
-    <GlobalStateContext.Provider value={{ formData, setFormData, error, fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments }}>
+    <GlobalStateContext.Provider value={{ formData, setFormData, error, fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments, fetchAdminNotifications, fetchAdminData }}>
       {children}
     </GlobalStateContext.Provider>
    </>

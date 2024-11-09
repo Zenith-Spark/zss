@@ -3,7 +3,6 @@ import ThemeProvider from "./Theme/ThemeProvider";
 import ClientLayout from "./ClientLayout"; // Separate client logic
 import { GlobalStateProvider } from "./GlobalStateProvider";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: "Zenith Spark Station",

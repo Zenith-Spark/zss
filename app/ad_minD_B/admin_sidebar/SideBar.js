@@ -8,10 +8,13 @@ import { AiOutlineMenu, AiOutlineClose, AiOutlineLogout } from 'react-icons/ai';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import Notification from '../admin_notification/Notification';
 import { ButtonTwo, DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
 const SideBar = () => {
+  const {formData} = useGlobalState()
   const [sideSlide, setSideSlide] = useState(false);
   const [activeLink, setActiveLink] = useState('');
   const [showLogoutModal, setShowLogoutModal] = useState(false); // New state for the logout modal
+  
 
   // Effect to check screen size on mount and resize
   useEffect(() => {
@@ -78,15 +81,19 @@ const SideBar = () => {
           </div>
 
           {/* User Info */}
-          <div className='h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2 mb-3'>
-            <span className='text-3xl border rounded-full p-2 bg-slate-500'>
-              {adminDBSidebar[6].icons}
+          <div className="h-16 flex items-center gap-1 ml-4 md:ml-8 pb-2 w-full overflow-hidden pr-2">
+            <span className="text-3xl border rounded-full h-12 w-12 bg-slate-500 flex items-center justify-center">
+              {formData.adminFullName ? <strong>{formData.adminFullName.charAt(0)}</strong> : adminDBSidebar[6].icons}
             </span>
             <div>
-              <h1 className='font-bold text-lg flex flex-col md:flex-row gap-x-2 '>
-               Welcome. Admin
+              <h1 className="font-bold text-base flex flex-col md:flex-row gap-x-2">
+                <span>
+                  {formData.adminFullName ? formData.adminFullName : 'Full Name'}
+                </span>
               </h1>
-              {/* <p>Admin email</p> */}
+              <marquee className="text-xs w-full">
+                {formData.adminEmail ? formData.adminEmail : 'Email'}
+              </marquee>
             </div>
           </div>
 
