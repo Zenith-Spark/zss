@@ -61,8 +61,8 @@ const SubLandingPage = () => {
   }, []);
 
   // Limit coins to 4 on small screens
-  const displayedCoins = isSmallScreen ? coins.slice(0, 6) : coins;
-
+  const displayedCoins = coins;
+   //isSmallScreen ? coins.slice(0, 6) : 
 
   return (
     <main className='w-full h-auto relative overflow-hidden'>
@@ -93,7 +93,7 @@ const SubLandingPage = () => {
       <marquee>
       <div className='flex flex-row w-full items-center justify-evenly pt-16'>
       {displayedCoins.map((coin, index) => (
-        <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
+        <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-10'>
           <span>
           {coin.coins}
           </span>
