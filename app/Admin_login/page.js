@@ -7,7 +7,7 @@ import formBg from '../../public/img/formbg.webp';
 import { Input } from '../components/resuables/Input/Input';
 import { useGlobalState } from '../GlobalStateProvider';
 import { Loader } from '../components/resuables/Loader/Loader';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const AdminLoginPage = () => {
@@ -110,12 +110,11 @@ const AdminLoginPage = () => {
 
   return (
     <>
-      <ToastContainer />
       <main className='w-full h-screen flex items-center justify-center relative'>
         <div className='absolute inset-0 bg-cover bg-center' style={{ backgroundImage: `url(${formBg.src})` }}>
           <div className='bg-black bg-opacity-50 h-full w-full flex items-center justify-center'>
             <section className='w-[80%] mx-auto md:w-[40%] lg:w-[30%] rounded-3xl backdrop-blur-sm h-auto border flex flex-col items-center justify-center p-6'>
-              <h1 className='text-white text-3xl font-bold mb-6'>Login</h1>
+              <h1 className='text-white text-3xl font-bold mb-6'>Admin Login</h1>
               <form className='w-full flex flex-col gap-y-5' onSubmit={handleSubmit}>
                 <Input
                   Labelvalue="Email"

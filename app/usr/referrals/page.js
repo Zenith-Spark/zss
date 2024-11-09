@@ -7,7 +7,7 @@ import { Copy } from 'lucide-react'
 import React, { useState, useEffect } from 'react'
 import { PiGreaterThan } from 'react-icons/pi'
 import axios from 'axios'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 const ReferralPage = () => {
@@ -126,7 +126,6 @@ const ReferralPage = () => {
 
   return (
     <div className="p-4">
-      <ToastContainer />
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
         <span>{usrDBSidebar[5].icons}</span>
         <span><PiGreaterThan /></span>

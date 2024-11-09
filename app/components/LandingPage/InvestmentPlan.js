@@ -135,31 +135,7 @@ const InvestmentPlan = () => {
         </div>
       </section>
 
-      <div className="w-[80%] mx-auto p-4 text-center my-10">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-yellow-600 font-bold mb-4">
-          How to Earn with Us
-        </h1>
-        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl">
-          Our team is committed to upholding the highest standards in managing and growing your wealth. Three simple steps make you financially independent.
-        </p>
-      </div>
-
-      <section className="w-full py-12">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex flex-col md:flex-row justify-between border rounded-xl">
-            {howToEarn.map((step, index) => (
-              <div
-                key={index}
-                className="p-6 w-full md:w-[23%] transition-transform hover:scale-105"
-              >
-                <h1 className='text-3xl font-bold'>Step {step.No}</h1>
-                <h3 className="text-yellow-600 text-2xl font-bold mb-4">{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+     
     </main>
   );
 }

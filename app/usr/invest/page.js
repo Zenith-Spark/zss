@@ -7,7 +7,7 @@ import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { AiOutlineClose } from 'react-icons/ai';
 import { PiGreaterThan } from 'react-icons/pi';
 import axios from 'axios';
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Page = () => {
@@ -108,7 +108,6 @@ const Page = () => {
 
   return (
     <>
-      <ToastContainer />
       <p className="flex flex-row gap-2 items-center text-lg font-thin px-6 mb-14 translate-y-7">
         <span>{usrDBSidebar[3].icons}</span>
         <span><PiGreaterThan /></span>

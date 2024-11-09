@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
 
 
@@ -135,7 +135,6 @@ const Plans = () => {
 
   return (
    <>
-   <ToastContainer/>
     <div className='py-16 w-full h-auto'>
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
         <span>{adminDBSidebar[3].icons}</span>

@@ -3,12 +3,10 @@
 
 import React from 'react';
 import SideBar from './admin_sidebar/SideBar';
-import { ToastContainer } from 'react-toastify';
 
 const UsrLayout = ({ children }) => {
   return (
    <>
-   {/* <ToastContainer/> */}
     <div className="dashboard-layout flex">
       <header>
         <SideBar />

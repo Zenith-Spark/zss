@@ -4,7 +4,7 @@ import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import { Edit, Eye, EyeClosed } from 'lucide-react';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { LoaderStyle5Component } from '../components/resuables/Loader/Loader';
 
 const Admin = () => {
@@ -190,7 +190,6 @@ const Admin = () => {
 
   return (
     <>
-      <ToastContainer />
       <div className="p-4">
         <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-2 pt-4">
           <span>{adminDBSidebar[0].icons}</span>

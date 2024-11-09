@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
 import { kycUploadRules, usrDBSidebar } from '@assets/app/components/resuables/index';
 import { PiGreaterThan } from 'react-icons/pi';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
 import { MdArrowDropDown, MdArrowDropUp } from 'react-icons/md';
@@ -155,7 +155,6 @@ const SecuritySettings = () => {
 
   return (
     <div className="container mx-auto py-12 px-6 sm:px-8 lg:px-12">
-      <ToastContainer />
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4 -translate-y-10">
         <span>{usrDBSidebar[7].icons}</span>
         <span><PiGreaterThan /></span>

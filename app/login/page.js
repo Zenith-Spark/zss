@@ -6,7 +6,7 @@ import axios from 'axios';
 import formBg from '../../public/img/formbg.webp';
 import { Input } from '../components/resuables/Input/Input';
 import Link from 'next/link';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Loader } from '../components/resuables/Loader/Loader';
 
@@ -92,7 +92,6 @@ const LoginPage = () => {
 
   return (
     <>
-      <ToastContainer />
       <main className="w-full h-screen flex items-center justify-center relative">
         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${formBg.src})` }}>
           <div className="bg-black bg-opacity-50 h-full w-full flex items-center justify-center">

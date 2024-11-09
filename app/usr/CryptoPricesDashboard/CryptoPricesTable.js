@@ -8,7 +8,7 @@ import Txn from '../transaction/Txn';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { LoaderStyle6Component, LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
 import axios from 'axios';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast} from 'react-toastify';
 
 
 
@@ -125,12 +125,7 @@ const CryptoPricesTable = ({showTable}) => {
   // Define wallet addresses for each coin
   const walletAddresses = formData.walletAddresses
   
-  // {
-  //   bitcoin: '1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa', // Example address
-  //   ethereum: '0x32Be343B94f860124dC4fEe278FDCBD38C102D88', // Example address
-  //   // Add more coins and their associated wallet addresses as needed
-  // };
-
+ 
   // Function to copy wallet address based on selected coin
   const copyWalletAddress = () => {
   const walletAddress = walletAddresses[selectedCoin.id.toLowerCase()];
@@ -326,7 +321,6 @@ useEffect(() => {
  
   return (
     <>
-    <ToastContainer/>
       <div className="container mx-auto pb-5 pt-5">
         {/* Full-screen overlay for transaction popup */}
         {transaction && (
