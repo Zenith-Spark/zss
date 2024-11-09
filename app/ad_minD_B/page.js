@@ -15,6 +15,10 @@ const Admin = () => {
   const [loading, setLoading] = useState(true); // State to handle loading state
   const [error, setError] = useState(''); // State to handle errors
   const [passwordVisibility, setPasswordVisibility] = useState({}); // State to manage password visibility
+  const [totalSystemBalance, setTotalSystemBalance] = useState(0.0);
+  const [userBalances, setUserBalances] = useState([]);
+  const [actionUserId, setActionUserId] = useState(null); // User selected for action
+  const [actionType, setActionType] = useState(''); // Action type (activate, suspend, delete)
 
   // Function to handle filter change
   const handleFilterChange = (newFilter) => {
@@ -27,7 +31,10 @@ const Admin = () => {
 
     // Check if token is present
     if (!token) {
-      toast.error('No token found. Please log in.');
+      toast.error('No token found. Please log in.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
       setLoading(false);
       return;
     }
@@ -38,9 +45,6 @@ const Admin = () => {
           Authorization: `Bearer ${token}`, // Include token in the Authorization header
         },
       });
-
-      console.log(response.data); // Log the API response
-
       // Set total number of users
       setTotalUsers(response.data.data.total_users);
       
@@ -60,12 +64,18 @@ const Admin = () => {
         });
         setPasswordVisibility(visibilityState);
       } else {
-        toast.error('Unexpected response structure.');
+        toast.error('Unexpected response structure.',  {
+          position: "top-right",
+          autoClose: 3000,
+        });
       }
 
       setLoading(false);
     } catch (err) {
-      toast.error('Failed to fetch users. Please check your Internet connection or login status.');
+      toast.error('Failed to fetch users. Please check your Internet connection or login status.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
       setLoading(false);
     }
   };
@@ -73,6 +83,45 @@ const Admin = () => {
   // Effect to fetch users on component mount
   useEffect(() => {
     fetchUsers();
+  }, []);
+
+  // Fetching total balances and user balances
+  useEffect(() => {
+    // Function to fetch the balances
+    const fetchBalances = async () => {
+      const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+
+      // Check if token is present
+      if (!token) {
+        toast.error('No token found. Please log in.',  {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('https://zss.pythonanywhere.com/api/v1/admin/all-users-balance/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+
+        if (data.status === 'success') {
+          setTotalSystemBalance(data.data.total_system_balance); // Set the total system balance
+          setUserBalances(data.data.user_balances); // Set the user balances
+        } else {
+          console.error('Error fetching balances:', data.message);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    // Call the fetch function on component mount
+    fetchBalances();
   }, []);
 
   // Filter users based on the selected filter
@@ -88,30 +137,85 @@ const Admin = () => {
     }));
   };
 
+  // Function to get the individual user balance
+  const getUserBalance = (userId) => {
+    const userBalance = userBalances.find(balance => balance.user_id === userId);
+    return userBalance ? userBalance.balance.toFixed(2) : 'N/A';
+  };
+
+  // Function to handle action on a user (activate, suspend, delete)
+  const handleUserAction = async (userId, actionType) => {
+    setActionUserId(userId);
+    setActionType(actionType);
+
+    const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+
+    if (!token) {
+      toast.error('No token found. Please log in.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
+      return;
+    }
+
+    try {
+      const endpoint = `https://zss.pythonanywhere.com/api/v1/admin/users/${userId}/${actionType}/`;
+      const response = await axios.post(endpoint, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.status === 200) {
+        toast.success(`User ${actionType}d successfully.`,  {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        // Update UI by removing the user or changing status
+        setUsers(users.filter(user => user.id !== userId)); // Remove user from the list after action
+      } else {
+        toast.error('Action failed. Please try again.',  {
+          position: "top-right",
+          autoClose: 3000,
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error('An error occurred while processing the action.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
+    }
+  };
+
   return (
     <>
-      <ToastContainer/>
+      <ToastContainer />
       <div className="p-4">
         <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-2 pt-4">
           <span>{adminDBSidebar[0].icons}</span>
           <span><PiGreaterThan /></span>
           <span>{adminDBSidebar[0].name}</span>
         </p>
-        <h2 className="text-xl font-bold mb-4 text-center">Users</h2>
-        
-        <div className="text-center mb-4">
-          <h3 className="text-lg font-semibold">Total Users: {totalUsers}</h3>
+        <div className="w-full h-auto my-2 flex flex-col items-center justify-center gap-5">
+          {/* Total Users Card */}
+          <div className="text-start mb-4 flex flex-col justify-center items-start p-6 shadow-lg rounded-xl w-full">
+            <p className="text-5xl font-bold text-blue-600">{totalUsers}</p>
+            <h3 className="text-lg font-semibold">Total Users</h3>
+          </div>
+          
+          {/* Total Network Balance Card */}
+          <div className="text-start mb-4 flex flex-col justify-center items-start p-6 shadow-lg rounded-xl w-full">
+            <p className="text-5xl font-bold text-green-600">${totalSystemBalance.toFixed(2)}</p>
+            <h3 className="text-lg font-semibold">Total Network Balance</h3>
+          </div>
         </div>
-
-        {/* Total Network Balance */}
-        <div className="text-center mb-4">
-          <h3 className="text-lg font-semibold">Total Network Balance: ${totalNetworkBalance.toFixed(2)}</h3>
-        </div>
+        <h2 className="text-xl font-bold my-4 text-center">Users details</h2>
 
         {/* Loading and error handling */}
-        {loading && <p className="text-center">
-          <LoaderStyle5Component/>
-        </p>}
+        {loading && <div className="text-center">
+          <LoaderStyle5Component />
+        </div>}
 
         {/* Table with scrollable x-direction on mobile */}
         <div className="overflow-x-auto justify-center items-center mt-6">
@@ -144,17 +248,27 @@ const Admin = () => {
                     <td className="py-2 text-start">{user.email_address || 'N/A'}</td>
                     <td className="py-2 text-start flex flex-row gap-x-1 items-center">
                       {passwordVisibility[user.id] ? user.password ? user.password : 'Null' : '********'}
-                      <button onClick={() => togglePasswordVisibility(user.id)} >
-                        {passwordVisibility[user.id] ? <Eye size={15}/> : <EyeClosed size={15}/> }
+                      <button onClick={() => togglePasswordVisibility(user.id)}>
+                        {passwordVisibility[user.id] ? <Eye size={15} /> : <EyeClosed size={15} />}
                       </button>
                     </td>
-                    <td className="py-2 text-start">${user.total_balance.toFixed(2) || 'N/A'}</td>
+                    <td className="py-2 text-start">${getUserBalance(user.id) || 'N/A'}</td>
                     <td className="py-2 text-start">{user.ip_address || 'N/A'}</td>
                     <td className="py-2 text-start">{user.gender || 'N/A'}</td>
                     <td className="py-2 text-start">{user.date_joined ? new Date(user.date_joined).toLocaleDateString() : 'N/A'}</td>
                     <td className="py-2 text-start">
-                      <Edit />
-                    </td>
+                    <select
+                      onChange={(e) => handleUserAction(user.id, e.target.value)}
+                      className="text-sm bg-white border border-gray-300 rounded px-3 py-1"
+                      defaultValue=""
+                    >
+                      <option value="" disabled>Action</option>
+                      <option value="activate" className="text-blue-600">Activate</option>
+                      <option value="suspend" className="text-yellow-600">Suspend</option>
+                      <option value="delete" className="text-red-600">Delete</option>
+                    </select>
+                  </td>
+
                   </tr>
                 ))
               )}

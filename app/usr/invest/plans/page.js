@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import { Plans } from '@assets/app/components/resuables/index';
+import { toast } from 'react-toastify';
 
 const PlansPage = () => {
   const { formData } = useGlobalState();
@@ -29,9 +30,15 @@ const PlansPage = () => {
 
     // Check if the investment is valid
     if (equivalentValue > 0) {
-      alert(`You are investing $${investmentAmount} in ${selectedCoin} with the ${selectedPlan.title}.`);
+      toast.info(`You are investing $${investmentAmount} in ${selectedCoin} with the ${selectedPlan.title}.`,  {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } else {
-      alert('Insufficient value of the selected coin for this investment.');
+      toast.error('Insufficient value of the selected coin for this investment.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 

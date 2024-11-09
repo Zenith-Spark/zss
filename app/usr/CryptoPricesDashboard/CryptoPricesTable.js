@@ -138,105 +138,147 @@ const CryptoPricesTable = ({showTable}) => {
       if (walletAddress) {
         navigator.clipboard.writeText(walletAddress)
           .then(() => {
-            toast.success(`Wallet address copied: ${walletAddress}`);
+            toast.success(`Wallet address copied: ${walletAddress}`,  {
+              position: "top-right",
+              autoClose: 5000,
+            });
           })
           .catch(err => {
             console.error('Failed to copy wallet address: ', err);
           });
       } else {
-        toast.error(`No wallet address available for ${selectedCoin.name}`);
+        toast.error(`No wallet address available for ${selectedCoin.name}`,  {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
     } else {
-      toast.warn('Please select a coin first.');
+      toast.warn('Please select a coin first.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
     }
   };
 
-  
   const handleSubmitDeposit = async (e) => {
     e.preventDefault();
-
+  
     // Prevent multiple submissions
-    
-    setLoading(true);
     if (loading) return;
-    
+  
     if (!selectedCoin || !depositAmount) {
-      toast.warn('Please select a coin and enter an amount.');
-      setLoading(false);
+      toast.warn('Please select a coin and enter an amount.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
       return;
     }
-
+  
+    setLoading(true); // Start loading when the request is being processed
+  
     try {
-      const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/deposits/${selectedCoin.id}/`, 
-        { amount_usd: depositAmount }, 
-        { headers: { Authorization: `Bearer ${token}` }}
+      const response = await axios.post(
+        `https://zss.pythonanywhere.com/api/v1/deposits/${selectedCoin.id}/`,
+        { amount_usd: depositAmount },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
-
+  
       if (response.status === 200 || response.status === 201) {
-        toast.success('Deposit successful');
-        setDepositAmount(''); // Reset the deposit amount
+        toast.success('Deposit successful',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
+        setDepositAmount(''); // Reset the deposit amount after success
+        setLoading(false)
       } else {
-        toast.error('Deposit failed');
+        toast.error('Deposit failed',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
+        setLoading(false)
       }
     } catch (err) {
       console.error('Error during deposit:', err);
-      toast.error('An error occurred while processing your deposit. Please try again.');
+      toast.error('An error occurred while processing your deposit. Please try again.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
     } finally {
-      setLoading(false);
+      setLoading(false); // Reset loading state
     }
   };
+  
 
   const handleSubmitwithdrawal = async (e) => {
     e.preventDefault();
-    setLoading(true);
   
-    if (!selectedCoin || !withdrawal) {
-      toast.warn('Please enter your wallet address and an amount.');
-      setLoading(false);
+    // Prevent multiple submissions
+    if (loading) return;
+  
+    if (!selectedCoin || !withdrawal || !userWalletAdd) {
+      toast.warn('Please enter an amount, wallet address, and select a coin.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
       return;
     }
   
-    // Calculate the total value of the selected coin owned by the user
-    const userTotalValue = userWallet[selectedCoin.id] || 0
+    // Check if the withdrawal amount is valid
+    if (parseFloat(withdrawal) <= 0) {
+      toast.warn('Please input a valid amount greater than 0.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
+      return; // Prevent form submission
+    }
   
-    // Check if the withdrawal amount exceeds the total value of the owned coins
+    setLoading(true); // Start loading when the request is being processed
+  
+    // Ensure withdrawal amount doesn't exceed the user's balance
+    const userTotalValue = userWallet[selectedCoin.id] || 0;
     if (parseFloat(withdrawal) > userTotalValue) {
-      toast.warn(`Insufficient funds. You can withdraw up to $${userTotalValue.toFixed(2)} for ${selectedCoin.name}.`);
-      setLoading(false);
-      setWithdrawal(''); 
-      setUserWalletAdd('');
+      toast.warn(`Insufficient funds. You can withdraw up to $${userTotalValue.toFixed(2)} for ${selectedCoin.name}.`,  {
+        position: "top-right",
+        autoClose: 5000,
+      });
+      setLoading(false); // Stop loading
       return;
     }
   
     try {
-      const response = await axios.post(`https://zss.pythonanywhere.com/api/v1/withdrawals/${selectedCoin.id}/`, 
-        {
-          amount_usd: withdrawal,
-          wallet_address: userWalletAdd
-        }, 
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const response = await axios.post(
+        `https://zss.pythonanywhere.com/api/v1/withdrawals/${selectedCoin.id}/`,
+        { amount_usd: withdrawal, wallet_address: userWalletAdd },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
   
       if (response.status === 200 || response.status === 201) {
-        toast.success('Withdrawal successful');
-        setWithdrawal(''); 
+        toast.success('Withdrawal successful',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
+        setWithdrawal('');
         setUserWalletAdd('');
-        setShowWithdrawal(false); // Close the modal
-        fetchTransactions();
+        setShowWithdrawal(false); // Close the modal after success
+        fetchTransactions(); // Fetch transactions after a successful withdrawal
       } else {
-        toast.error('Withdrawal failed');
+        toast.error('Withdrawal failed',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
     } catch (err) {
       console.error('Error during withdrawal:', err);
-      toast.error('An error occurred while processing your withdrawal. Please try again.');
+      toast.error('An error occurred while processing your withdrawal. Please try again.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
     } finally {
-      setLoading(false);
+      setLoading(false); // Reset loading state
     }
   };
+  
+  
   
 const fetchTransactions = async () => {
   try {
@@ -270,7 +312,10 @@ const fetchTransactions = async () => {
     })));
   } catch (err) {
     settxnerror(err);
-    console.error('Error fetching transactions:', err);
+    toast.error('Error fetching transactions:' + err,  {
+      position: "top-right",
+      autoClose: 5000,
+    });
   } finally {
     settxnLoading(false);
   }
@@ -327,16 +372,35 @@ useEffect(() => {
           >
             <form className="text-slate-800 p-5 flex flex-col gap-y-5" onSubmit={handleSubmitDeposit}>
             <ButtonOne buttonValue={`Copy ${selectedCoin.id} Wallet Address`} Clicked={copyWalletAddress} />
+            <span className={`flex flex-col w-full`}>
+            <label htmlFor='deposit_amount' className='font-bold w-full flex justify-between items-center'>
+               <span>
+               Input Amount {'(USD):'}
+               </span>
+               <span className={`text-xs flex flex-col gap-1`}>
+                <p>
+               Equiv in {selectedCoin.id}:
+                </p>
+                <p className={'text-right'}>
+                  {depositAmount / selectedCoin.currentPrice}
+                </p>
+               </span>
+              </label>
             <input 
-            placeholder='Amount (USD)' 
-            className='border-b border-slate-800 outline-none p-2 '
+            placeholder='Amount' 
+            className='border-b border-slate-800 outline-none p-2 w-full'
+            id={`deposit_amount`}
             value={depositAmount}
             onChange={(e) => setDepositAmount(e.target.value)}
             />
+            </span>
             <span className='w-1/2'>
-            <DBButtonOne buttonValue={loading ? (
-              <LoaderStyle8Component fill={'#ffffff'}/>
-            ) : 'Proceed'} disabled={loading}/>
+                            <DBButtonOne
+                  buttonValue={loading ? (
+                    <LoaderStyle8Component fill={'#ffffff'} />
+                  ) : 'Proceed'}
+                  disabled={loading || !depositAmount || !selectedCoin}
+                />
              </span>
             </form >
           </Modal>
@@ -350,8 +414,18 @@ useEffect(() => {
             <form className="text-slate-800 p-5" onSubmit={handleSubmitwithdrawal}>
             <div className="text-slate-800 p-5 flex flex-col gap-y-5">
               <span className='flex flex-col'>
-              <label htmlFor='withdraw_amount' className='font-bold'>
-                Input Amount {'(USD):'}
+              <label htmlFor='withdraw_amount' className='font-bold w-full flex justify-between items-center'>
+               <span>
+               Input Amount {'(USD):'}
+               </span>
+               <span className={`text-xs flex flex-col gap-1`}>
+                <p>
+               Equiv in {selectedCoin.id}:
+                </p>
+                <p className={'text-right'}>
+                  {withdrawal / selectedCoin.currentPrice}
+                </p>
+               </span>
               </label>
             <input placeholder='Amount' className='border-b border-slate-800 outline-none p-2' id='withdraw_amount' 
              value={withdrawal}
@@ -367,9 +441,12 @@ useEffect(() => {
             />
               </span>
             <span className='w-1/2'>
-            <DBButtonOne buttonValue={loading ? (
-              <LoaderStyle8Component fill={'#ffffff'}/>
-            ) : 'Proceed'} disabled={loading}/>
+                              <DBButtonOne
+                    buttonValue={loading ? (
+                      <LoaderStyle8Component fill={'#ffffff'} />
+                    ) : 'Proceed'}
+                    disabled={loading || !withdrawal || !userWalletAdd || !selectedCoin}
+                  />
             </span>
             </div>
             </form>

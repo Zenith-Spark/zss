@@ -124,6 +124,55 @@ const Investment = () => {
     }
   };
 
+  // New function to handle refund when an investment is marked as "failed"
+  const handleRefund = async (investmentId, transactionId) => {
+    const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+    if (!token) {
+      setError('No token found. Please log in.');
+      toast.error('No token found. Please log in.', { position: "top-right", autoClose: 3000 });
+      return;
+    }
+  
+    // Log the transactionId for debugging
+  
+    // Check if transactionId is valid before proceeding
+    if (!investmentId) {
+      console.error(`Transaction ID is missing for ivm_id: ${investmentId}`);
+      toast.error('Transaction ID is missing.', { position: "top-right", autoClose: 3000 });
+      return;
+    }
+  
+    try {
+      setLoading(true); // Show loading state during the refund request
+  
+      const response = await axios.post(
+        'https://zss.pythonanywhere.com/api/v1/admin/refund-failed-investments/',
+        { investment_id: investmentId }, // Ensure correct field
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.data.success) {
+        toast.success('Refund processed successfully.', { position: "top-right", autoClose: 3000 });
+        setInvestments(prevInvestments =>
+          prevInvestments.filter(investment => investment.id !== investmentId) // Remove refunded investment
+        );
+      } else {
+        toast.error('Refund failed. Please try again later.', { position: "top-right", autoClose: 3000 });
+      }
+    } catch (err) {
+      console.error('Refund request error for ivm_id:', investmentId, 'Error:', err.response?.data || err.message);
+      toast.error('Refund request failed. Please check your connection.', { position: "top-right", autoClose: 3000 });
+    } finally {
+      setLoading(false); // End loading state
+    }
+  };
+  
+  
+
   return (
     <div className="p-4">
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-2 pt-4">
@@ -145,6 +194,7 @@ const Investment = () => {
           <thead>
             <tr className="text-start">
               <th className="py-2 text-start">User Id</th>
+              <th className="py-2 text-start">Ivm Id</th>
               <th className="py-2 text-start">Full Name</th>
               <th className="py-2 text-start">Plan</th>
               <th className="py-2 text-start">Network</th>
@@ -168,6 +218,7 @@ const Investment = () => {
               filteredInvestments.map((investment) => (
                 <tr key={investment.id}>
                   <td className="py-2 text-start">{investment.user}</td>
+                  <td className="py-2 text-start">{investment.id}</td>
                   <td className="py-2">{investment.user_full_name}</td>
                   <td className="py-2">{investment.plan_name}</td>
                   <td className="py-2">{investment.network_symbol}</td>
@@ -237,9 +288,19 @@ const Investment = () => {
                         </button>
                       </>
                     ) : (
-                      <button onClick={() => handleEditClick(investment)} className="bg-yellow-500 text-white px-3 py-1 rounded">
-                        Edit
-                      </button>
+                      <>
+                        <button onClick={() => handleEditClick(investment)} className="bg-yellow-500 text-white px-3 py-1 rounded">
+                          Edit
+                        </button>
+                        {investment.status === 'failed' && (
+                          <button
+                            onClick={() => handleRefund(investment.id, investment.transaction_id)} 
+                            className="bg-red-500 text-white px-3 py-1 rounded"
+                          >
+                            Refund
+                          </button>
+                        )}
+                      </>
                     )}
                   </td>
                 </tr>

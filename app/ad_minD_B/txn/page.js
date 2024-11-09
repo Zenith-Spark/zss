@@ -27,7 +27,10 @@ const TransactionHistory = () => {
     if (!token) {
       setError('No token found. Please log in.');
       setLoading(false);
-      toast.error('No token found. Please log in.');
+      toast.error('No token found. Please log in.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -40,14 +43,20 @@ const TransactionHistory = () => {
         setTransactions(response.data.transactions);
       } else {
         setError('Unexpected response structure.');
-        toast.error('Unexpected response structure.');
+        toast.error('Unexpected response structure.',  {
+          position: "top-right",
+          autoClose: 3000,
+        });
       }
 
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch transactions. Please check your Internet connection or login status.');
       setLoading(false);
-      toast.error('Failed to fetch transactions. Please check your Internet connection or login status.');
+      toast.error('Failed to fetch transactions. Please check your Internet connection or login status.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
     }
   };
 
@@ -84,7 +93,10 @@ const TransactionHistory = () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!token) {
       setError('No token found. Please log in.');
-      toast.error('No token found. Please log in.');
+      toast.error('No token found. Please log in.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
       return;
     }
 
@@ -120,7 +132,7 @@ const TransactionHistory = () => {
         };
       }
 
-      console.log('Request Data:', requestData);  // Log request data
+      // console.log('Request Data:', requestData);  // Log request data
 
       const response = await axios.put(
         url,
@@ -130,7 +142,7 @@ const TransactionHistory = () => {
         }
       );
 
-      console.log('Response:', response);  // Log the API response
+      // console.log('Response:', response);  // Log the API response
 
       // Update the state after successful API call
       setTransactions(prevTransactions =>
@@ -142,11 +154,17 @@ const TransactionHistory = () => {
       );
 
       setEditMode(null); // Exit edit mode after saving
-      toast.success('Transaction updated successfully!');
+      toast.success('Transaction updated successfully!',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } catch (err) {
       console.error('Error:', err.response ? err.response.data : err);  // Log detailed error if available
       setError('Failed to save changes. Please check your Internet connection or login status.');
-      toast.error('Failed to save changes. Please check your Internet connection or login status.');
+      toast.error('Failed to save changes. Please check your Internet connection or login status.',  {
+        position: "top-right",
+        autoClose: 3000,
+      });
     } finally {
       setUpdatingStatus(false);
     }

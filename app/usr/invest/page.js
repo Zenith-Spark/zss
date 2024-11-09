@@ -1,7 +1,7 @@
 'use client';
 import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
 import Modal from '@assets/app/components/resuables/Modal/Modal';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -11,12 +11,22 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Page = () => {
-  const { formData } = useGlobalState();
+  const { formData, fetchPlans } = useGlobalState();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [investmentAmount, setInvestmentAmount] = useState('');
   const [selectedCoin, setSelectedCoin] = useState(Object.keys(formData.userWallet)[0]);
   const [isInvesting, setIsInvesting] = useState(false); // New state for loading
+
+  useEffect(() => {
+    // Get the auth token from local or session storage
+    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    if (authToken) {
+      // Call fetchTotalBalance if authToken exists
+      fetchPlans(authToken);
+    }
+  }, []); // Empty dependency array ensures it only runs on mount
+
 
   const Plans = formData.plans;
 
@@ -48,7 +58,10 @@ const Page = () => {
     if (investmentAmount > 0 && investmentAmount <= coinValue) {
       const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
       if (!token) {
-        toast.error('No token found. Please log in.');
+        toast.error('No token found. Please log in.',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
         return;
       }
 
@@ -61,8 +74,6 @@ const Page = () => {
           network_name: selectedCoin.toLowerCase().replace(/\s+/g, '-'), // Make the coin lowercase and replace spaces with hyphens
         };
 
-        console.log('Investment Data:', investmentData);
-
         const response = await axios.post(
           'https://zss.pythonanywhere.com/api/v1/investments/',
           investmentData,
@@ -73,18 +84,25 @@ const Page = () => {
             },
           }
         );
-
-        console.log('Investment response:', response.data);
-        toast.success(`You have successfully invested $${investmentAmount} in ${selectedCoin} with the ${selectedPlan.name}.`);
+        toast.success(`You have successfully invested $${investmentAmount} in ${selectedCoin} with the ${selectedPlan.name}.`,  {
+          position: "top-right",
+          autoClose: 5000,
+        });
         closeModal();
       } catch (error) {
         console.error('Investment failed:', error);
-        toast.error('There was an error processing your investment. Please make sure to take note of the minimum and maximum price for each plan.');
+        toast.error('There was an error processing your investment. Please make sure to take note of the minimum and maximum price for each plan.',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
       } finally {
         setIsInvesting(false); // Set loading to false after the request
       }
     } else {
-      toast.error(`Insufficient Funds in your ${selectedCoin} wallet. Try again with a different coin or fund your ZSS wallet.`);
+      toast.error(`Insufficient Funds in your ${selectedCoin} wallet. Try again with a different coin or fund your ZSS wallet.`,  {
+        position: "top-right",
+        autoClose: 5000,
+      });
     }
   };
 
@@ -148,16 +166,16 @@ const Page = () => {
                 <label htmlFor="investmentAmount" className="flex text-gray-700 mb-2 w-full items-center flex-row justify-between">
                   <span>Investment Amount ($):</span>
                   <span className='flex flex-col gap-y-1 text-end'>
-                    <span className='font-semibold'>
+                    {/* <span className='font-semibold'>
                       Equivalent value in {selectedCoin}
-                    </span>
-                    {
+                    </span> */}
+                    {/* {
                       isNaN(equivalentValue) || equivalentValue === Infinity ? 'No funds for selected coin' : (
                         <span>
                           {`${equivalentValue} ${selectedCoin}`}
                         </span>
                       )
-                    }
+                    } */}
                   </span>
                 </label>
                 <input

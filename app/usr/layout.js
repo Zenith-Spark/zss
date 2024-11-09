@@ -14,7 +14,7 @@ const UsrLayout = ({ children }) => {
   useEffect(() => {
     const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
     if (!authToken) {
-      handleError('No authentication token found');
+      alert('No authentication token found');
       return;
     }
 

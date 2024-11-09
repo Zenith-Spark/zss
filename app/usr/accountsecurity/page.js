@@ -40,7 +40,10 @@ const SecuritySettings = () => {
         setKycStatus(response.data.kyc_status);
       }
     } catch (err) {
-      toast.error('An error occurred while fetching KYC status.');
+      toast.error('An error occurred while fetching KYC status.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
     }
   };
 
@@ -67,15 +70,24 @@ const SecuritySettings = () => {
       );
 
       if (response.status === 200) {
-        toast.success('Password updated successfully!');
+        toast.success('Password updated successfully!',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
         setOldPassword('');
         setNewPassword('');
       }
     } catch (err) {
       if (err.response && err.response.data) {
-        toast.error('An error occurred: ' + (err.response.data.detail || 'Please try again.'));
+        toast.error('An error occurred: ' + (err.response.data.detail || 'Please try again.'),  {
+          position: "top-right",
+          autoClose: 5000,
+        });
       } else {
-        toast.error('An error occurred. Please check your connection and try again.');
+        toast.error('An error occurred. Please check your connection and try again.',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
       }
     }
   };
@@ -83,13 +95,19 @@ const SecuritySettings = () => {
   // KYC file upload handler
   const handleKycUpload = async () => {
     if (!kycFile) {
-      toast.error('Please select a document to upload.');
+      toast.error('Please select a document to upload.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
       return;
     }
 
     // Check if the file size exceeds 5MB
     if (kycFile.size > 5 * 1024 * 1024) {
-      toast.error('File size exceeds 5MB limit. Please choose a smaller file.');
+      toast.error('File size exceeds 5MB limit. Please choose a smaller file.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
       setKycFile(null)
       return;
     }
@@ -113,12 +131,18 @@ const SecuritySettings = () => {
       );
 
       if (response.status === 200) {
-        toast.success('KYC document uploaded successfully!');
+        toast.success('KYC document uploaded successfully!',  {
+          position: "top-right",
+          autoClose: 5000,
+        });
         setKycFile(null); // Reset file input after successful upload
         fetchKycStatus();
       }
     } catch (err) {
-      toast.error('An error occurred during document upload. Please try again.');
+      toast.error('An error occurred during document upload. Please try again.',  {
+        position: "top-right",
+        autoClose: 5000,
+      });
       console.error('Error during KYC upload:', err); // Log the error for debugging
     } finally {
       setLoading(false);  // Stop loading after the upload

@@ -13,8 +13,6 @@ const Page = () => {
   useEffect(() => {
     const fetchReferrals = async () => {
       const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
-      console.log('Token:', token); // Log the token for debugging
-
       if (!token) {
         setError('No authentication token found');
         setLoading(false); // Set loading to false on error

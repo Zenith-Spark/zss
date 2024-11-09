@@ -39,10 +39,10 @@ const Kyc = () => {
           },
         });
         setKycDocuments(response.data);
-        toast.success('KYC documents fetched successfully.', { position: "top-right", autoClose: 3000 });
+        toast.success('KYC documents fetched successfully.', { position: "top-right", autoClose: 5000 });
       } catch (error) {
         setError('Failed to fetch KYC documents: ' + (error.response ? error.response.data.message : error.message));
-        toast.error('Failed to fetch KYC documents.', { position: "top-right", autoClose: 3000 });
+        toast.error('Failed to fetch KYC documents.', { position: "top-right", autoClose: 5000 });
       } finally {
         setLoading(false); // End loading
       }
@@ -69,7 +69,7 @@ const Kyc = () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
     if (!token) {
       setError('No authentication token found');
-      toast.error('No authentication token found.', { position: "top-right", autoClose: 3000 });
+      toast.error('No authentication token found.', { position: "top-right", autoClose: 5000 });
       return;
     }
 
@@ -90,10 +90,10 @@ const Kyc = () => {
         },
       });
       setKycDocuments(response.data);
-      toast.success('KYC status updated successfully.', { position: "top-right", autoClose: 3000 });
+      toast.success('KYC status updated successfully.', { position: "top-right", autoClose: 5000 });
     } catch (error) {
       setError('Failed to update KYC status: ' + (error.response ? error.response.data.message : error.message));
-      toast.error('Failed to update KYC status.', { position: "top-right", autoClose: 3000 });
+      toast.error('Failed to update KYC status.', { position: "top-right", autoClose: 5000 });
     } finally {
       setUpdatingStatus(false); // End updating status
     }

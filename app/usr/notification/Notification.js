@@ -5,12 +5,18 @@ import React, { useState, useEffect, useRef } from 'react';
 import { IoNotifications } from 'react-icons/io5';
 
 const Notification = () => {
-  const { formData } = useGlobalState();
+  const { formData, fetchNotifications } = useGlobalState();
   const notificationsData = formData.notification || []; // Access notifications from formData
   const [notification, setNotification] = useState(false);
   const notificationRef = useRef(null);
 
   const toggleNotification = () => {
+    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
+    if (!authToken) {
+      handleError('No authentication token found');
+      return;
+    }
+    fetchNotifications(authToken),
     setNotification(!notification);
   };
 

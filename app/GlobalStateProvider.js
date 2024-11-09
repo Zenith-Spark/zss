@@ -7,6 +7,7 @@ const GlobalStateContext = createContext();
 
 export const GlobalStateProvider = ({ children }) => {
   const [error, setError] = useState(null);
+  
   const [formData, setFormData] = useState({
     userId: '',
     fullName: '',
@@ -81,6 +82,28 @@ export const GlobalStateProvider = ({ children }) => {
     }
   };
 
+
+  const fetchAdminNotifications = async () => {
+    const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+    if (!token) {
+      toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
+      return;
+  }
+  try {
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/notifications/', {
+          headers: { Authorization: `Bearer ${token}` },
+      });
+     
+      setFormData(prevState => ({
+        ...prevState,
+        adminNotification: response.data, // Assuming response is an array of notifications
+      }));
+  } catch (err) {
+    handleError('Could not fetch notifications', err);
+     
+  } 
+  };
+
   // Function to fetch total balance and network balances
   const fetchTotalBalance = async (authToken) => {
     try {
@@ -100,7 +123,6 @@ export const GlobalStateProvider = ({ children }) => {
       });
   
       const networks = networkResponse.data;
-      console.log('Networks:', networks); // Log the network data before updating state
   
       // Populate userWallet and walletAddresses from the network data
       const userWallet = {};
@@ -112,21 +134,17 @@ export const GlobalStateProvider = ({ children }) => {
   
         // Log the formatted name and network balance before assigning
         const networkBalance = network_balances[network.name]; // Access balance by network name
-        console.log(`Network: ${network.name}, Formatted Name: ${formattedName}, Network Balance: ${networkBalance ? networkBalance.balance : 'No balance'}`);
   
         // Assign the network balance to userWallet
         userWallet[formattedName] = networkBalance ? networkBalance.balance : 0; // Assign the balance
   
         // Log the wallet address before assigning to walletAddresses
         const walletAddress = network.wallet_address;
-        console.log(`Network: ${network.name}, Wallet Address: ${walletAddress}`);
   
         // Assign the wallet address to walletAddresses using the formatted name
         walletAddresses[formattedName] = walletAddress;
       });
   
-      console.log('userWallet before setFormData:', userWallet);
-      console.log('walletAddresses before setFormData:', walletAddresses);
   
       // Now update formData with userWallet and walletAddresses
       setFormData(prevState => ({
@@ -134,17 +152,8 @@ export const GlobalStateProvider = ({ children }) => {
         totalBalance: total_balance || 0,
         userWallet,
         walletAddresses,
-      }));
-  
-      console.log('formData after setFormData update:', {
-        ...formData,
-        totalBalance: total_balance || 0,
-        userWallet,
-        walletAddresses,
-      });
-  
+      }));  
     } catch (err) {
-      console.error('Could not fetch total balance or networks:', err);
       handleError('Could not fetch total balance or networks', err);
     }
   };
@@ -185,7 +194,6 @@ export const GlobalStateProvider = ({ children }) => {
           ...prevState,
           investments: response.data, // Store investments in the state
         }));
-        console.log('Investment data:', response.data); // Corrected log statement
       }
     } catch (err) {
       handleError('Could not fetch investments', err);
@@ -207,11 +215,7 @@ export const GlobalStateProvider = ({ children }) => {
     fetchInvestments(authToken); // Fetch investments
   }, []);
 
-  // Log updates to formData for debugging
-  useEffect(() => {
-    console.log('Updated formData:', formData);
-  }, [formData]);
-
+ 
   return (
    <>
    <ToastContainer/>

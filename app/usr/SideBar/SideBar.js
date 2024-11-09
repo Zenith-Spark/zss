@@ -85,7 +85,7 @@ const SideBar = () => {
           </div>
 
           {/* User Info */}
-          <div className="h-16 flex items-center gap-5 ml-4 md:ml-8 pb-2">
+          <div className="h-16 flex items-center gap-1 ml-4 md:ml-8 pb-2 w-full overflow-hidden pr-2">
             <span className="text-3xl border rounded-full h-12 w-12 bg-slate-500 flex items-center justify-center">
               {formData.fullName ? <strong>{formData.fullName.charAt(0)}</strong> : usrDBSidebar[6].icons}
             </span>

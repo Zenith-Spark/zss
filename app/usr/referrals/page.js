@@ -15,15 +15,16 @@ const ReferralPage = () => {
   const [reffCode, setReffCode] = useState('') // Referral code input state
   const { formData, setFormData } = useGlobalState()
 
-  console.log('Form Data:', formData) // Log formData to check values
-
   // Fetch referral details on page load
   useEffect(() => {
     const fetchReferrals = async () => {
       try {
         const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
         if (!token) {
-          toast.error('You need to be logged in to view your referral details.')
+          toast.error('You need to be logged in to view your referral details.',  {
+            position: "top-right",
+            autoClose: 5000,
+          })
           return
         }
 
@@ -40,11 +41,17 @@ const ReferralPage = () => {
         if (response.status === 200) {
           setReferrals(response.data) // Set referrals data
         } else {
-          toast.error('Failed to load referral details. Please try again later.')
+          toast.error('Failed to load referral details. Please try again later.',  {
+            position: "top-right",
+            autoClose: 5000,
+          })
         }
       } catch (error) {
         console.error('Error fetching referral details:', error)
-        toast.error('There was an error fetching referral details. Please try again later.')
+        toast.error('There was an error fetching referral details. Please try again later.',  {
+          position: "top-right",
+          autoClose: 5000,
+        })
       }
     }
 
@@ -54,7 +61,10 @@ const ReferralPage = () => {
   // Handle Copy to Clipboard
   const copyToClipboard = (text) => {
     navigator.clipboard.writeText(text)
-    toast.success('Copied to clipboard!')
+    toast.success('Copied to clipboard!',  {
+      position: "top-right",
+      autoClose: 5000,
+    })
   }
 
   // Handle Referral Code Submission
@@ -62,14 +72,20 @@ const ReferralPage = () => {
     e.preventDefault()
     
     if (!reffCode) {
-      toast.error('Please enter a referral code.')
+      toast.error('Please enter a referral code.',  {
+        position: "top-right",
+        autoClose: 5000,
+      })
       return
     }
 
     try {
       const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
       if (!token) {
-        toast.error('You need to be logged in to apply a referral code.')
+        toast.error('You need to be logged in to apply a referral code.',  {
+          position: "top-right",
+          autoClose: 5000,
+        })
         return
       }
 
@@ -85,17 +101,26 @@ const ReferralPage = () => {
       )
 
       if (response.status === 200) {
-        toast.success('Referral code applied successfully!')
+        toast.success('Referral code applied successfully!',  {
+          position: "top-right",
+          autoClose: 5000,
+        })
         setFormData((prevState) => ({
           ...prevState,
           referalCode: reffCode,
         }))
       } else {
-        toast.error('Failed to apply referral code. Please try again.')
+        toast.error('Failed to apply referral code. Please try again.',  {
+          position: "top-right",
+          autoClose: 5000,
+        })
       }
     } catch (error) {
       console.error('Error applying referral code:', error)
-      toast.error('There was an error processing your request. Please try again later.')
+      toast.error('There was an error processing your request. Please try again later.',  {
+        position: "top-right",
+        autoClose: 5000,
+      })
     }
   }
 
