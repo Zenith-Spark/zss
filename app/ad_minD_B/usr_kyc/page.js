@@ -119,7 +119,7 @@ const Kyc = () => {
 
       {/* Table with scrollable x-direction on mobile */}
       <div className="overflow-x-auto justify-center items-center mt-6">
-        <table className="w-full border-collapse">
+        <table className="w-[70rem] border-collapse">
           <thead>
             <tr className="text-start border-b">
               <th className="py-2 text-start">User ID</th>

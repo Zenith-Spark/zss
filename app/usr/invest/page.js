@@ -142,7 +142,7 @@ const Page = () => {
         </div>
 
         <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <div className="relative">
+          <div className="relative text-slate-800">
             <h2 className="text-lg font-bold mb-4">Invest in {selectedPlan ? selectedPlan.name : ''}</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
               <div>

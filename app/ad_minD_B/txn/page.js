@@ -223,7 +223,7 @@ const TransactionHistory = () => {
                         type="datetime-local"
                         value={editedData.created_at}
                         onChange={(e) => handleEditChange('created_at', e.target.value)}
-                        className="border p-1 rounded"
+                        className="border p-1 rounded bg-transparent"
                       />
                     ) : (
                       new Date(transaction.created_at).toLocaleString()
@@ -234,7 +234,7 @@ const TransactionHistory = () => {
                       <select
                         value={editedData.status}
                         onChange={(e) => handleEditChange('status', e.target.value)}
-                        className="border p-1 rounded"
+                        className="border p-1 rounded bg-transparent"
                       >
                         <option value="pending">Pending</option>
                         <option value="completed">Completed</option>

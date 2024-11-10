@@ -258,7 +258,7 @@ const Admin = () => {
                     <td className="py-2 text-start">
                     <select
                       onChange={(e) => handleUserAction(user.id, e.target.value)}
-                      className="text-sm bg-white border border-gray-300 rounded px-3 py-1"
+                      className="text-sm bg-transparent px-3 py-1"
                       defaultValue=""
                     >
                       <option value="" disabled>Action</option>
