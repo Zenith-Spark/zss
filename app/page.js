@@ -24,7 +24,8 @@ export default function Home() {
           {texts.subHeading}
           </article>
 
-          <div className="flex gap-4 flex-col md:flex-row">
+          <div className="flex gap-4 flex-row md:flex-row">
+              <ButtonOne buttonValue={'How it works'} />
             <Link href={'/signup'} className="flex flex-row gap-3 items-center">
               <ButtonTwo buttonValue={'Get Stated'} iconValue={(<ArrowRight/>)}/>
             </Link>
