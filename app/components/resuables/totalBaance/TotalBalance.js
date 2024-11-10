@@ -23,7 +23,7 @@ const TotalBalance = () => {
           <div className="px-5">
             <h3 className="text-base md:text-lg tracking-wider font-medium">Total Balance</h3>
             <h1 className="text-4xl md:text-6xl font-bold tracking-wide md:mx-0">
-              {formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formData.totalBalance.toFixed(2) : 0.00}
+              ${formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formData.totalBalance.toFixed(2) : 0.00}
             </h1>
           </div>
 
