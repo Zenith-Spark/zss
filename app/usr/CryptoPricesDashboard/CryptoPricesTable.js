@@ -185,6 +185,7 @@ const CryptoPricesTable = ({showTable}) => {
         });
         setDepositAmount(''); // Reset the deposit amount after success
         setLoading(false)
+        fetchTransactions(),
       } else {
         toast.error('Deposit failed',  {
           position: "top-right",
