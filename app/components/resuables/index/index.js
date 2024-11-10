@@ -33,12 +33,17 @@ export const WhatWeOffer = [
       text: `Our website features an EV SSL certificate, ensuring top-notch security with full business verification. This protects against phishing attacks and offers the highest level of encryption with 2048-bit security.`}
 ];
 
-export const Affiliate = [
-  {
-  title: `Affiliate Program`, 
-  heading: `Our Referral Program`, 
-  text: `We offer a user-friendly affiliate program. Every partner, regardless of an active deposit, can earn commissions by referring others to our business. You can earn commissions at three levels: 3%, 2%, and 1%, with the VIP plan offering a 10% referral commission.`}
-];
+export const investmentOptions = {
+  header: "Your Flexibility In",
+  header2: 'Investment',
+  text: "Our app is designed to give you complete freedom with your investments. Here are some of the key features we offer:",
+  features: [
+    "Freedom to invest any amount, big or small",
+    "Zero investment fees to maximize your returns",
+    "Reliable and secure platform for a trusted experience",
+  ]
+};
+
 
 export const Plans = [
   {

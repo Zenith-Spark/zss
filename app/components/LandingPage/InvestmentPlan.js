@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ComponayDocs, CP, howToEarn, Plans } from '../resuables/index';
+import { ComponayDocs, CP, howToEarn, investmentOptions, Plans } from '../resuables/index';
 import ManBG from '../../../public/img/man1.webp';
+import ManBGTwo from '../../../public/img/man2.webp';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ButtonOne } from '../resuables/Buttons/Buttons';
@@ -8,6 +9,8 @@ import { ArrowRight, ArrowRightCircle } from 'lucide-react';
 import BGTwo from '../../../public/img/building1.webp';
 import BGThree from '../../../public/img/building2.webp';
 import InvestmentCalculator from '../profitcalculator/InvestmentCalculator';
+import { IoCheckmarkCircle } from 'react-icons/io5';
+import { FaEthereum } from 'react-icons/fa';
 
 const InvestmentPlan = () => {
   const [showMore, setShowMore] = useState(false);
@@ -76,16 +79,54 @@ const InvestmentPlan = () => {
   return (
     <main className="w-full py-12 overflow-hidden">
 
-      <section className='w-[80%] h-[80dvh] flex-col md:flex-row mx-auto mb-10'>
-        <div className='w-1/2 overflow-hidden'>
-          <h1 className='text-2xl font-e'>
-            Your flexibility in <br/> investment 
-          </h1>
-        </div>
-        <div className='w-1/3 overflow-hidden h-full flex items-center justify-center rounded-2xl border'>
-        <Image src={ManBG} alt='Flexibility in investment' className='object-cover'/>
-        </div>
-      </section>
+    <section className="w-[80%]  h-[80dvh] flex flex-col md:flex-row mx-auto mb-10 justify-evenly items-center text-xl">
+      <div className="w-full md:w-1/2 overflow-hidden flex flex-col gap-y-3">
+        <h1 className="text-5xl font-extrabold capitalize">
+          {investmentOptions.header}
+        </h1>
+        <h1 className="text-5xl font-extrabold capitalize mb-5">
+          {investmentOptions.header2}
+        </h1>
+        <span className="my-4">
+          {investmentOptions.text}
+        </span>
+        <ul className="list-disc list-inside flex flex-col gap-8">
+          {investmentOptions.features.map((feature, index) => (
+            <li key={index} className="mb-2">
+              {feature}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="w-1/3 h-full hidden md:flex items-center justify-center relative text-slate-800">
+            <span className="absolute w-24 h-24 top-0 left-0 flex flex-col items-center justify-center bg-white rounded-xl z-10 -translate-x-1/2 -translate-y-1/2">
+            <span className='text-5xl'>
+              <IoCheckmarkCircle/>
+            </span>
+            <span className='text-sm font-bold'>
+              Invesment <br/> Successful
+            </span>
+            </span>
+            <span className="absolute w-1/2 h-10 bottom-28 right-0 translate-x-10 bg-white rounded-full z-20 flex items-center justify-between px-3">
+            <span className='w-5 h-5 flex '>
+              <Image src={ManBGTwo} alt='man bg 2' className='rounded-full scale-150' />
+            </span>
+            <span className='text-xs'>
+              Greg Invested In Ethereum
+            </span>
+            </span>
+            <span className="absolute w-1/2 h-16 bottom-10 right-0 translate-x-20 bg-white rounded-xl z-20 flex flex-row gap-x-2 px-3 items-center justify-between">
+            <span className='p-2 rounded-full bg-blue-500 flex items-center justify-center text-white text-center text-sm'>
+            <FaEthereum/>
+            </span>
+            <span className='font-bold'>
+              0.345 ETH
+            </span>
+            </span>
+            <Image src={ManBG} alt="Flexibility in investment" className="object-cover rounded-2xl z-0" />
+          </div>
+    </section>
+
 
       <div className="max-w-7xl mx-auto px-4">
         <h1 className="text-3xl md:text-5xl font-bold text-center mb-12">

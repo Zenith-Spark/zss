@@ -9,18 +9,18 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main>
-      <div className="w-full h-screen pt-20 md:pt-32 flex flex-col items-center overflow-hidden relative bg-black">
+      <div className="w-full h-screen  flex flex-col items-center overflow-hidden relative bg-black">
         {
           LandingPage.map((texts, index)=>(
-            <div className="flex-col flex gap-3 z-10 text-white w-[80%] mx-auto" key={index}>
+            <div className="flex-col flex items-center justify-center w-full h-screen gap-5 z-10 text-white text-center" key={index}>
           <h3 className="text-lg md:text-xl tracking-wider font-bold my-2 font-agdasima ">
             {texts.title}
           </h3>
-          <h1 className="text-4xl md:text-6xl  tracking-widest w-1/2 font-sourceCode font-bold">
+          <h1 className="text-4xl md:text-6xl  tracking-widest font-sourceCode font-bold">
               {texts.heading}
           </h1>
           <span className="bg-neutral-400 w-1/2 h-[1px]"></span>
-          <article className=" text-xl md:text-2xl tracking-wider">
+          <article className=" text-xl md:text-2xl tracking-wider px-5">
           {texts.subHeading}
           </article>
 
