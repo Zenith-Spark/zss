@@ -1,16 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Affiliate, coins, ComponayDocs, howToEarn, LandingPageAboutUs, WhatWeOffer } from '../resuables/index';
+import { coins, howToEarn, LandingPageAboutUs,  } from '../resuables/index';
 import Image from 'next/image';
 import BG from '../../../public/img/team1.webp';
-import BGTwo from '../../../public/img/building1.webp';
-import BGThree from '../../../public/img/building2.webp';
 import AffiliateImg from '../../../public/img/offer1.webp'
-import AffiliateImgTwo from '../../../public/img/offer2.webp'
-import { ButtonOne } from '../resuables/Buttons/Buttons';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
-import InvestmentCalculator from '../profitcalculator/InvestmentCalculator';
 import InvestmentPlan from './InvestmentPlan';
 
 const SubLandingPage = () => {
@@ -91,7 +84,7 @@ const SubLandingPage = () => {
 </div>
 
       <marquee>
-      <div className='flex flex-row w-full items-center justify-evenly pt-16'>
+      <div className='flex flex-row w-full items-center justify-between pt-16 gap-10'>
       {displayedCoins.map((coin, index) => (
         <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
           <span>
@@ -117,14 +110,17 @@ const SubLandingPage = () => {
 
       <section className="w-full py-12">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <div className="flex flex-col md:flex-row justify-between border rounded-xl">
+          <div className="flex flex-col md:flex-row justify-between">
             {howToEarn.map((step, index) => (
               <div
                 key={index}
                 className="p-6 w-full md:w-[23%] transition-transform hover:scale-105"
               >
-                <h1 className='text-3xl font-bold'>Step {step.No}</h1>
-                <h3 className="text-yellow-600 text-2xl font-bold mb-4">{step.title}</h3>
+                <div className='relative mx-auto w-14 h-14 rounded-full items-center justify-center text-center text-2xl flex bg-slate-500 text-white'>
+                <h1 className='text-xs flex items-center justify-center text-center h-4 w-4 bg-blue-500 text-white rounded-full absolute top-0 right-0'>{step.No}</h1>
+                    {step.icon}
+                </div>
+                <h3 className=" text-2xl font-semibold mb-4">{step.title}</h3>
                 <p>{step.text}</p>
               </div>
             ))}
@@ -132,78 +128,6 @@ const SubLandingPage = () => {
         </div>
       </section>
 
-      <section className='h-auto w-full mb-20  flex items-center  my-10  gap-x-5 text-md  md:text-xl px-3 md:px-10 bg-slate-800 text-white py-10'>
-      <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={AffiliateImgTwo} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl border-2' />
-        </div>
-      <article className="w-full md:w-1/2   mx-auto flex flex-col items-start  z-20 ">
-          {WhatWeOffer.map((texts, index) => (
-            <section className='flex flex-col gap-2 font-semibold  md:text-lg ' key={index}>
-              <h1 className="text-4xl md:text-6xl tracking-wider">
-                {texts.heading}
-              </h1>
-              <p>{texts.text}</p>
-            </section>
-          ))}
-        </article>
-      </section>
-          <section className='mx-auto  flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between gap-x-3'>
-        <div className='z-20 w-full md:w-1/2 '>
-        {ComponayDocs.map((texts, index) => (
-            <div className='flex flex-col gap-2 font-semibold md:text-lg' key={index}>
-              <h3 className='text-xl md:text-2xl mb-4 font-extrabold dark:text-yellow-600 text-yellow-700'>
-                {texts.title}
-              </h3>
-              <h1 className="text-4xl md:text-6xl tracking-wider">
-                {texts.heading}
-              </h1>
-              <p>{texts.name}</p>
-              <p>{texts.No}</p>
-              <p>{texts.address}</p>
-              <div className='mb-8 flex flex-row gap-4 items-center'>
-                <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
-                <span> Certification</span>
-              </div>
-              <p>{texts.text}</p>
-              <div className='mb-8 flex flex-row gap-4 items-center'>
-                <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
-                <span> View Report</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className='hidden md:flex gap-x-1 z-20 relative rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={BGTwo} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6 border-2' />
-          <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover -translate-y-20 rounded-2xl shadow-2xl w-1/2 skew-y-6 border-2' />
-        </div>
-      </section>
-
-
-      <InvestmentCalculator/>
-
-      <section className='h-auto w-full mb-20  flex items-center  my-10  gap-x-5 text-md  md:text-xl px-3 md:px-10 bg-slate-800 text-white py-10'>
-      <article className="w-full md:w-1/2   mx-auto flex flex-col items-start  z-20 ">
-          {Affiliate.map((texts, index) => (
-            <section className='flex flex-col gap-2 font-semibold  md:text-lg ' key={index}>
-              <h1 className="text-4xl md:text-6xl tracking-wider">
-                {texts.heading}
-              </h1>
-              <p>{texts.text}</p>
-            </section>
-          ))}
-          <span className='flex flex-col items-center text-yellow-400 my-5'>
-            <h1 className=' text-6xl md:text-8xl font-extrabold'>
-              10%.
-            </h1>
-            <p>
-            Referral Commission
-            </p>
-          </span>
-        </article>
-        <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={AffiliateImg} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl border-2' />
-        </div>
-      </section>
       <InvestmentPlan/>
     </main>
   );

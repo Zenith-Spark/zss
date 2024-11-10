@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { CP, howToEarn, Plans } from '../resuables/index';
+import { ComponayDocs, CP, howToEarn, Plans } from '../resuables/index';
 import ManBG from '../../../public/img/man1.webp';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ButtonOne } from '../resuables/Buttons/Buttons';
-import { ArrowRightCircle } from 'lucide-react';
+import { ArrowRight, ArrowRightCircle } from 'lucide-react';
+import BGTwo from '../../../public/img/building1.webp';
+import BGThree from '../../../public/img/building2.webp';
+import InvestmentCalculator from '../profitcalculator/InvestmentCalculator';
 
 const InvestmentPlan = () => {
   const [showMore, setShowMore] = useState(false);
@@ -72,6 +75,18 @@ const InvestmentPlan = () => {
 
   return (
     <main className="w-full py-12 overflow-hidden">
+
+      <section className='w-[80%] h-[80dvh] flex-col md:flex-row mx-auto mb-10'>
+        <div className='w-1/2 overflow-hidden'>
+          <h1 className='text-2xl font-e'>
+            Your flexibility in <br/> investment 
+          </h1>
+        </div>
+        <div className='w-1/3 overflow-hidden h-full flex items-center justify-center rounded-2xl border'>
+        <Image src={ManBG} alt='Flexibility in investment' className='object-cover'/>
+        </div>
+      </section>
+
       <div className="max-w-7xl mx-auto px-4">
         <h1 className="text-3xl md:text-5xl font-bold text-center mb-12">
           Our Investment Plans
@@ -114,27 +129,38 @@ const InvestmentPlan = () => {
         </div>
       </div>
 
-      <section className='mx-auto flex flex-row gap-x-8 items-center py-16 px-10 text-xl w-full bg-slate-800 md:text-2xl md:justify-around text-white'>
-        <div className='hidden md:flex z-20 rounded-2xl h-[50dvh] w-1/2'>
-          <Image src={ManBG} width={600} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl border-2' />
-        </div>
-        <div className='z-20 w-full md:w-1/2'>
-          {CP.map((texts, index) => (
-            <div key={index} className='flex flex-col gap-4'>
-              <h3 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-4 text-yellow-400'>
+        <InvestmentCalculator/>
+
+      <section className='mx-auto  flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between gap-x-3'>
+        <div className='z-20 w-full md:w-1/2 '>
+        {ComponayDocs.map((texts, index) => (
+            <div className='flex flex-col gap-2 font-semibold md:text-lg' key={index}>
+              <h3 className='text-xl md:text-2xl mb-4 font-extrabold dark:text-yellow-600 text-yellow-700'>
                 {texts.title}
               </h3>
-              <p>{getLimitedText(texts.firstText)}</p>
-              <Link href={'/about'}>
-                <div className='flex flex-row gap-4 items-center'>
-                  <ButtonOne buttonValue={'More'} />
-                </div>
-              </Link>
+              <h1 className="text-4xl md:text-6xl tracking-wider">
+                {texts.heading}
+              </h1>
+              <p>{texts.name}</p>
+              <p>{texts.No}</p>
+              <p>{texts.address}</p>
+              <div className='mb-8 flex flex-row gap-4 items-center'>
+                <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
+                <span> Certification</span>
+              </div>
+              <p>{texts.text}</p>
+              <div className='mb-8 flex flex-row gap-4 items-center'>
+                <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
+                <span> View Report</span>
+              </div>
             </div>
           ))}
         </div>
+        <div className='hidden md:flex gap-x-1 z-20 relative rounded-2xl h-[50dvh] w-1/2'>
+          <Image src={BGTwo} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6 border-2' />
+          <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover -translate-y-20 rounded-2xl shadow-2xl w-1/2 skew-y-6 border-2' />
+        </div>
       </section>
-
      
     </main>
   );

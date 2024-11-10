@@ -3,7 +3,7 @@ export const NavItems = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'FAQ', href: '/faq' },
-  { name: 'Bonuses', href: '/bonuses' }
+  { name: 'Road Map', href: '/bonuses' }
 ];
 
 export const LandingPage = [
@@ -99,21 +99,25 @@ export const CP = [
 
 export const howToEarn = [
   {
+    icon: <FaUserPlus/>,
       No: `1`,
       title: `Register`,
       text: `Create an account by clicking SIGN UP, completing the form, confirming the captcha, and clicking REGISTER.`
   },
   {
+    icon: <PiHandDepositFill/> ,
       No: `2`,
       title: `Make a Deposit`,
       text: `Select MAKE DEPOSIT, choose your payment method, input the deposit amount, and complete the transaction.`
   },
   {
+    icon: <FiTrendingUp/>,
       No: `3`,
       title: `Choose a Plan`,
       text: `Navigate to the "Invest" section on your dashboard, pick your desired investment plan, and proceed.`
   },
   {
+    icon: <PiHandWithdrawFill/>,
       No: `4`,
       title: `Receive Profit`,
       text: `Log in with your credentials and click on the WITHDRAW section to access your earnings.`
@@ -282,7 +286,7 @@ export const RoadMapYearThree = [
 
 
 import { SiBitcoin, SiCardano, SiChainlink, SiFantom, SiHedera, SiLitecoin, SiPolkadot, SiStellar } from "react-icons/si";
-import { FaEthereum } from "react-icons/fa";
+import { FaEthereum, FaUserPlus } from "react-icons/fa";
 import { RiBnbFill } from "react-icons/ri";
 import { SiSolana } from "react-icons/si";
 import { SiTether } from "react-icons/si";

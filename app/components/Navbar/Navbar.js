@@ -33,15 +33,16 @@ const Navbar = () => {
             <Image src={NavBarImg} width={80} height={30} alt="Logo" />
           </Link>
 
-          <div className="hidden md:flex items-center space-x-6">
-            {NavItems.map((item, index) => (
-              <Link href={item.href} key={index}>
-                <span className="text-white hover:text-gray-300 transition-all duration-200">
-                  {item.name}
-                </span>
-              </Link>
-            ))}
-          </div>
+          <div className="hidden md:flex items-center space-x-6 md:divide-x md:divide-gray-500">
+        {NavItems.map((item, index) => (
+          <Link href={item.href} key={index}>
+            <span className="text-white px-6 hover:text-gray-300 transition-all duration-200">
+              {item.name}
+            </span>
+          </Link>
+        ))}
+</div>  
+
 
           <div className="hidden md:flex space-x-4">
             <Link href="/login">
