@@ -365,8 +365,8 @@ useEffect(() => {
             onClose={() => setShowDeposit(false)}
             title={`Deposit ${selectedCoin.id}`}
           >
-            <form className="text-slate-800 p-5 flex flex-col gap-y-5" onSubmit={handleSubmitDeposit}>
             <ButtonOne buttonValue={`Copy ${selectedCoin.id} Wallet Address`} Clicked={copyWalletAddress} />
+            <form className="text-slate-800 p-5 flex flex-col gap-y-5" onSubmit={handleSubmitDeposit}>
             <span className={`flex flex-col w-full`}>
             <label htmlFor='deposit_amount' className='font-bold w-full flex justify-between items-center'>
                <span>
