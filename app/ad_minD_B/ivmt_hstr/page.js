@@ -233,7 +233,7 @@ const Investment = () => {
                         type="datetime-local"
                         value={editedData.investment_time}
                         onChange={(e) => handleEditChange('investment_time', e.target.value)}
-                        className="border p-1 rounded"
+                        className="border p-1 rounded bg-transparent"
                       />
                     ) : (
                       new Date(investment.investment_time).toLocaleString()
@@ -246,7 +246,7 @@ const Investment = () => {
                         type="datetime-local"
                         value={editedData.return_time}
                         onChange={(e) => handleEditChange('return_time', e.target.value)}
-                        className="border p-1 rounded"
+                        className="border p-1 rounded bg-transparent"
                       />
                     ) : (
                       new Date(investment.return_time).toLocaleString()
@@ -258,7 +258,7 @@ const Investment = () => {
                       <select
                         value={editedData.status}
                         onChange={(e) => handleEditChange('status', e.target.value)}
-                        className="border p-1 rounded"
+                        className="border p-1 rounded bg-transparent"
                       >
                         <option value="active">Active</option>
                         <option value="pending">Pending</option>

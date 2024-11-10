@@ -80,8 +80,8 @@ const PersonalInfoPage = () => {
             </p>
             {selectGender && (
               <div className="flex flex-col gap-4">
-                <label htmlFor="gender" className="block text-sm font-medium mb-2">Select Gender:</label>
-                <select id="gender" value={gender} onChange={handleGenderChange} className="p-2 border rounded">
+                <label htmlFor="gender" className="block text-sm  font-medium mb-2">Select Gender:</label>
+                <select id="gender" value={gender} onChange={handleGenderChange} className="p-2 border rounded bg-transparent">
                   <option value="FEMALE">Female</option>
                   <option value="MALE">Male</option>
                 </select>
