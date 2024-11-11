@@ -335,7 +335,7 @@ useEffect(() => {
                 <section className='flex flex-row items-center justify-between'>
                   {selectedCoin && (
                     <div className="flex flex-row items-center gap-x-5">
-                      <img src={selectedCoin.image} alt={selectedCoin.name} className="w-20 h-20 rounded-full" />
+                      <Image src={selectedCoin.image} alt={selectedCoin.name} className="w-20 h-20 rounded-full" />
                       <div>
                         <h2 className="text-xl font-bold">{selectedCoin.name}</h2>
                         <p className="md:text-lg ">~ {(userWallet[selectedCoin.id] ? (userWallet[selectedCoin.id] / selectedCoin.currentPrice) : 0)}</p>
@@ -519,7 +519,7 @@ useEffect(() => {
                     return (
                       <tr key={coin.id} className="transition duration-200 ease-in-out hover:border-b" onClick={() => toggleTransaction(coin)}>
                         <td className="flex items-center py-4 px-6" >
-                          <img src={coin.image} alt={coin.name} className="w-8 h-8 mr-4 rounded-full" />
+                          <Image src={coin.image} alt={coin.name} className="w-8 h-8 mr-4 rounded-full" />
                           <div>
                             <p className="font-semibold">{coin.name}</p>
                           </div>
