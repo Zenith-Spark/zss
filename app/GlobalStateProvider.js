@@ -244,21 +244,21 @@ export const GlobalStateProvider = ({ children }) => {
     }
   };
 
-  // Fetch data when the component mounts
-  useEffect(() => {
-    const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken') ||  localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
-    if (!authToken) {
-      handleError('No authentication token found');
-      return;
-    }
+  // // Fetch data when the component mounts
+  // useEffect(() => {
+  //   const authToken = localStorage.getItem('authToken') || sessionStorage.getItem('authToken') ||  localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+  //   if (!authToken) {
+  //     handleError('No authentication token found');
+  //     return;
+  //   }
 
-    fetchData(authToken);
-    fetchNotifications(authToken);
-    fetchTotalBalance(authToken);
-    fetchPlans(authToken); // Fetch plans as well
-    fetchInvestments(authToken); // Fetch investments
-    fetchAdminData(authToken); // Fetch investments
-  }, []);
+  //   fetchData(authToken);
+  //   fetchNotifications(authToken);
+  //   fetchTotalBalance(authToken);
+  //   fetchPlans(authToken); // Fetch plans as well
+  //   fetchInvestments(authToken); // Fetch investments
+  //   fetchAdminData(authToken); // Fetch investments
+  // }, []);
 
  // utils/format.js
  const formatBalance = (balance) => {

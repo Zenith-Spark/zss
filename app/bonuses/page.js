@@ -1,14 +1,10 @@
-'use client'
+'use client';
 
 import React, { useState } from 'react';
 import { RoadMapYearOne, RoadMapYearTwo, RoadMapYearThree } from '../components/resuables/index/index';
 
 const Roadmap = () => {
   const [selectedYear, setSelectedYear] = useState('Year One');
-
-  const handleYearChange = (event) => {
-    setSelectedYear(event.target.value);
-  };
 
   const getRoadmapContent = () => {
     switch (selectedYear) {
@@ -23,23 +19,34 @@ const Roadmap = () => {
     }
   };
 
+  const roadmapContent = getRoadmapContent();
+  const title = roadmapContent[0]?.title || '';
+
   return (
-    <main className="max-w-7xl mx-auto px-4 h-screen">
-      <h1 className="text-3xl font-bold text-center mb-8">Our Roadmap</h1>
-      <div className="flex justify-center mb-4">
-        <select
-          onChange={handleYearChange}
-          className="border rounded-md p-2 text-lg focus:outline-none focus:ring-2 focus:ring-yellow-500 text-slate-800"
-        >
-          <option value="Year One">Year 1</option>
-          <option value="Year Two">Year 2</option>
-          <option value="Year Three">Year 3</option>
-        </select>
+    <main className="max-w-7xl mx-auto px-4 h-auto">
+      <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Our Roadmap</h1>
+      
+      <div className="flex justify-center mb-8 space-x-4">
+        {['Year One', 'Year Two', 'Year Three'].map((year, index) => (
+          <button
+            key={index}
+            onClick={() => setSelectedYear(year)}
+            className={`px-6 py-3 rounded-lg font-semibold focus:outline-none transition-colors duration-300 ${
+              selectedYear === year
+                ? 'bg-yellow-500 text-white shadow-lg'
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            {year}
+          </button>
+        ))}
       </div>
-      <div className=" shadow-lg rounded-lg p-6">
+
+      <div className="shadow-lg rounded-lg p-8">
+        {title && <h2 className="text-2xl font-semibold mb-4 text-yellow-600">{title}</h2>}
         <ul className="list-disc list-inside space-y-4 text-lg">
-          {getRoadmapContent().map((item, index) => (
-            <li key={index} className="">{item}</li>
+          {roadmapContent.slice(1).map((item, index) => (
+            <li key={index}>{item}</li>
           ))}
         </ul>
       </div>

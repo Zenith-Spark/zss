@@ -260,33 +260,38 @@ export const aboutWithdrawalFAQs = [
 ];
 
 export const RoadMapYearOne = [
-  "Drafting business and marketing plans",
-  "Registering with the UK government",
-  "Launching our brand-new website",
-  "Activating affiliate referral program",
-  "Offering a diverse selection of investment plans",
-  "Building a strong international client network",
-  "Creating secure financial transactions"
+  {title: 'Establishing Foundations'},
+  "Drafting Business and Marketing Plans: Conduct in-depth market research to identify target audience and industry trends. Define the brand mission, vision, and core values to guide company growth. Develop marketing strategies focusing on brand awareness, lead generation, and customer engagement.",
+  "Registering with the UK Government: Complete all necessary legal and regulatory requirements to establish the company as a legitimate entity in the UK. Ensure compliance with industry standards, including financial regulations and data privacy laws.",
+  "Launching Our Brand-New Website: Develop a modern, user-friendly website that highlights our services, investment plans, and company information. Optimize for SEO to improve search engine visibility and attract organic traffic. Incorporate secure, scalable infrastructure to support high traffic and financial transactions.",
+  "Activating Affiliate Referral Program: Design an affiliate program that incentivizes referrals and rewards affiliates for each successful sign-up. Create promotional materials and tools for affiliates to maximize reach and engagement. Track and optimize the program for increased conversions and a wider client network.",
+  "Offering a Diverse Selection of Investment Plans: Curate a variety of investment plans that cater to different risk appetites and financial goals. Establish partnerships with financial advisors to develop credible and lucrative options. Provide detailed breakdowns of each plan, including expected returns, risks, and timelines.",
+  "Building a Strong International Client Network: Begin outreach to potential clients worldwide to create a diverse portfolio of investors. Attend industry events and use online channels to build visibility and trust with clients from various regions. Develop multilingual support to facilitate communication and engagement with international clients.",
+  "Creating Secure Financial Transactions: Integrate encryption and fraud detection systems to safeguard client transactions. Partner with reliable payment providers to offer seamless, secure payment options. Regularly conduct security audits to identify vulnerabilities and maintain client trust."
 ];
 
 export const RoadMapYearTwo = [
-  "Expanding investment offerings with new asset classes",
-  "Enhancing website features and user experience",
-  "Implementing advanced security measures for transactions",
-  "Launching educational resources and webinars for investors",
-  "Establishing partnerships with financial institutions",
-  "Increasing marketing efforts to attract more clients",
-  "Monitoring and optimizing investment strategies"
+  {title: 'Growth and Enhancement'},
+  "Expanding Investment Offerings with New Asset Classes: Research and introduce new investment options, including real estate, bonds, and sustainable assets. Evaluate market demand and risk factors to ensure each asset class meets client expectations. Collaborate with industry experts to curate diverse portfolios with well-balanced risk and return.",
+  "Enhancing Website Features and User Experience: Upgrade the website with advanced tools like calculators, client dashboards, and personalized recommendations. Use client feedback to streamline navigation and improve accessibility for all users. Implement faster load times, mobile optimization, and smoother transitions to enrich the user experience.",
+  "Implementing Advanced Security Measures for Transactions: Adopt multi-factor authentication and biometric security options for enhanced account protection. Regularly update software to counteract emerging threats and secure client data. Educate clients on best practices for online safety, helping them protect their accounts and information.",
+  "Launching Educational Resources and Webinars for Investors: Host webinars and publish articles on investment basics, strategies, and market trends. Create content for different experience levels, from beginner to advanced investors. Partner with financial experts and thought leaders to provide valuable, relevant insights.",
+  "Establishing Partnerships with Financial Institutions: Partner with banks, asset managers, and fintech companies to broaden our offerings and credibility. Collaborate on shared projects like client education, financial literacy, and investment innovation. Leverage partnerships to enhance our service offerings and expand our reach.",
+  "Increasing Marketing Efforts to Attract More Clients: Launch digital marketing campaigns targeting specific demographics and regions. Expand social media presence, utilizing platforms like LinkedIn, Twitter, and Instagram to reach diverse audiences. Track marketing performance with data analytics, optimizing campaigns for maximum ROI.",
+  "Monitoring and Optimizing Investment Strategies: Continuously analyze the performance of our investment portfolios and make adjustments based on market changes. Use data-driven insights and client feedback to refine strategies and enhance returns. Develop internal metrics to measure and improve investment effectiveness and client satisfaction."
 ];
+
 export const RoadMapYearThree = [
-  "Expanding into new markets and regions",
-  "Integrating cutting-edge technology like AI for analytics",
-  "Developing a mobile application for easier access",
-  "Establishing a customer support center for enhanced service",
-  "Launching loyalty programs for long-term clients",
-  "Conducting in-depth market research to refine offerings",
-  "Strengthening community engagement and corporate responsibility initiatives"
+  {title: 'Expansion and Innovation'},
+  "Expanding into New Markets and Regions: Conduct market analysis to identify potential countries and regions for expansion. Establish local partnerships and comply with regional regulations to ensure smooth entry into new markets. Tailor services and marketing strategies to meet the cultural and economic needs of each new region.",
+  "Integrating Cutting-Edge Technology like AI for Analytics: Implement AI-driven tools for risk assessment, investment recommendations, and portfolio optimization. Use machine learning to analyze market trends, offering clients more accurate and timely investment options. Ensure all AI systems are transparent, ethical, and designed with client interests in mind.",
+  "Developing a Mobile Application for Easier Access: Create a user-friendly mobile app with core features like account management, transaction history, and portfolio tracking. Incorporate secure login options, such as biometric authentication, to protect client data. Optimize the app for a seamless experience on both iOS and Android devices, focusing on ease of use and functionality.",
+  "Establishing a Customer Support Center for Enhanced Service: Set up a dedicated support center with trained representatives to assist clients with questions and issues. Provide 24/7 support options, including live chat, phone support, and email. Regularly review support interactions to improve response times and customer satisfaction.",
+  "Launching Loyalty Programs for Long-Term Clients: Introduce loyalty rewards based on account age, transaction volume, and engagement. Offer perks like reduced fees, exclusive investment options, and invitations to special events. Design a tiered system to recognize and reward different levels of client loyalty.",
+  "Conducting In-Depth Market Research to Refine Offerings: Use client feedback, surveys, and industry analysis to identify areas for improvement and new service opportunities. Stay updated with market changes to ensure our investment plans remain relevant and competitive. Invest in research on emerging trends, such as sustainable investing, to align with evolving client interests.",
+  "Strengthening Community Engagement and Corporate Responsibility Initiatives: Organize events, workshops, and initiatives that promote financial literacy and community welfare. Allocate resources to support charitable causes and sustainability projects that align with our values. Partner with community organizations to create a positive social impact and build lasting client relationships."
 ];
+
 
 
 

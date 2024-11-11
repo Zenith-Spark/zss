@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
 
 const Page = () => {
-  const { formData, fetchPlans, formatBalance } = useGlobalState();
+  const { formData, fetchPlans, formatBalance, fetchInvestments } = useGlobalState();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [investmentAmount, setInvestmentAmount] = useState('');
@@ -54,6 +54,7 @@ const Page = () => {
   const equivalentValue = investmentAmount / coinValue;
 
   const handleSubmit = async (e) => {
+    fetchInvestments()
     e.preventDefault();
 
     if (investmentAmount > 0 && investmentAmount <= coinValue) {

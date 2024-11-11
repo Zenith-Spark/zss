@@ -1,10 +1,23 @@
 // app/usr/layout.js (for Next.js 13 and later)
 "use client"; // Ensure this is a Client Component
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import SideBar from './admin_sidebar/SideBar';
+import { useGlobalState } from '../GlobalStateProvider';
+
 
 const UsrLayout = ({ children }) => {
+  const {fetchAdminData} = useGlobalState();
+
+  useEffect(() => {
+    const authToken =  localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+    if (!authToken) {
+      handleError('No authentication token found');
+      return;
+    }
+    fetchAdminData(authToken); // Fetch investments
+  }, []);
+
   return (
    <>
     <div className="dashboard-layout flex">

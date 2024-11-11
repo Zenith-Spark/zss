@@ -16,7 +16,7 @@ export default function Home() {
           <h3 className="text-lg md:text-xl tracking-wider font-bold my-2 font-agdasima ">
             {texts.title}
           </h3>
-          <h1 className="text-4xl md:text-6xl  tracking-widest font-sourceCode font-bold">
+          <h1 className="text-4xl md:text-7xl  tracking-widest font-sourceCode font-bold">
               {texts.heading}
           </h1>
           <span className="bg-neutral-400 w-1/2 h-[1px]"></span>
