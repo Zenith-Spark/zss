@@ -66,10 +66,10 @@ const handleSubmit = async (e) => {
     setIsLoading(true); // Set loading to true when submitting form
 
     // Modify networkForm.name before submitting
-    const formattedName = networkForm.name
-        .toLowerCase()
-        .replace(/\s+/g, '-'); // Convert to lowercase and replace spaces with hyphens
-
+    const formattedName = typeof networkForm.name === 'string' 
+    ? networkForm.name.toLowerCase().replace(/\s+/g, '-') 
+    : '';
+  
     const formData = { ...networkForm, name: formattedName };
 
     try {

@@ -83,25 +83,21 @@ const SubLandingPage = () => {
   ))}
 </div>
 
-      <marquee>
-      <div className='flex flex-row w-full items-center justify-between pt-16 gap-10'>
-      {displayedCoins.map((coin, index) => (
-        <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1'>
-          <span>
-          {coin.coins}
-          </span>
-          <span className='text-xs font-thin'>
-            {coin.name}
-          </span>
-        </span>
-      ))}
-    </div>
-      </marquee>
+<div className="overflow-hidden w-full pt-16 relative">
+          <div className="flex w-max animate-slide">
+            {displayedCoins.map((coin, index) => (
+              <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1 mx-6'>
+                <span>{coin.coins}</span>
+                <span className='text-xs font-thin'>{coin.name}</span>
+              </span>
+            ))}
+          </div>
+        </div>
       </section>
 
       <div className="w-[80%] mx-auto p-4 text-center my-10">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-yellow-600 font-bold mb-4">
-          How to Earn with Us
+        <h1 className="text-3xl sm:text-4xl md:text-3xl lg:text-6xl text-yellow-600 font-bold mb-4">
+          How "Better" Works
         </h1>
         <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl">
           Our team is committed to upholding the highest standards in managing and growing your wealth. Three simple steps make you financially independent.

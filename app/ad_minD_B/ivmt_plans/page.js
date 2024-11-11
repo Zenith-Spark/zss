@@ -137,9 +137,9 @@ const Plans = () => {
    <>
     <div className='py-16 w-full h-auto'>
       <p className="flex flex-row gap-2 items-center text-lg pb-4 font-thin px-6 pt-4">
-        <span>{adminDBSidebar[3].icons}</span>
+        <span>{adminDBSidebar[2].icons}</span>
         <span><PiGreaterThan /></span>
-        <span>{adminDBSidebar[3].name}</span>
+        <span>{adminDBSidebar[2].name}</span>
       </p>
 
       <h2 className="text-2xl font-bold text-center mb-4">Manage Plans</h2>
@@ -235,9 +235,9 @@ const Plans = () => {
           </div>
           <button type="submit" className="bg-blue-500 rounded-lg text-white px-6 py-3 hover:bg-blue-600 transition duration-200" disabled={loading}>
             {loading ? (formType === 'create' ? (
-              <LoaderStyle8Component fill={'#ffffff'}/>
+              <LoaderStyle8Component fill={'#ffffff'} smaillerSize={true}/>
             ) : (
-              <LoaderStyle8Component fill={'#ffffff'}/>
+              <LoaderStyle8Component fill={'#ffffff'} smaillerSize={true}/>
             )) : (formType === 'create' ? 'Create Plan' : 'Update Plan')}
           </button>
         </form>

@@ -6,8 +6,11 @@ import { Edit, Eye, EyeClosed } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { LoaderStyle5Component } from '../components/resuables/Loader/Loader';
+import { useGlobalState } from '../GlobalStateProvider';
+
 
 const Admin = () => {
+  const {fetchAdminData} = useGlobalState()
   const [filter, setFilter] = useState('all');
   const [users, setUsers] = useState([]); // State to hold user data
   const [totalNetworkBalance, setTotalNetworkBalance] = useState(0); // State to hold total network balance
@@ -83,6 +86,7 @@ const Admin = () => {
   // Effect to fetch users on component mount
   useEffect(() => {
     fetchUsers();
+    fetchAdminData()
   }, []);
 
   // Fetching total balances and user balances

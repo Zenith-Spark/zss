@@ -118,8 +118,8 @@ const Kyc = () => {
       {loading && <p className="text-center">Loading KYC documents...</p>}
 
       {/* Table with scrollable x-direction on mobile */}
-      <div className="overflow-x-auto justify-center items-center mt-6">
-        <table className="w-[50rem] border-collapse">
+      <div className="overflow-x-auto justify-center items-center flex mt-6">
+        <table className="min-w-[50rem] w-full border-collapse ">
           <thead>
             <tr className="text-start border-b">
               <th className="py-2 text-start">User ID</th>
@@ -158,6 +158,7 @@ const Kyc = () => {
                       className="border-b px-2 py-1 bg-transparent"
                       disabled={updatingStatus} // Disable during status update
                     >
+                      <option value="approved" className='text-black' disabled>Action</option>
                       <option value="approved" className='text-black'>Approve</option>
                       <option value="rejected" className='text-black'>Reject</option>
                     </select>
