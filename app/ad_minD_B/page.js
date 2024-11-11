@@ -10,7 +10,7 @@ import { useGlobalState } from '../GlobalStateProvider';
 
 
 const Admin = () => {
-  const {fetchAdminData} = useGlobalState()
+  const {fetchAdminData, formatBalance} = useGlobalState()
   const [filter, setFilter] = useState('all');
   const [users, setUsers] = useState([]); // State to hold user data
   const [totalNetworkBalance, setTotalNetworkBalance] = useState(0); // State to hold total network balance
@@ -209,7 +209,9 @@ const Admin = () => {
           
           {/* Total Network Balance Card */}
           <div className="text-start mb-4 flex flex-col justify-center items-start p-6 shadow-lg rounded-xl w-full">
-            <p className="text-5xl font-bold text-green-600">${totalSystemBalance.toFixed(2)}</p>
+          <p className="text-5xl font-bold text-green-600">
+              ${formatBalance(totalSystemBalance)}
+            </p>
             <h3 className="text-lg font-semibold">Total Network Balance</h3>
           </div>
         </div>
@@ -255,7 +257,7 @@ const Admin = () => {
                         {passwordVisibility[user.id] ? <Eye size={15} /> : <EyeClosed size={15} />}
                       </button>
                     </td>
-                    <td className="py-2 text-start">${getUserBalance(user.id) || 'N/A'}</td>
+                    <td className="py-2 text-start">${formatBalance(getUserBalance(user.id)) || 'N/A'}</td>
                     <td className="py-2 text-start">{user.ip_address || 'N/A'}</td>
                     <td className="py-2 text-start">{user.gender || 'N/A'}</td>
                     <td className="py-2 text-start">{user.date_joined ? new Date(user.date_joined).toLocaleDateString() : 'N/A'}</td>

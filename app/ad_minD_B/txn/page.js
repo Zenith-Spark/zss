@@ -5,8 +5,12 @@ import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
+import { Loader, LoaderStyle5Component } from '@assets/app/components/resuables/Loader/Loader';
+
 
 const TransactionHistory = () => {
+  const {formatBalance} = useGlobalState()
   const [filter, setFilter] = useState('all');
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,39 +31,43 @@ const TransactionHistory = () => {
     if (!token) {
       setError('No token found. Please log in.');
       setLoading(false);
-      toast.error('No token found. Please log in.',  {
+      toast.error('No token found. Please log in.', {
         position: "top-right",
         autoClose: 3000,
       });
       return;
     }
-
+  
     try {
       const response = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/history/', {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       if (response.data && Array.isArray(response.data.transactions)) {
         setTransactions(response.data.transactions);
+        toast.success('Transactions fetched successfully!', {
+          position: "top-right",
+          autoClose: 3000,
+        });
       } else {
         setError('Unexpected response structure.');
-        toast.error('Unexpected response structure.',  {
+        toast.error('Unexpected response structure.', {
           position: "top-right",
           autoClose: 3000,
         });
       }
-
+  
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch transactions. Please check your Internet connection or login status.');
       setLoading(false);
-      toast.error('Failed to fetch transactions. Please check your Internet connection or login status.',  {
+      toast.error('Failed to fetch transactions. Please check your Internet connection or login status.', {
         position: "top-right",
         autoClose: 3000,
       });
     }
   };
-
+  
   useEffect(() => {
     fetchTransactions();
   }, []);
@@ -177,13 +185,15 @@ const TransactionHistory = () => {
         <span><PiGreaterThan /></span>
         <span>{adminDBSidebar[1].name}</span>
       </p>
-      <h2 className="text-xl font-bold mb-4 text-center">Transaction History</h2>
+      <h2 className="text-xl font-bold mb-4 text-center cursor-pointer" onClick={fetchTransactions}>Transaction History</h2>
 
       <div className="w-full flex justify-end pr-15">
         <Dropdown buttonText={filter.charAt(0).toUpperCase() + filter.slice(1)} items={dropdownItems} />
       </div>
 
-      {loading && <p className="text-center">Loading transactions...</p>}
+      {loading && <div className="mx-auto">
+        {<Loader fill={"#eab308"}/>}
+        </div>}
       <div className="overflow-x-auto justify-center items-center mt-6">
         <table className="min-w-full w-[100rem]">
           <thead>
@@ -214,7 +224,7 @@ const TransactionHistory = () => {
                   <td className="py-2 text-start">{transaction.user_id}</td>
                   <td className="py-2">{transaction.full_name}</td>
                   <td className="py-2">{transaction.email_address}</td>
-                  <td className="py-2">${parseFloat(transaction.amount).toFixed(2)}</td>
+                  <td className="py-2">${formatBalance(transaction.amount)}</td>
                   <td className="py-2">{transaction.network}</td>
                   <td className="py-2">{transaction.method}</td>
                   <td className="py-2">
@@ -260,7 +270,9 @@ const TransactionHistory = () => {
                           className="bg-green-500 text-white p-1 rounded"
                           disabled={updatingStatus}
                         >
-                          {updatingStatus ? 'Saving...' : 'Save'}
+                          {updatingStatus ?(
+                            <LoaderStyle5Component fill={'#ffffff'}/>
+                          ) : 'Save'}
                         </button>
                         <button
                           onClick={() => setEditMode(null)}

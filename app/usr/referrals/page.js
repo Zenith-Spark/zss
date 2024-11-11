@@ -9,11 +9,15 @@ import { PiGreaterThan } from 'react-icons/pi'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader'
 
 const ReferralPage = () => {
   const [referrals, setReferrals] = useState([]) // Referral list state
   const [reffCode, setReffCode] = useState('') // Referral code input state
   const { formData, setFormData } = useGlobalState()
+
+  // Loading state for referral submission
+  const [loading, setLoading] = useState(false)
 
   // Fetch referral details on page load
   useEffect(() => {
@@ -69,24 +73,27 @@ const ReferralPage = () => {
 
   // Handle Referral Code Submission
   const handleReferralSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     
     if (!reffCode) {
-      toast.error('Please enter a referral code.',  {
+      toast.error('Please enter a referral code.', {
         position: "top-right",
         autoClose: 5000,
-      })
-      return
+      });
+      return;
     }
 
+    setLoading(true) // Start loading
+
     try {
-      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken')
+      const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
       if (!token) {
-        toast.error('You need to be logged in to apply a referral code.',  {
+        toast.error('You need to be logged in to apply a referral code.', {
           position: "top-right",
           autoClose: 5000,
-        })
-        return
+        });
+        setLoading(false) // Stop loading
+        return;
       }
 
       const response = await axios.post(
@@ -98,29 +105,43 @@ const ReferralPage = () => {
             Authorization: `Bearer ${token}`,
           },
         }
-      )
+      );
 
       if (response.status === 200) {
-        toast.success('Referral code applied successfully!',  {
+        toast.success('Referral code applied successfully!', {
           position: "top-right",
           autoClose: 5000,
-        })
+        });
         setFormData((prevState) => ({
           ...prevState,
           referalCode: reffCode,
-        }))
+        }));
       } else {
-        toast.error('Failed to apply referral code. Please try again.',  {
+        toast.error('Failed to apply referral code. Please try again.', {
           position: "top-right",
           autoClose: 5000,
-        })
+        });
       }
     } catch (error) {
-      console.error('Error applying referral code:', error)
-      toast.error('There was an error processing your request. Please try again later.',  {
-        position: "top-right",
-        autoClose: 5000,
-      })
+      if (error.response && error.response.status === 404) {
+        toast.error(error.response.data.error, {
+          position: "top-right",
+          autoClose: 5000,
+        });
+      } else if (error.response && error.response.status === 400) {
+        toast.warn(error.response.data.error, {
+          position: "top-right",
+          autoClose: 5000,
+        });
+      } else {
+        console.error('Error applying referral code:', error);
+        toast.error(error.response?.data?.error || 'An unexpected error occurred. Please try again later.', {
+          position: "top-right",
+          autoClose: 5000,
+        });
+      }
+    } finally {
+      setLoading(false) // Stop loading after request completes
     }
   }
 
@@ -166,7 +187,15 @@ const ReferralPage = () => {
             />
           </div>
 
-          <button type="submit" className="bg-blue-500 text-white rounded-lg w-full py-2">Apply Referral</button>
+          <button
+            type="submit"
+            className={`bg-blue-500 text-white rounded-lg w-full py-2 flex items-center justify-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            disabled={loading} // Disable button when loading
+          >
+            {loading ?(
+              <LoaderStyle8Component fill={'#ffffff'}/>
+            ): 'Apply Referral'}
+          </button>
         </form>
       </section>
 

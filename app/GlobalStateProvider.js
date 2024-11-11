@@ -260,11 +260,18 @@ export const GlobalStateProvider = ({ children }) => {
     fetchAdminData(authToken); // Fetch investments
   }, []);
 
- 
+ // utils/format.js
+ const formatBalance = (balance) => {
+  if (balance !== null && !isNaN(Number(balance))) {
+    return Number(balance).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  return "0.00";
+};
+
   return (
    <>
    <ToastContainer/>
-    <GlobalStateContext.Provider value={{ formData, setFormData, error, fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments, fetchAdminNotifications, fetchAdminData }}>
+    <GlobalStateContext.Provider value={{ formData, setFormData, error, fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments, fetchAdminNotifications, fetchAdminData, formatBalance }}>
       {children}
     </GlobalStateContext.Provider>
    </>

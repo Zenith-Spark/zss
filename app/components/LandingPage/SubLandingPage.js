@@ -1,9 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { coins, howToEarn, LandingPageAboutUs,  } from '../resuables/index';
-import Image from 'next/image';
-import BG from '../../../public/img/team1.webp';
-import AffiliateImg from '../../../public/img/offer1.webp'
 import InvestmentPlan from './InvestmentPlan';
 
 const SubLandingPage = () => {
@@ -113,7 +110,7 @@ const SubLandingPage = () => {
                 className="p-6 w-full md:w-[23%] transition-transform hover:scale-105"
               >
                 <div className='relative mx-auto w-14 h-14 rounded-full items-center justify-center text-center text-2xl flex bg-slate-500 text-white'>
-                <h1 className='text-xs flex items-center justify-center text-center h-4 w-4 bg-blue-500 text-white rounded-full absolute top-0 right-0'>{step.No}</h1>
+                {/* <h1 className='text-xs flex items-center justify-center text-center h-4 w-4 bg-blue-500 text-white rounded-full absolute top-0 right-0'>{step.No}</h1> */}
                     {step.icon}
                 </div>
                 <h3 className=" text-2xl font-semibold mb-4">{step.title}</h3>

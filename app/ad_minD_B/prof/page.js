@@ -89,7 +89,9 @@ const PersonalInfoPage = () => {
             )}
           </div>
           <p className="w-full">
-            <strong>Date Joined:</strong> {formData.adminDateJoined || 'Date Joined'}
+            <strong>Date Joined:</strong> {formData.adminDateJoined
+                  ? new Date(formData.adminDateJoined).toLocaleString()
+                  : 'Date not available'}
           </p>
           <p className="w-full">
             <strong>Referred By:</strong> {formData.adminLastReferredBy ||  'You were not referred'}

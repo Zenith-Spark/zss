@@ -5,9 +5,12 @@ import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import { toast } from 'react-toastify';
 import { LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
+
 
 
 const Plans = () => {
+  const {formatBalance} = useGlobalState()
   const [loading, setLoading] = useState(false); // Loading state for form submit
   const [loadingPlan, setLoadingPlan] = useState(false); // Loading state for fetching plans
   const [plans, setPlans] = useState([]); // State to hold existing plans
@@ -253,8 +256,8 @@ const Plans = () => {
               <h4 className="text-lg font-bold">{plan.name}</h4>
               <p><strong>Profit %:</strong> {plan.profit_percentage}</p>
               <p><strong>Duration:</strong> {plan.duration_days} days</p>
-              <p><strong>Min Amount:</strong> {plan.minimum_amount}</p>
-              <p><strong>Max Amount:</strong> {plan.maximum_amount}</p>
+              <p><strong>Min Amount:</strong> {formatBalance(plan.minimum_amount)}</p>
+              <p><strong>Max Amount:</strong> {formatBalance(plan.maximum_amount)}</p>
               <p><strong>Status:</strong> {plan.is_active ? 'Active' : 'Inactive'}</p>
               <button onClick={() => handleEdit(plan)} className="text-blue-500 hover:underline mt-4">Edit</button>
             </div>

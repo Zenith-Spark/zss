@@ -7,7 +7,7 @@ import { useGlobalState } from '@assets/app/GlobalStateProvider';
 
 const Investment = () => {
   const [filter, setFilter] = useState('all');
-  const { formData, fetchInvestments } = useGlobalState();
+  const { formData, fetchInvestments, formatBalance } = useGlobalState();
   const investmentData = formData.investments || [];
 
   // Handle filter change
@@ -73,8 +73,8 @@ const Investment = () => {
                 <tr key={index} className="text-end">
                   <td className="py-2 text-start">{investment.plan_name}</td>
                   <td className="py-2 text-start">{investment.network_symbol}</td>
-                  <td className="py-2">${parseFloat(investment.amount).toFixed(2)}</td>
-                  <td className="py-2">${parseFloat(investment.expected_profit).toFixed(2)}</td>
+                  <td className="py-2">${formatBalance(investment.amount)}</td>
+                  <td className="py-2">${formatBalance(investment.expected_profit)}</td>
                   <td className="py-2">{new Date(investment.investment_time).toLocaleString()}</td>
                   <td className="py-2">{new Date(investment.return_time).toLocaleString()}</td>
                   <td className={`py-2 ${

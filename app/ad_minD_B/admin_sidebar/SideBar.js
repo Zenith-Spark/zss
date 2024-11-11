@@ -83,7 +83,7 @@ const SideBar = () => {
           {/* User Info */}
           <div className="h-16 flex items-center gap-1 ml-4 md:ml-8 pb-2 w-full overflow-hidden pr-2">
             <span className="text-3xl border rounded-full h-12 w-12 bg-slate-500 flex items-center justify-center">
-              {formData.adminFullName ? <strong>{formData.adminFullName.charAt(0)}</strong> : adminDBSidebar[6].icons}
+              {formData.adminFullName ? <strong>{formData.adminFullName.charAt(0).toUpperCase()}</strong> : adminDBSidebar[6].icons}
             </span>
             <div>
               <h1 className="font-bold text-base flex flex-col md:flex-row gap-x-2">

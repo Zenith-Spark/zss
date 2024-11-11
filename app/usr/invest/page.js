@@ -9,9 +9,10 @@ import { PiGreaterThan } from 'react-icons/pi';
 import axios from 'axios';
 import {  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { LoaderStyle8Component } from '@assets/app/components/resuables/Loader/Loader';
 
 const Page = () => {
-  const { formData, fetchPlans } = useGlobalState();
+  const { formData, fetchPlans, formatBalance } = useGlobalState();
   const [isModalOpen, setModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [investmentAmount, setInvestmentAmount] = useState('');
@@ -127,10 +128,10 @@ const Page = () => {
                   <span className="font-semibold">Interval: </span>After {plan.duration_days} days
                 </li>
                 <li className="text-gray-600 text-lg">
-                  <span className="font-semibold">Min: </span>$ {plan.minimum_amount}
+                  <span className="font-semibold">Min: </span>$ {formatBalance(plan.minimum_amount)}
                 </li>
                 <li className="text-gray-600 text-lg">
-                  <span className="font-semibold">Max: </span>$ {plan.maximum_amount}
+                  <span className="font-semibold">Max: </span>$ {formatBalance(plan.maximum_amount)}
                 </li>
                 <li className="text-yellow-600 text-xl font-bold">Capital Return: {plan.is_active ? 'Yes' : 'No'}</li>
                 <button onClick={() => openModal(plan)} className="mt-4 bg-blue-500 w-full text-white rounded-lg px-4 py-2">
@@ -192,7 +193,9 @@ const Page = () => {
                 className="bg-blue-500 text-white rounded-lg px-4 py-2"
                 disabled={isInvesting} // Disable the button during investment processing
               >
-                {isInvesting ? 'Processing...' : 'Invest'}
+                {isInvesting ?(
+              <LoaderStyle8Component fill={'#ffffff'}/>
+            ) : 'Invest'}
               </button>
             </form>
           </div>

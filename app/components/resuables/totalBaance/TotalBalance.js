@@ -8,7 +8,7 @@ import { PiGreaterThan } from 'react-icons/pi';
 import Link from 'next/link';
 
 const TotalBalance = () => {
-  const { formData } = useGlobalState();
+  const { formData, formatBalance } = useGlobalState();
  
   return (
     <div className=''>
@@ -22,9 +22,9 @@ const TotalBalance = () => {
           {/* Total Balance Section */}
           <div className="px-5">
             <h3 className="text-base md:text-lg tracking-wider font-medium">Total Balance</h3>
-            <h1 className="text-4xl md:text-6xl font-bold tracking-wide md:mx-0">
-              ${formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formData.totalBalance.toFixed(2) : 0.00}
-            </h1>
+               <h1 className="text-4xl md:text-6xl font-bold tracking-wide md:mx-0">
+                ${formatBalance(formData.totalBalance)}
+              </h1>
           </div>
 
           {/* Action Buttons */}

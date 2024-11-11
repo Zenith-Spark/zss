@@ -5,8 +5,11 @@ import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import Dropdown from '@assets/app/components/resuables/dropdown/Dropdown';
 import axios from 'axios';
 import { toast } from 'react-toastify'; // Import react-toastify
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
+
 
 const Investment = () => {
+  const {formatBalance} = useGlobalState()
   const [filter, setFilter] = useState('all');
   const [investments, setInvestments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -222,9 +225,9 @@ const Investment = () => {
                   <td className="py-2">{investment.user_full_name}</td>
                   <td className="py-2">{investment.plan_name}</td>
                   <td className="py-2">{investment.network_symbol}</td>
-                  <td className="py-2">${parseFloat(investment.amount).toFixed(2)}</td>
+                  <td className="py-2">${formatBalance(investment.amount)}</td>
                   <td className="py-2">{investment.duration_days} days</td>
-                  <td className="py-2">${parseFloat(investment.expected_profit).toFixed(2)}</td>
+                  <td className="py-2">${formatBalance(investment.expected_profit)}</td>
                   
 
                   <td className="py-2">

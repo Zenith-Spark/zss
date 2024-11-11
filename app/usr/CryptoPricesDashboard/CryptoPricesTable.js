@@ -14,7 +14,7 @@ import { toast} from 'react-toastify';
 
 
 const CryptoPricesTable = ({showTable}) => {
-  const { formData, setFormData } = useGlobalState();
+  const { formData, formatBalance } = useGlobalState();
   const userWallet = formData.userWallet;
   
 
@@ -81,6 +81,7 @@ const CryptoPricesTable = ({showTable}) => {
   const toggleTransaction = (coin) => {
     setSelectedCoin(coin);
     setTransaction((prev) => !prev);
+    fetchTransactions()
   };
 
   const disableScroll = () => {
@@ -156,6 +157,7 @@ const CryptoPricesTable = ({showTable}) => {
   };
 
   const handleSubmitDeposit = async (e) => {
+    setLoading(true)
     e.preventDefault();
   
     // Prevent multiple submissions
@@ -206,6 +208,7 @@ const CryptoPricesTable = ({showTable}) => {
   
 
   const handleSubmitwithdrawal = async (e) => {
+    setLoading(true)
     e.preventDefault();
   
     // Prevent multiple submissions
@@ -233,7 +236,7 @@ const CryptoPricesTable = ({showTable}) => {
     // Ensure withdrawal amount doesn't exceed the user's balance
     const userTotalValue = userWallet[selectedCoin.id] || 0;
     if (parseFloat(withdrawal) > userTotalValue) {
-      toast.warn(`Insufficient funds. You can withdraw up to $${userTotalValue.toFixed(2)} for ${selectedCoin.name}.`,  {
+      toast.warn(`Insufficient funds. You can withdraw up to $${formatBalance(userTotalValue)} for ${selectedCoin.name}.`,  {
         position: "top-right",
         autoClose: 5000,
       });
@@ -255,6 +258,7 @@ const CryptoPricesTable = ({showTable}) => {
         });
         setWithdrawal('');
         setUserWalletAdd('');
+        setLoading(false)
         setShowWithdrawal(false); // Close the modal after success
         fetchTransactions(); // Fetch transactions after a successful withdrawal
       } else {
@@ -391,10 +395,10 @@ useEffect(() => {
             </span>
             <span className='w-1/2'>
                             <DBButtonOne
-                  buttonValue={loading ? (
-                    <LoaderStyle8Component fill={'#ffffff'} />
+                  buttonValue={laoding ? (
+                    <LoaderStyle8Component smaillerSize={true} fill={'#ffffff'} />
                   ) : 'Proceed'}
-                  disabled={loading || !depositAmount || !selectedCoin}
+                  disabled={laoding || !depositAmount || !selectedCoin}
                 />
              </span>
             </form >
@@ -436,12 +440,12 @@ useEffect(() => {
             />
               </span>
             <span className='w-1/2'>
-                              <DBButtonOne
-                    buttonValue={loading ? (
-                      <LoaderStyle8Component fill={'#ffffff'} />
-                    ) : 'Proceed'}
-                    disabled={loading || !withdrawal || !userWalletAdd || !selectedCoin}
-                  />
+            <DBButtonOne
+                  buttonValue={laoding ? (
+                    <LoaderStyle8Component smaillerSize={true} fill={'#ffffff'} />
+                  ) : 'Proceed'}
+                  disabled={laoding || !withdrawal || !userWalletAdd}
+                />
             </span>
             </div>
             </form>
@@ -527,7 +531,7 @@ useEffect(() => {
                         {showOwnedCoins && (
                           <>
                             <td className="py-4 px-6 text-right">
-                            $ {userCoinAmount.toFixed(2)} 
+                            $ {formatBalance(userCoinAmount)} 
                             </td>
                             <td className="py-4 px-6 text-right">
                               {userTotalValue} {coinSymbol}

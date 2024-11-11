@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ComponayDocs, CP, howToEarn, investmentOptions, Plans } from '../resuables/index';
 import ManBG from '../../../public/img/man1.webp';
-import ManBGTwo from '../../../public/img/man2.webp';
+import ManBGTwo from '../../../public/img/image.png';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ButtonOne } from '../resuables/Buttons/Buttons';

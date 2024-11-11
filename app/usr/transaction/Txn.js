@@ -1,8 +1,11 @@
 'use client';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
+
 
 const Txn = ({ depositHistory = [], withdrawalHistory = [] }) => {
+  const {formatBalance} = useGlobalState()
   const [showTxn, setShowTxn] = useState(true); // Set to true to show Deposit History first
 
   // Function to set status color
@@ -49,7 +52,7 @@ const Txn = ({ depositHistory = [], withdrawalHistory = [] }) => {
                 {depositHistory.map(txn => (
                   <tr key={txn.id} className="transition duration-200">
                     <td className="p-2">{txn.id}</td>
-                    <td className="p-2 text-right">${parseFloat(txn.amount).toFixed(2)}</td>
+                    <td className="p-2 text-right">${formatBalance(txn.amount)}</td>
                     <td className={`p-2 ${getStatusColor(txn.status)} text-right`}>
                       {txn.status}
                     </td>
@@ -79,7 +82,7 @@ const Txn = ({ depositHistory = [], withdrawalHistory = [] }) => {
                 {withdrawalHistory.map(withdrawal => (
                   <tr key={withdrawal.id} className="transition duration-200">
                     <td className="p-2">{withdrawal.id}</td>
-                    <td className="p-2 text-right">${parseFloat(withdrawal.amount).toFixed(2)}</td>
+                    <td className="p-2 text-right">${formatBalance(withdrawal.amount)}</td>
                     <td className={`p-2 ${getStatusColor(withdrawal.status)} text-right`}>
                       {withdrawal.status}
                     </td>
