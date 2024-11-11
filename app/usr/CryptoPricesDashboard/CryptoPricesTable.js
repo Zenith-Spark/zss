@@ -21,7 +21,7 @@ const CryptoPricesTable = ({showTable}) => {
   const [currency, setCurrency] = useState('usd');
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState('');
-  const [showOwnedCoins, setShowOwnedCoins] = useState(true);
+  const [showOwnedCoins, setShowOwnedCoins] = useState(false);
   const [showDeposit, setShowDeposit] = useState(false);
   const [showWithdrawal, setShowWithdrawal] = useState(false);
   const { coinsData, loading, error, refetch } = useCryptoPrices(currency, page);
