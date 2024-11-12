@@ -163,7 +163,7 @@ const InvestmentPlan = () => {
               <p>{texts.name}</p>
               <p>{texts.No}</p>
               <p>{texts.address}</p>
-              <a className='mb-8 flex flex-row gap-4 items-center' href='/public/docs/zss.pdf'>
+              <a className='mb-8 flex flex-row gap-4 items-center' href='https://drive.google.com/file/d/1r7W3sX8zs-NSe9mRkho6_nJ2rBHEaN-P/view?usp=sharing' target='_blank' rel='noopener noreferrer'>
                 <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
                 <span> Certification</span>
               </a>

@@ -29,7 +29,9 @@ const TotalBalance = () => {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4 mt-4 md:mt-10 px-6">
+            <a href='https://bitpay.com/buy-crypto/' target="_blank" rel="noopener noreferrer">
             <DBButtonTwo buttonValue="Buy" iconValue={usrDBSidebar[1].icons} />
+            </a>
             <Link href={'/usr/withdraw'}>
               <DBButtonOne buttonValue="Withdraw" iconValue={usrDBSidebar[2].icons} />
             </Link>
