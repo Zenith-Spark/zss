@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import useCryptoPrices from '@assets/app/components/resuables/CryptoPrices/CryptoPrices';
 import { ButtonOne, DBButtonOne, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
@@ -280,49 +280,51 @@ const CryptoPricesTable = ({showTable}) => {
   
   
   
-const fetchTransactions = async () => {
-  try {
-    // Fetch deposits
-    const depositResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/deposits/', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    // Fetch withdrawals
-    const withdrawalResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/withdrawals/', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    // Set the states for deposits and withdrawals
-    setDepositHistory(depositResponse.data.map(deposit => ({
-      id: deposit.transaction_id,
-      amount: deposit.amount_usd, // Assuming you want to show the USD amount
-      status: deposit.status,
-      date: deposit.created_at,
-    })));
-
-    setWithdrawalHistory(withdrawalResponse.data.map(withdrawal => ({
-      id: withdrawal.transaction_id,
-      amount: withdrawal.amount_usd, // Assuming you want to show the USD amount
-      status: withdrawal.status,
-      date: withdrawal.created_at,
-    })));
-  } catch (err) {
-    settxnerror(err);
-    toast.error('Error fetching transactions:' + err,  {
-      position: "top-right",
-      autoClose: 5000,
-    });
-  } finally {
-    settxnLoading(false);
-  }
-};
+const fetchTransactions = useCallback(
+  async () => {
+    try {
+      // Fetch deposits
+      const depositResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/deposits/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      // Fetch withdrawals
+      const withdrawalResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/withdrawals/', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      // Set the states for deposits and withdrawals
+      setDepositHistory(depositResponse.data.map(deposit => ({
+        id: deposit.transaction_id,
+        amount: deposit.amount_usd, // Assuming you want to show the USD amount
+        status: deposit.status,
+        date: deposit.created_at,
+      })));
+  
+      setWithdrawalHistory(withdrawalResponse.data.map(withdrawal => ({
+        id: withdrawal.transaction_id,
+        amount: withdrawal.amount_usd, // Assuming you want to show the USD amount
+        status: withdrawal.status,
+        date: withdrawal.created_at,
+      })));
+    } catch (err) {
+      settxnerror(err);
+      toast.error('Error fetching transactions:' + err,  {
+        position: "top-right",
+        autoClose: 5000,
+      });
+    } finally {
+      settxnLoading(false);
+    }
+  }, [token]
+);
 useEffect(() => {
   fetchTransactions();
-}, [token]);
+}, [token, fetchTransactions]);
  
   return (
     <>
