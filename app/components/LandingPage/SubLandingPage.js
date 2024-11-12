@@ -56,7 +56,7 @@ const SubLandingPage = () => {
 
   return (
     <main className='w-full h-auto relative overflow-hidden'>
-      <section className='mx-auto md:h-auto py-5 flex flex-col  items-center  text-xl md:text-2xl md:justify-center'>
+      <section className='mx-auto md:h-screen h-auto py-5 flex flex-col  items-center  text-xl md:text-2xl md:justify-center'>
       <div className='z-20 w-[80%]'>
   {LandingPageAboutUs.map((text, index) => (
     <div 
@@ -73,9 +73,12 @@ const SubLandingPage = () => {
       </h1>
       
       {/* Paragraph */}
-      <p className='text-lg md:text-xl   leading-relaxed max-w-3xl'>
+      <p className='text-lg md:text-xl   leading-relaxed max-w-3xl mb-10'>
         {text.firstText}
       </p>
+      {/* <p className='text-lg md:text-xl   leading-relaxed max-w-3xl'>
+        {text.secondText}
+      </p> */}
     </div>
   ))}
 </div>
@@ -105,7 +108,7 @@ const SubLandingPage = () => {
       </section>
 
       <div className="w-[80%] mx-auto p-4 text-center mt-10 ">
-        <h1 className="text-3xl sm:text-4xl md:text-3xl lg:text-6xl text-yellow-600 font-bold mb-4">
+        <h1 className="text-3xl sm:text-4xl md:text-3xl lg:text-6xl text-yellow-600 font-bold mb-10">
           How {`"Zenith"`} Works
         </h1>
         <p className="text-xl md:w-1/2 mx-auto">

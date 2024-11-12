@@ -110,12 +110,12 @@ const InvestmentCalculator = () => {
   }, [investment, selectedPlan]); // Dependency array includes both investment and selectedPlan
 
   return (
-    <div className="calculator-container w-full md:w-1/2 mx-auto rounded-2xl shadow-xl py-6 px-5 border border-slate-800 my-10">
+    <div className="calculator-container w-full md:w-1/2 mx-auto rounded-2xl shadow-xl py-6 border border-slate-800 my-10 text-base">
       <h1 className="text-3xl font-bold text-center mb-8">Investment Profit Calculator</h1>
       
       <div className="flex justify-around items-center mb-10">
         <span>Select Plan:</span>
-        <div className="w-1/2 relative text-sm">
+        <div className="w-1/2 relative ">
           <div
             onClick={() => setDropdownOpen(!isDropdownOpen)}
             className="cursor-pointer p-3 border-b flex justify-between items-center"

@@ -12,8 +12,8 @@ export const LandingPage = [
 
 export const LandingPageAboutUs = [
   {title: 'Why choose', heading: 'Zenith Spark Station', 
-  firstText: 'Introducing Zenith Spark Station, a forward-thinking investment firm designed for ambitious investors. We assist our clients in discovering valuable digital assets and enabling private funding opportunities. Zenith Nova Globals is a legally registered UK company with registration number 04255913.', 
-  secondText: `We specialize in investing in high-growth companies, particularly those involved in blockchain and automated trading technologies. Here, you'll find top-tier opportunities for profitable investments, paving the way for your financial freedom.`}
+  firstText: 'At Zenith Spark Station, we’re more than an investment firm; we’re your partner in discovering and funding high-potential digital assets through exclusive, private transactions. Fully licensed and registered in the UK, Zenith is dedicated to helping ambitious investors achieve financial growth through curated, secure opportunities. With a sharp focus on companies pioneering blockchain technologies for finance and trading, we provide access to the most promising and profitable investments in the digital market.', 
+  secondText: `Choosing Zenith means joining an exclusive community where your financial goals come first. Backed by industry expertise and a commitment to trust, we empower you to make secure, future-focused investments. If you’re seeking a proven partner in wealth management and financial planning, Zenith Spark Station is your ideal choice for modern, impactful investing.`}
 ];
 
 export const ComponayDocs = [
