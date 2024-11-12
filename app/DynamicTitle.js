@@ -8,7 +8,7 @@ const DynamicTitle = () => {
 
   useEffect(() => {
     // Dynamically set the title based on the available formData
-    const title = `Welcome ${formData.fullName}` || `Welcome ${formData.adminFullName}` || "Zenith Spark Station";
+    const title = `${formData.fullName && `Welcome ${formData.fullName}`}` || `${formData.adminFullName && `Welcome ${formData.adminFullName}`}` || "Zenith Spark Station";
     document.title = title; // Update the document title
   }, [formData]); // Re-run when formData changes
 
