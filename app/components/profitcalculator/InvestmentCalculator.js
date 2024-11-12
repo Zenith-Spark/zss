@@ -3,10 +3,13 @@ import { Chart, registerables } from 'chart.js';
 import { Plans } from '../resuables/index';
 import Modal from '../resuables/Modal/Modal';
 import { DBButtonTwo } from '../resuables/Buttons/Buttons';
+import { useGlobalState } from '@assets/app/GlobalStateProvider';
+
 
 Chart.register(...registerables);
 
 const InvestmentCalculator = () => {
+  const {formatBalance} = useGlobalState()
   const [selectedPlan, setSelectedPlan] = useState(Plans[0]);
   const [investment, setInvestment] = useState(1000);
   const [dailyProfit, setDailyProfit] = useState(0);
@@ -20,7 +23,7 @@ const InvestmentCalculator = () => {
 
     // Check if the investment is within the valid range before showing the modal
     if (investment < min || investment > max) {
-      alert(`Please enter an amount between ${min} and ${max} USD.`);
+      alert(`Please enter an amount between ${formatBalance(min)} and ${formatBalance(max)} USD for ${selectedPlan.title}`);
     } else {
       setModal(!modal);
       updateCalculations(); // Update calculations if the modal is opened
@@ -38,7 +41,7 @@ const InvestmentCalculator = () => {
     } else if (investment > newMax) {
       setInvestment(newMax);
     }
-  }, [selectedPlan]);
+  }, [selectedPlan]); // Dependency on selectedPlan
 
   const handleInvestmentChange = (e) => {
     const value = parseFloat(e.target.value);
@@ -100,6 +103,11 @@ const InvestmentCalculator = () => {
     setSelectedPlan(plan);
     setDropdownOpen(false);
   };
+
+  // useEffect to update calculations when investment changes
+  useEffect(() => {
+    updateCalculations();
+  }, [investment, selectedPlan]); // Dependency array includes both investment and selectedPlan
 
   return (
     <div className="calculator-container w-full md:w-1/2 mx-auto rounded-2xl shadow-xl py-6 px-5 border border-slate-800 my-10">
@@ -167,19 +175,19 @@ const InvestmentCalculator = () => {
           <div className="summary-item mb-4">
             <p className="text-sm font-medium">Investment Amount</p>
             <p id="investmentDisplay" className="text-xl font-semibold">
-              {investment.toFixed(2)} USD
+              {formatBalance(investment)} USD
             </p>
           </div>
           <div className="summary-item mb-4">
             <p className="text-sm font-medium">Daily Profit</p>
             <p id="dailyProfit" className="text-xl font-semibold text-green-600">
-              {dailyProfit.toFixed(2)} USD
+              {formatBalance(dailyProfit)} USD
             </p>
           </div>
           <div className="summary-item">
             <p className="text-sm font-medium">Total Profit after 30 days</p>
             <p id="totalProfit" className="text-xl font-semibold text-green-600">
-              {totalProfit.toFixed(2)} USD
+              {formatBalance(totalProfit)} USD
             </p>
           </div>
         </div>

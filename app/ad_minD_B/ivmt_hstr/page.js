@@ -193,7 +193,7 @@ const Investment = () => {
       {error && <p className="text-red-500 text-center">{error}</p>}
 
       <div className="overflow-x-auto justify-center items-center mt-6">
-        <table className="min-w-full w-[80rem]">
+        <table className=" w-[100rem]">
           <thead>
             <tr className="text-start">
               <th className="py-2 text-start">User Id</th>

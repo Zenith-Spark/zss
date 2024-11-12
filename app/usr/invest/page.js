@@ -26,7 +26,7 @@ const Page = () => {
       // Call fetchTotalBalance if authToken exists
       fetchPlans(authToken);
     }
-  }, []); // Empty dependency array ensures it only runs on mount
+  }, [fetchPlans]); // Empty dependency array ensures it only runs on mount
 
 
   const Plans = formData.plans;

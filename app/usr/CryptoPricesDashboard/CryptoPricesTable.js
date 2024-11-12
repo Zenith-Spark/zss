@@ -455,7 +455,7 @@ useEffect(() => {
           {
             !showTable && (
               <div className="mb-4 text-start font-bold px-6">
-            <h2 className="text-lg font-semibold">Total Balance: ${formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formData.totalBalance.toFixed(2) : 0.00}
+            <h2 className="text-lg font-semibold">Total Balance: ${formData.totalBalance !== null && !isNaN(formData.totalBalance) ? formatBalance(formData.totalBalance) : 0.00}
             </h2>
           </div>
             )
@@ -541,7 +541,7 @@ useEffect(() => {
                         {!showOwnedCoins && (
                           <>
                             <td className="py-4 px-6 text-right">
-                              ${coin.currentPrice}
+                              ${formatBalance(coin.currentPrice)}
                             </td>
                             <td className={`py-4 px-6 text-right hidden md:table-cell ${coin.priceChange >= 0 ? 'text-green-500': 'text-red-500'}`}>
                               {coin.priceChange}%

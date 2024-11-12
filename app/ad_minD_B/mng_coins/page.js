@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { PiGreaterThan } from 'react-icons/pi';
@@ -22,30 +22,32 @@ const NetworksPage = () => {
     const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
 
     // Fetch all networks on component mount
-    const fetchNetworks = async () => {
-        if (!token) {
-            toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
-            return;
-        }
-
-        setLoadingNetworks(true); // Set loading state when fetching networks
-        try {
-            const response = await axios.get('https://zss.pythonanywhere.com/api/v1/networks/', {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            setNetworks(response.data);
-            toast.success('Networks fetched successfully.', { position: "top-right", autoClose: 3000 });
-        } catch (error) {
-            console.error('Error fetching networks:', error);
-            toast.error('Failed to fetch networks: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
-        } finally {
-            setLoadingNetworks(false); // Reset loading state after fetch completes
-        }
-    };
+    const fetchNetworks = useCallback(
+        async () => {
+            if (!token) {
+                toast.error('No authentication token found', { position: "top-right", autoClose: 3000 });
+                return;
+            }
+    
+            setLoadingNetworks(true); // Set loading state when fetching networks
+            try {
+                const response = await axios.get('https://zss.pythonanywhere.com/api/v1/networks/', {
+                    headers: { Authorization: `Bearer ${token}` },
+                });
+                setNetworks(response.data);
+                toast.success('Networks fetched successfully.', { position: "top-right", autoClose: 3000 });
+            } catch (error) {
+                console.error('Error fetching networks:', error);
+                toast.error('Failed to fetch networks: ' + (error.response?.data?.message || error.message), { position: "top-right", autoClose: 3000 });
+            } finally {
+                setLoadingNetworks(false); // Reset loading state after fetch completes
+            }
+        }, [token]
+    );
 
     useEffect(() => {
         fetchNetworks(); // Fetch networks when the component mounts
-    }, [token]);
+    }, [token, fetchNetworks]);
 
     // Handle form input changes
     const handleChange = (e) => {

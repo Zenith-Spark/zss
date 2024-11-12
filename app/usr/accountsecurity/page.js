@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { DBButtonOne } from '@assets/app/components/resuables/Buttons/Buttons';
@@ -25,31 +25,26 @@ const SecuritySettings = () => {
   const token = localStorage.getItem('authToken') || sessionStorage.getItem('authToken');
 
   // Fetch KYC status when component mounts
-  const fetchKycStatus = async () => {
+  const fetchKycStatus = useCallback(async () => {
     try {
-      const response = await axios.get(
-        'https://zss.pythonanywhere.com/api/v1/user-kyc-status/',
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
+      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/user-kyc-status/', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (response.status === 200) {
         setKycStatus(response.data.kyc_status);
       }
     } catch (err) {
-      toast.error('An error occurred while fetching KYC status.',  {
+      toast.error('An error occurred while fetching KYC status.', {
         position: "top-right",
         autoClose: 5000,
       });
     }
-  };
+  }, [token]);
+  
 
   useEffect(() => {
     fetchKycStatus();
-  }, [token]);
+  }, [token, fetchKycStatus]);
 
   // Password change submit handler
   const handleSubmit = async (e) => {

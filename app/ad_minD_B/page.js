@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { PiGreaterThan } from 'react-icons/pi';
 import { adminDBSidebar } from '@assets/app/components/resuables/index';
 import { Edit, Eye, EyeClosed } from 'lucide-react';
@@ -29,72 +29,10 @@ const Admin = () => {
   };
 
   // Fetch user data based on admin token
-  const fetchUsers = async () => {
-    const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
-
-    // Check if token is present
-    if (!token) {
-      toast.error('No token found. Please log in.',  {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/users-count/', {
-        headers: {
-          Authorization: `Bearer ${token}`, // Include token in the Authorization header
-        },
-      });
-      // Set total number of users
-      setTotalUsers(response.data.data.total_users);
-      
-      // Fetch detailed user information as before
-      const usersResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/users-detail/', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      setTotalNetworkBalance(usersResponse.data.total_network_balance);
-      if (Array.isArray(usersResponse.data.users)) {
-        setUsers(usersResponse.data.users);
-        const visibilityState = {};
-        usersResponse.data.users.forEach(user => {
-          visibilityState[user.id] = false;
-        });
-        setPasswordVisibility(visibilityState);
-      } else {
-        toast.error('Unexpected response structure.',  {
-          position: "top-right",
-          autoClose: 3000,
-        });
-      }
-
-      setLoading(false);
-    } catch (err) {
-      toast.error('Failed to fetch users. Please check your Internet connection or login status.',  {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      setLoading(false);
-    }
-  };
-
-  // Effect to fetch users on component mount
-  useEffect(() => {
-    fetchUsers();
-    fetchAdminData()
-  }, []);
-
-  // Fetching total balances and user balances
-  useEffect(() => {
-    // Function to fetch the balances
-    const fetchBalances = async () => {
+  const fetchUsers = useCallback(
+    async () => {
       const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
-
+  
       // Check if token is present
       if (!token) {
         toast.error('No token found. Please log in.',  {
@@ -104,7 +42,63 @@ const Admin = () => {
         setLoading(false);
         return;
       }
+  
+      try {
+        const response = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/users-count/', {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include token in the Authorization header
+          },
+        });
+        // Set total number of users
+        setTotalUsers(response.data.data.total_users);
+        
+        // Fetch detailed user information as before
+        const usersResponse = await axios.get('https://zss.pythonanywhere.com/api/v1/admin/users-detail/', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+  
+        setTotalNetworkBalance(usersResponse.data.total_network_balance);
+        if (Array.isArray(usersResponse.data.users)) {
+          setUsers(usersResponse.data.users);
+          const visibilityState = {};
+          usersResponse.data.users.forEach(user => {
+            visibilityState[user.id] = false;
+          });
+          setPasswordVisibility(visibilityState);
+        } else {
+          toast.error('Unexpected response structure.',  {
+            position: "top-right",
+            autoClose: 3000,
+          });
+        }
+  
+        setLoading(false);
+      } catch (err) {
+        toast.error('Failed to fetch users. Please check your Internet connection or login status.',  {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        setLoading(false);
+      }
+    }, []
+  )
 
+  const fetchBalances = useCallback(
+    async () => {
+      const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+  
+      // Check if token is present
+      if (!token) {
+        toast.error('No token found. Please log in.',  {
+          position: "top-right",
+          autoClose: 3000,
+        });
+        setLoading(false);
+        return;
+      }
+  
       try {
         const response = await fetch('https://zss.pythonanywhere.com/api/v1/admin/all-users-balance/', {
           headers: {
@@ -112,7 +106,7 @@ const Admin = () => {
           },
         });
         const data = await response.json();
-
+  
         if (data.status === 'success') {
           setTotalSystemBalance(data.data.total_system_balance); // Set the total system balance
           setUserBalances(data.data.user_balances); // Set the user balances
@@ -122,13 +116,16 @@ const Admin = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       }
-    };
+    }, []
+  )
+  // Effect to fetch users on component mount
+  useEffect(() => {
+    fetchUsers();
+    fetchAdminData()
+    fetchBalances()
+  }, [fetchUsers, fetchAdminData, fetchBalances]);
 
-    // Call the fetch function on component mount
-    fetchBalances();
-  }, []);
-
-  // Filter users based on the selected filter
+ 
   const filteredUsers = filter === 'all'
     ? users
     : users.filter(user => user.is_active === (filter === 'verified'));
@@ -144,7 +141,7 @@ const Admin = () => {
   // Function to get the individual user balance
   const getUserBalance = (userId) => {
     const userBalance = userBalances.find(balance => balance.user_id === userId);
-    return userBalance ? userBalance.balance.toFixed(2) : 'N/A';
+    return userBalance ? formatBalance(userBalance.balance) : 'N/A';
   };
 
   // Function to handle action on a user (activate, suspend, delete)

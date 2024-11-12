@@ -16,7 +16,7 @@ const UsrLayout = ({ children }) => {
       return;
     }
     fetchAdminData(authToken); // Fetch investments
-  }, []);
+  }, [fetchAdminData]);
 
   return (
    <>

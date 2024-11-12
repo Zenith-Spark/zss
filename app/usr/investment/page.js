@@ -33,7 +33,7 @@ const Investment = () => {
       return;
     }
     fetchInvestments(authToken)
-  }, []);
+  }, [fetchInvestments]);
 
   return (
     <div className="p-4">

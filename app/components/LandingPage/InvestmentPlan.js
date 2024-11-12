@@ -66,40 +66,47 @@ const InvestmentPlan = () => {
     };
 
     const previousScrollLeft = { current: 0 }; // Track the previous scroll position
-    scrollRef.current.addEventListener('scroll', handleScroll); // Add scroll event listener
+    
+    // Store the ref value in a variable to avoid changes during cleanup
+    const currentScrollRef = scrollRef.current;
+
+    // Add event listener
+    if (currentScrollRef) {
+      currentScrollRef.addEventListener('scroll', handleScroll);
+    }
 
     // Clean up the event listener on unmount
     return () => {
-      if (scrollRef.current) {
-        scrollRef.current.removeEventListener('scroll', handleScroll);
+      if (currentScrollRef) {
+        currentScrollRef.removeEventListener('scroll', handleScroll);
       }
     };
-  }, []);
+  }, []); // Empty dependency array to run effect only once
 
   return (
-    <main className="w-full py-12 overflow-hidden">
+    <main className="w-full h-auto py-12 overflow-hidden">
 
-    <section className="w-[80%]  h-[80dvh] flex flex-col md:flex-row mx-auto mb-10 justify-evenly gap-x-5 items-center text-xl">
-      <div className="w-full md:w-1/2 overflow-hidden flex flex-col gap-y-3">
-        <h1 className="text-5xl font-extrabold capitalize">
-          {investmentOptions.header}
-        </h1>
-        <h1 className="text-5xl font-extrabold capitalize mb-5">
-          {investmentOptions.header2}
-        </h1>
-        <span className="my-4">
-          {investmentOptions.text}
-        </span>
-        <ol className="list-decimal list-inside flex flex-col gap-4 text-sm">
-          {investmentOptions.features.map((feature, index) => (
-            <li key={index} className="">
-              {feature}
-            </li>
-          ))}
-        </ol>
-      </div>
-      <InvestmentCalculator/>
-    </section>
+      <section className="w-[80%]  h-auto flex flex-col md:flex-row mx-auto mb-10 justify-evenly gap-x-5 items-center text-xl">
+        <div className="w-full md:w-1/2 overflow-hidden flex flex-col gap-y-3">
+          <h1 className="text-5xl font-extrabold capitalize">
+            {investmentOptions.header}
+          </h1>
+          <h1 className="text-5xl font-extrabold capitalize mb-5">
+            {investmentOptions.header2}
+          </h1>
+          <span className="my-4">
+            {investmentOptions.text}
+          </span>
+          <ol className="list-decimal list-inside flex flex-col gap-4 text-sm">
+            {investmentOptions.features.map((feature, index) => (
+              <li key={index} className="">
+                {feature}
+              </li>
+            ))}
+          </ol>
+        </div>
+        <InvestmentCalculator/>
+      </section>
 
 
       <div className="max-w-7xl mx-auto px-4 h-auto my-16">
@@ -145,7 +152,7 @@ const InvestmentPlan = () => {
       </div>
       <section className='mx-auto  flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between gap-x-3'>
         <div className='z-20 w-full md:w-1/2 '>
-        {ComponayDocs.map((texts, index) => (
+          {ComponayDocs.map((texts, index) => (
             <div className='flex flex-col gap-2 font-semibold md:text-lg' key={index}>
               <h3 className='text-xl md:text-2xl mb-4 font-extrabold dark:text-yellow-600 text-yellow-700'>
                 {texts.title}
@@ -170,12 +177,12 @@ const InvestmentPlan = () => {
         </div>
         <div className='hidden md:flex gap-x-1 z-20 relative rounded-2xl h-[50dvh] w-1/2'>
           <Image src={BGTwo} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6 border-2' />
-          <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover -translate-y-20 rounded-2xl shadow-2xl w-1/2 skew-y-6 border-2' />
+          <Image src={BGThree} width={300} height={600} alt='Sub Landing Background' className='object-cover rounded-2xl shadow-2xl w-1/2 -skew-y-6 border-2' />
         </div>
       </section>
-     
+
     </main>
   );
-}
+};
 
 export default InvestmentPlan;

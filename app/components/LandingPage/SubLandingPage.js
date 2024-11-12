@@ -132,8 +132,6 @@ const SubLandingPage = () => {
           </div>
         </div>
       </section>
-
-      {/* <InvestmentPlan/> */}
     </main>
   );
 }

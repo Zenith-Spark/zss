@@ -17,7 +17,7 @@ export default function DashboardPage() {
       fetchData(authToken)
 
     }
-  }, []); // Empty dependency array ensures it only runs on mount
+  }, [fetchTotalBalance, fetchData]); // Empty dependency array ensures it only runs on mount
 
   return (
     <div className='container mx-auto pb-5 pt-16'>

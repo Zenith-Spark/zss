@@ -23,7 +23,7 @@ const UsrLayout = ({ children }) => {
     fetchTotalBalance(authToken);
     fetchPlans(authToken)
     fetchInvestments(authToken)
-  }, []);
+  }, [fetchData, fetchNotifications, fetchTotalBalance, fetchPlans, fetchInvestments ]);
   return (
     <div className="dashboard-layout flex">
       <header>
