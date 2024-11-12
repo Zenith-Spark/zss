@@ -7,7 +7,7 @@ export const NavItems = [
 ];
 
 export const LandingPage = [
-  {title: `Welcome to Zenith Spark Station`, heading:`Empowering Your Financial Independence`, subHeading: `Innovative team. Advanced technologies. Premier financial experts.` }
+  {title: `Welcome to Zenith Spark Station`, heading:`Empowering Your Financial`,br: 'Independence', subHeading: `Innovative team. Advanced technologies. Premier financial experts.` }
 ];
 
 export const LandingPageAboutUs = [
@@ -39,6 +39,9 @@ export const investmentOptions = {
   text: "Our app is designed to give you complete freedom with your investments. Here are some of the key features we offer:",
   features: [
     "Freedom to invest any amount, big or small",
+    "We prioritize our clients, offering financial freedom and complete anonymity as trusted partners.",
+    "Our website features an EV SSL certificate, offering top-tier security with full business verification, 2048-bit encryption, and protection against phishing attacks.",
+    "Our affiliate program allows you to earn money by sharing your referral link, even without an active deposit. Earn commissions at 3%, 2%, and 1% levels, with a 10% commission on the VIP plan.",
     "Zero investment fees to maximize your returns",
     "Reliable and secure platform for a trusted experience",
   ]

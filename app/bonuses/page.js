@@ -42,13 +42,15 @@ const Roadmap = () => {
   }
 
   return (
-    <div style={{
-      backgroundImage: `url(${backgroundImage.src})`,
-      backgroundPosition: 'center',
-      backgroundSize: 'cover',
-      backgroundRepeat: 'no-repeat',
-      minHeight: '100vh' // Make sure the background covers the full height
-    }}>
+    <div 
+    // style={{
+    //   backgroundImage: `url(${backgroundImage.src})`,
+    //   backgroundPosition: 'center',
+    //   backgroundSize: 'cover',
+    //   backgroundRepeat: 'no-repeat',
+    //   minHeight: '100vh' // Make sure the background covers the full height
+    // }}
+    >
       <main className="max-w-7xl mx-auto px-4 h-auto pb-10">
         <h1 className="text-4xl font-bold text-center mb-8 text-gray-900">Our Roadmap</h1>
         

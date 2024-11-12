@@ -79,7 +79,7 @@ const InvestmentPlan = () => {
   return (
     <main className="w-full py-12 overflow-hidden">
 
-    <section className="w-[80%]  h-[80dvh] flex flex-col md:flex-row mx-auto mb-10 justify-evenly items-center text-xl">
+    <section className="w-[80%]  h-[80dvh] flex flex-col md:flex-row mx-auto mb-10 justify-evenly gap-x-5 items-center text-xl">
       <div className="w-full md:w-1/2 overflow-hidden flex flex-col gap-y-3">
         <h1 className="text-5xl font-extrabold capitalize">
           {investmentOptions.header}
@@ -90,45 +90,19 @@ const InvestmentPlan = () => {
         <span className="my-4">
           {investmentOptions.text}
         </span>
-        <ul className="list-disc list-inside flex flex-col gap-8">
+        <ol className="list-decimal list-inside flex flex-col gap-4 text-sm">
           {investmentOptions.features.map((feature, index) => (
-            <li key={index} className="mb-2">
+            <li key={index} className="">
               {feature}
             </li>
           ))}
-        </ul>
+        </ol>
       </div>
-      <div className="w-1/3 h-full hidden md:flex items-center justify-center relative text-slate-800">
-            <span className="absolute w-24 h-24 top-0 left-0 flex flex-col items-center justify-center bg-white rounded-xl z-10 -translate-x-1/2 -translate-y-1/2">
-            <span className='text-5xl'>
-              <IoCheckmarkCircle/>
-            </span>
-            <span className='text-sm font-bold'>
-              Invesment <br/> Successful
-            </span>
-            </span>
-            <span className="absolute w-1/2 h-10 bottom-28 right-0 translate-x-10 bg-white rounded-full z-20 flex items-center justify-between px-3">
-            <span className='w-5 h-5 flex '>
-              <Image src={ManBGTwo} alt='man bg 2' className='rounded-full scale-150' />
-            </span>
-            <span className='text-xs'>
-              Greg Invested In Ethereum
-            </span>
-            </span>
-            <span className="absolute w-1/2 h-16 bottom-10 right-0 translate-x-20 bg-white rounded-xl z-20 flex flex-row gap-x-2 px-3 items-center justify-between">
-            <span className='p-2 rounded-full bg-blue-500 flex items-center justify-center text-white text-center text-sm'>
-            <FaEthereum/>
-            </span>
-            <span className='font-bold'>
-              0.345 ETH
-            </span>
-            </span>
-            <Image src={ManBG} alt="Flexibility in investment" className="object-cover rounded-2xl z-0" />
-          </div>
+      <InvestmentCalculator/>
     </section>
 
 
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="max-w-7xl mx-auto px-4 h-auto my-16">
         <h1 className="text-3xl md:text-5xl font-bold text-center mb-12">
           Our Investment Plans
         </h1>
@@ -169,9 +143,6 @@ const InvestmentPlan = () => {
           </div>
         </div>
       </div>
-
-        <InvestmentCalculator/>
-
       <section className='mx-auto  flex flex-row  items-center pt-24 text-xl w-[80%] md:text-2xl md:justify-between gap-x-3'>
         <div className='z-20 w-full md:w-1/2 '>
         {ComponayDocs.map((texts, index) => (
@@ -185,10 +156,10 @@ const InvestmentPlan = () => {
               <p>{texts.name}</p>
               <p>{texts.No}</p>
               <p>{texts.address}</p>
-              <div className='mb-8 flex flex-row gap-4 items-center'>
+              <a className='mb-8 flex flex-row gap-4 items-center' href='/public/docs/zss.pdf'>
                 <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />
                 <span> Certification</span>
-              </div>
+              </a>
               <p>{texts.text}</p>
               <div className='mb-8 flex flex-row gap-4 items-center'>
                 <ButtonOne iconValue={(<ArrowRight />)} IconButton={true} />

@@ -16,10 +16,8 @@ module.exports = {
         customBlue: '#4A4ABF',
       },
       fontFamily: {
-        afacad: ['Afacad Flux', 'sans-serif'],
-        agdasima: ['Agdasima', 'sans-serif'],
-        josefin: ['Josefin Sans', 'sans-serif'],
-        sourceCode: ['Source Code Pro', 'monospace'],
+        montserat: ['montserat', 'sans-serif'],
+        poppins: ['poppins', 'sans-serif'],
       },
     },
   },

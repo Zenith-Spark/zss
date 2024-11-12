@@ -56,8 +56,8 @@ const SubLandingPage = () => {
 
   return (
     <main className='w-full h-auto relative overflow-hidden'>
-      <section className='mx-auto md:h-auto py-5 flex flex-col  items-center  text-xl w-[80%] md:text-2xl md:justify-center'>
-      <div className='z-20 w-full'>
+      <section className='mx-auto md:h-auto py-5 flex flex-col  items-center  text-xl md:text-2xl md:justify-center'>
+      <div className='z-20 w-[80%]'>
   {LandingPageAboutUs.map((text, index) => (
     <div 
       key={index} 
@@ -81,23 +81,35 @@ const SubLandingPage = () => {
 </div>
 
 <div className="overflow-hidden w-full pt-16 relative">
-          <div className="flex w-max animate-slide">
-            {displayedCoins.map((coin, index) => (
-              <span key={index} className='text-3xl md:text-4xl flex flex-col items-center gap-1 mx-6'>
-                <span>{coin.coins}</span>
-                <span className='text-xs font-thin'>{coin.name}</span>
-              </span>
-            ))}
-          </div>
-        </div>
+  <span className='w-10% h-full absolute right-0 backdrop-blur-3xl z-10'></span>
+  <span className='w-10% h-full absolute left-0 backdrop-blur-3xl z-10'></span>
+  <div className="flex w-full scroll-content">
+    {/* First instance of coins */}
+    {displayedCoins.map((coin, index) => (
+      <span key={index} className="text-3xl md:text-4xl flex flex-col items-center gap-1 mx-6 scroll-item">
+        <span>{coin.coins}</span>
+        <span className="text-xs font-thin">{coin.name}</span>
+      </span>
+    ))}
+    {/* Second instance of coins to create the loop effect */}
+    {displayedCoins.map((coin, index) => (
+      <span key={`copy-${index}`} className="text-3xl md:text-4xl flex flex-col items-center animate-pulse gap-1 mx-6 scroll-item">
+        <span>{coin.coins}</span>
+        <span className="text-xs font-thin">{coin.name}</span>
+      </span>
+    ))}
+  </div>
+</div>
+
+
       </section>
 
-      <div className="w-[80%] mx-auto p-4 text-center my-10">
+      <div className="w-[80%] mx-auto p-4 text-center mt-10 ">
         <h1 className="text-3xl sm:text-4xl md:text-3xl lg:text-6xl text-yellow-600 font-bold mb-4">
-          How {"Better"} Works
+          How {`"Zenith"`} Works
         </h1>
-        <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl">
-          Our team is committed to upholding the highest standards in managing and growing your wealth. Three simple steps make you financially independent.
+        <p className="text-xl md:w-1/2 mx-auto">
+          Our team is committed to upholding the highest standards in managing and growing your wealth. Four simple steps make you financially independent.
         </p>
       </div>
 
@@ -121,7 +133,7 @@ const SubLandingPage = () => {
         </div>
       </section>
 
-      <InvestmentPlan/>
+      {/* <InvestmentPlan/> */}
     </main>
   );
 }

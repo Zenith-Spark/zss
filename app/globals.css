@@ -1,25 +1,26 @@
 /* globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&family=Agdasima:wght@400;700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* Font Classes */
-.font-afacad {
-  font-family: 'Afacad Flux', sans-serif;
+.font-Montserrat {
+  font-family: 'Montserrat', sans-serif;
 }
 
-.font-agdasima {
-  font-family: 'Agdasima', sans-serif;
+.font-Poppins {
+  font-family: 'Poppins', sans-serif;
+}
+/* Set all header elements to Montserrat */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
 }
 
-.font-josefin {
-  font-family: 'Josefin Sans', sans-serif;
-}
-
-.font-source-code {
-  font-family: 'Source Code Pro', monospace;
+/* Set body and other text elements to Poppins */
+body, p, span, div, a, li, button, input, textarea, select {
+  font-family: 'Poppins', sans-serif;
 }
 
 /* Dark theme styles */
@@ -49,15 +50,29 @@ body {
   transition: transform 0.5s ease; /* Smooth transition */
 }
 
+/* Keyframes for continuous sliding effect */
 @keyframes slide {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 
-.animate-slide {
-  animation: slide 50s linear infinite;
+.scroll-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden; /* Hides the overflowing content */
 }
+
+.scroll-content {
+  display: flex;
+  animation: slide 50s linear infinite; /* Continuous animation */
+}
+
+.scroll-item {
+  white-space: nowrap; /* Prevents wrapping */
+  margin-right: 20px; /* Adjust space between items */
+}
+
