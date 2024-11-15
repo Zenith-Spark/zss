@@ -54,44 +54,47 @@ const InvestmentCalculator = () => {
   };
 
   const updateCalculations = () => {
-    const intervalDays = parseInt(selectedPlan.interval.match(/\d+/), 10);
-    const interestRate = parseFloat(selectedPlan.heading);
-    const profit = investment * (interestRate / 100);
-    const total = profit * (30 / intervalDays);
+    const intervalDays = parseInt(selectedPlan.interval.match(/\d+/), 10); // Extract the interval in days
+    const interestRate = parseFloat(selectedPlan.heading); // Extract interest rate
+    const profitPerInterval = investment * (interestRate / 100); // Calculate profit for one interval
+    const total = profitPerInterval; // Total profit equals profit for the interval
 
-    setDailyProfit(profit);
-    setTotalProfit(total);
+    setDailyProfit(profitPerInterval / intervalDays); // Distribute profit across the interval's days
+    setTotalProfit(total * intervalDays); // Multiply profit per interval by the interval days
 
     if (chartRef.current) {
-      chartRef.current.destroy();
+        chartRef.current.destroy();
     }
 
     const ctx = document.getElementById('profitChart').getContext('2d');
-    const labels = Array.from({ length: 30 }, (_, i) => `Day ${i + 1}`);
-    const data = Array.from({ length: 30 }, (_, i) => investment + (profit * (i + 1)));
+    const labels = Array.from({ length: intervalDays }, (_, i) => `Day ${i + 1}`);
+    const data = Array.from({ length: intervalDays }, (_, i) => investment + (profitPerInterval * i));
 
     chartRef.current = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels,
-        datasets: [{
-          label: 'Investment Value (USD)',
-          data,
-          borderColor: '#C2A74D',
-          borderWidth: 2,
-          fill: false
-        }]
-      },
-      options: {
-        responsive: true,
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
+        type: 'line',
+        data: {
+            labels,
+            datasets: [
+                {
+                    label: 'Investment Value (USD)',
+                    data,
+                    borderColor: '#C2A74D',
+                    borderWidth: 2,
+                    fill: false,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
     });
-  };
+};
+
 
   // Extract min and max from the selected plan
   const minInvestment = parseFloat(selectedPlan.min.replace(/[^\d.-]+/g, ""));
@@ -178,14 +181,8 @@ const InvestmentCalculator = () => {
               {formatBalance(investment)} USD
             </p>
           </div>
-          <div className="summary-item mb-4">
-            <p className="text-sm font-medium">Daily Profit</p>
-            <p id="dailyProfit" className="text-xl font-semibold text-green-600">
-              {formatBalance(dailyProfit)} USD
-            </p>
-          </div>
           <div className="summary-item">
-            <p className="text-sm font-medium">Total Profit after 30 days</p>
+            <p className="text-sm font-medium">Total Profit after{selectedPlan.interval}</p>
             <p id="totalProfit" className="text-xl font-semibold text-green-600">
               {formatBalance(totalProfit)} USD
             </p>
