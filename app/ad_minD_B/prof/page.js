@@ -5,11 +5,17 @@ import { usrDBSidebar } from '@assets/app/components/resuables/index';
 import { PiGreaterThan } from 'react-icons/pi';
 import { Edit } from 'lucide-react';
 import { useGlobalState } from '@assets/app/GlobalStateProvider';
+import { DBButtonOne, DBButtonTwo } from '@assets/app/components/resuables/Buttons/Buttons';
+import { toast } from 'react-toastify';
 
 const PersonalInfoPage = () => {
   const { formData, setFormData } = useGlobalState();
   const [gender, setGender] = useState(formData.adminGender || 'FEMALE'); // Default to "FEMALE"
   const [selectGender, setSelectGender] = useState(false);
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [form, setForm] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const toggleSelectedGender = () => {
     setSelectGender(!selectGender);
@@ -44,6 +50,52 @@ const PersonalInfoPage = () => {
     setGender(selectedGender);
     updateGender(selectedGender); // Update gender in the backend
   };
+
+    // Password change submit handler
+    const handleSubmit = async (e) => {
+      const token = localStorage.getItem('AdminAuthToken') || sessionStorage.getItem('AdminAuthToken');
+      e.preventDefault();
+      setLoading(true)
+  
+      try {
+        const response = await axios.post(
+          'https://zss.pythonanywhere.com/api/v1/change-password/',
+          {
+            old_password: oldPassword,
+            new_password: newPassword,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Include token in headers
+            },
+          }
+        );
+  
+        if (response.status === 200) {
+          toast.success('Password updated successfully!',  {
+            position: "top-right",
+            autoClose: 5000,
+          });
+          setOldPassword('');
+          setNewPassword('');
+          setLoading(false)
+        }
+      } catch (err) {
+        if (err.response && err.response.data) {
+          toast.error('An error occurred: ' + (err.response.data.detail || 'Please try again.'),  {
+            position: "top-right",
+            autoClose: 5000,
+          });
+          setLoading(false)
+        } else {
+          toast.error('An error occurred. Please check your connection and try again.',  {
+            position: "top-right",
+            autoClose: 5000,
+          });
+          setLoading(false)
+        }
+      }
+    };
 
   return (
     <div className="container mx-auto py-12 px-6 sm:px-8 lg:px-12 min-h-screen">
@@ -96,7 +148,42 @@ const PersonalInfoPage = () => {
           <p className="w-full">
             <strong>Referred By:</strong> {formData.adminLastReferredBy ||  'You were not referred'}
           </p>
+          <span className='w-1/4'>
+        <DBButtonTwo buttonValue={'Change Password'} Clicked={()=>setForm(!form)}/>
+          </span>
         </div>
+       {/* Password Update Form */}
+      {
+        form && (
+          <form onSubmit={handleSubmit} className="border  my-5 shadow-lg rounded-lg p-6 mb-12 w-full md:w-1/2 mx-auto">
+          <div className="mb-4">
+            <label htmlFor="old_password" className="block text-sm font-medium mb-1">Old Password</label>
+            <input
+              type="password"
+              id="old_password"
+              value={oldPassword}
+              onChange={(e) => setOldPassword(e.target.value)}
+              required
+              className="mt-1 block w-full p-3 border-b bg-transparent outline-none"
+            />
+          </div>
+          
+          <div className="mb-4">
+            <label htmlFor="newPassword" className="block text-sm font-medium mb-1">New Password</label>
+            <input
+              type="password"
+              id="newPassword"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+              className="mt-1 block w-full p-3 border-b bg-transparent outline-none"
+            />
+          </div>
+  
+          <DBButtonOne buttonValue={`${loading ? 'Loading...' : 'Update Password'}`} disabled={loading} />
+        </form>
+        )
+      }
       </section>
     </div>
   );
